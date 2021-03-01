@@ -1,0 +1,52 @@
+﻿@page "/instance"
+<AuthorizeView>
+    <h3>Все организации</h3>
+    
+    @if (false)
+    {
+        <p>
+            <em>Загрузка...</em>
+        </p>
+    }
+    else
+    {
+        <table class="table" style="font-size: 12px">
+            <thead>
+            <tr>
+                <th>Название организации</th>
+                <th>Наименование организации</th>
+                <th>Почта организации</th>
+                <th>Информация об организации</th>
+                <th>Регион</th>
+                <th>Тип организации</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>Нано сервис</td>
+                <td>ООО Нано</td>
+                <td>crazy@killer-b.ru</td>
+                <td>123123</td>
+                <td></td>
+                <td></td>
+            </tr>
+            </tbody>
+        </table>
+    }
+</AuthorizeView>
+
+@code{
+
+    //foreach (var instance in instances)
+    //        {
+    //            <tr>
+    //                <td>@instance.OrgName</td>
+    //                <td>@instance.OrgRealName</td>
+    //                <td>@instance.OrgEmail</td>
+    //                <td>@instance.CompanyInfo</td>
+    //                <td>@instance.InstanceType</td>
+    //                <td>@instance.Region</td>
+    //            </tr>
+    //        }
+
+}

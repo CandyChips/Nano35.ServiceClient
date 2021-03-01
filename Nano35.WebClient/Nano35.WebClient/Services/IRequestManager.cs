@@ -8,12 +8,13 @@ namespace Nano35.WebClient.Services
 {
     public interface IRequestManager
     {
+        string LocalIdentityServer { get; }
         string IdentityServer { get; }
         string InstanceServer { get; }
         string StorageServer { get; }
         string RepairOrdersServer { get; }
         string FileServer { get; }
-        Task<bool> HealthCheck(string serverUrl);
+        bool HealthCheck(string serverUrl);
     }
 
     public class ClusterRequestManager :
@@ -37,14 +38,26 @@ namespace Nano35.WebClient.Services
 
         public string FileServer => "http://192.168.100.210:30005";
 
-        public async Task<bool> HealthCheck(string serverUrl)
-        {
-            var result = await _httpClient.GetAsync($"{serverUrl}/health");
-            if (result.IsSuccessStatusCode)
-                return true;
-            else
-                return false;
+        public string LocalIdentityServer => "http://localhost:5001/Identity";
+        public string LocalInstanceServer => "http://localhost:5002/Instance";
 
+        public string LocalStorageServer => "http://localhost:5003/Storage";
+
+        public string LocalRepairOrdersServer => "http://localhost:5004";
+
+        public string LocalFileServer => "http://localhost:5005";
+
+        public bool HealthCheck(string serverUrl)
+        {
+            var result = _httpClient.GetAsync($"{serverUrl}/health").Result;
+            if (result.IsSuccessStatusCode)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }

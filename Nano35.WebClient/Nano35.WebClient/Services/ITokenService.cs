@@ -11,7 +11,7 @@ namespace Nano35.WebClient.Services
         void SaveToken(string token);
         void RemoveToken();
         AuthenticationHeaderValue GetIdentityHeader();
-        bool IsTokenValid();
+        bool IsTokenExist();
     }
 
     public class TokenService : 
@@ -24,7 +24,7 @@ namespace Nano35.WebClient.Services
             return new AuthenticationHeaderValue("Bearer", _token);
         }
 
-        public bool IsTokenValid()
+        public bool IsTokenExist()
         {
             return _token != null;
         }

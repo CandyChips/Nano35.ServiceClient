@@ -13,20 +13,22 @@
             </NavLink>
         </li>
         <li class="nav-item px-3">
-            <NavLink class="nav-link" href="counter">
-                <span class="oi oi-plus" aria-hidden="true"></span> Counter
-            </NavLink>
-        </li>
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="fetchdata">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Fetch data
-            </NavLink>
-        </li>
-        <li class="nav-item px-3">
             <NavLink class="nav-link" href="log-in">
                 <span class="oi oi-list-rich" aria-hidden="true"></span> Авторизация
             </NavLink>
         </li>
+        <AuthorizeView>
+            <li class="nav-item px-3">
+                <NavLink class="nav-link" href="instance">
+                    <span class="oi oi-list-rich" aria-hidden="true"></span> All Instances
+                </NavLink>
+            </li>
+            <li class="nav-item px-3">
+                <NavLink class="nav-link" href="addinstance">
+                    <span class="oi oi-list-rich" aria-hidden="true"></span> Add Instance
+                </NavLink>
+            </li>
+        </AuthorizeView>
     </ul>
 </div>
 

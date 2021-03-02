@@ -6,7 +6,9 @@ using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
+using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Authorization;
 using Nano35.Contracts.Identity.Models;
 using Nano35.WebClient.Services;
 
@@ -14,76 +16,71 @@ namespace Nano35.WebClient.Services
 {
     public interface IAuthService
     {
-        Task Login(GenerateUserTokenHttpContext.GenerateUserTokenBody loginRequest);
-        Task<IUserViewModel> GetUserFromToken();
-        Task Logout();
-        public IUserViewModel User { get; set; }
-        public bool IsLogIn();
-    }
-
+        Task<IGenerateTokenResultContract> Login(GenerateUserTokenHttpContext.GenerateUserTokenBody loginRequest);
+        Task<IGetUserByIdResultContract> GetCurrentUser();
     }
 
     public class AuthService : IAuthService
     {
-        private readonly NavigationManager _navigationManager;
         private readonly IRequestManager _requestManager;
-        private readonly ITokenService _tokenService;
+        private readonly ILocalStorageService _localStorage;
         private readonly HttpClient _httpClient;
+        private readonly AuthenticationStateProvider  _customAuthenticationStateProvider;
 
         public AuthService(
-            NavigationManager navigationManager,
             IRequestManager requestManager,
-            ITokenService tokenService,
-            HttpClient httpClient)
+            ILocalStorageService localStorage,
+            HttpClient httpClient,
+            AuthenticationStateProvider  customAuthenticationStateProvider)
         {
-            _navigationManager = navigationManager;
             _requestManager = requestManager;
-            _tokenService = tokenService;
             _httpClient = httpClient;
+            _customAuthenticationStateProvider = customAuthenticationStateProvider;
+            _localStorage = localStorage;
         }
 
-        public async Task Login(GenerateUserTokenHttpContext.GenerateUserTokenBody loginRequest)
+        public async Task<IGenerateTokenResultContract> Login(
+            GenerateUserTokenHttpContext.GenerateUserTokenBody loginRequest)
         {
             var result = await _httpClient.PostAsJsonAsync($"{_requestManager.IdentityServer}/Identity/Authenticate", loginRequest);
-            if (result.StatusCode == System.Net.HttpStatusCode.BadRequest) 
-                throw new Exception(
-                    result.Content.ReadFromJsonAsync<GenerateUserTokenHttpContext.GenerateUserTokenErrorResponse>().Result.Message);
-            else
-                _tokenService.SaveToken(
-                    result.Content.ReadFromJsonAsync<GenerateUserTokenHttpContext.GenerateUserTokenSuccessResponse>().Result.Token);
-                _navigationManager.NavigateTo("/");
-        }
-
-        public async Task<IUserViewModel> GetUserFromToken()
-        {
-            var request = new HttpRequestMessage(HttpMethod.Get, $"{_requestManager.IdentityServer}/Identity/GetUserFromToken");
-            if (_tokenService.IsTokenExist())
-                request.Headers.Authorization = _tokenService.GetIdentityHeader();
-            var result  = await _httpClient.SendAsync(request);
-            if (result.StatusCode == System.Net.HttpStatusCode.BadRequest) 
-                throw new Exception(
-                    result.Content.ReadFromJsonAsync<GetUserFromTokenHttpContext.GetUserFromTokenErrorResponse>().Result.Message);
-            else
-                return result.Content.ReadFromJsonAsync<GetUserFromTokenHttpContext.GetUserFromTokenSuccessResponse>().Result.Data;
-        }
-
-        public async Task Logout()
-        {
-            _tokenService.RemoveToken();
-            _navigationManager.NavigateTo("/log-in");
-        }
-
-        public bool IsLogIn()
-        {
-            if (_tokenService.IsTokenExist())
+            if (result.IsSuccessStatusCode)
             {
-                return true;
+                var success = await result.Content.ReadFromJsonAsync<impl1>();
+                await _localStorage.SetItemAsync("authToken", success?.Token);
+                ((CustomAuthenticationStateProvider) _customAuthenticationStateProvider).NotifyAsAuthenticated(
+                    success?.Token);
+                return success;
             }
             else
             {
-                return false;
+                return await result.Content.ReadFromJsonAsync<impl2>();
             }
         }
 
-        public IUserViewModel User { get; set; }
+        public async Task<IGetUserByIdResultContract> GetCurrentUser()
+        {
+            var result = await _httpClient.GetAsync($"{_requestManager.IdentityServer}/Identity/GetUserFromToken");
+            if (result.IsSuccessStatusCode)
+            {
+                return await result.Content.ReadFromJsonAsync<impl3>();
+            }
+
+            throw new NotImplementedException();
+        }
     }
+
+    public class impl1 : IGenerateTokenSuccessResultContract
+    {
+        public string Token { get; set; }
+    }
+
+    public class impl2 : IGenerateTokenErrorResultContract
+    {
+        public string Message { get; set; }
+    }
+    
+    public class impl3 : IGetUserByIdSuccessResultContract
+    {
+        public IUserViewModel Data { get; set; }
+    }
+}

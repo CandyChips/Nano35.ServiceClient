@@ -1,31 +1,17 @@
-﻿using System.Net;
-using System.Net.Http;
-using System.Net.Http.Json;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Components;
+﻿using Microsoft.AspNetCore.Components;
 using Nano35.WebClient.Services;
 
-namespace WebApplication2.Pages
+namespace Nano35.WebClient.Pages
 {
     public partial class Instance
     {
         [Inject]
-        private IRequestManager _requestManager { get; set; }
-
-        [Inject]
         private IAuthService _authService { get; set; }
-        [Inject]
-        private HttpClient _httpClient { get; set; }
         
-        async Task GetAllInstances()
+        protected override void OnInitialized()
         {
-            var response = await _httpClient.GetAsync( $"{_requestManager.InstanceServer}/Instances/GetAllInstances?UserId={_authService.User.Id}");
-            
-            if (response.StatusCode == HttpStatusCode.OK)
-            {
-            }
-            
+            var result = _authService.GetCurrentUser();
         }
+        
     }
 }

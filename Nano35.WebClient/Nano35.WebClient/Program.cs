@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using Blazored.LocalStorage;
 
 namespace Nano35.WebClient
 {
@@ -21,7 +22,8 @@ namespace Nano35.WebClient
 
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
             builder.Services.AddAuthorizationCore();
-            builder.Services.AddScoped<AuthenticationStateProvider, AuthProvider>(); 
+            builder.Services.AddBlazoredLocalStorage();
+            builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>(); 
             builder.Services.AddScoped<IAuthService, AuthService>();
             builder.Services.AddScoped<ITokenService, TokenService>();
             builder.Services.AddScoped<IRequestManager, ClusterRequestManager>();

@@ -1,45 +1,93 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Net.Http.Json;
 using System.Security.Claims;
+using System.Text.Json;
 using System.Threading.Tasks;
+using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components.Authorization;
+using Nano35.Contracts.Identity.Artifacts;
+using Nano35.Contracts.Identity.Models;
 
 
 namespace Nano35.WebClient.Services
 {
-    public class AuthProvider : AuthenticationStateProvider
+    public class CustomAuthenticationStateProvider : AuthenticationStateProvider
     {
-        private readonly ITokenService _tokenService;
-        private readonly IAuthService _authService;
         private readonly HttpClient _httpClient;
+        private readonly ILocalStorageService _localStorage;
+        private readonly IRequestManager _requestManager;    
+        private readonly AuthenticationState _anonymous;
 
-        public AuthProvider(
-            ITokenService tokenService,
-            HttpClient httpClient,
-            IAuthService authService)
+        public CustomAuthenticationStateProvider(
+            HttpClient httpClient, 
+            ILocalStorageService localStorage, 
+            IRequestManager requestManager)
         {
-             _tokenService = tokenService;
-             _httpClient = httpClient;
-             _authService = authService;
+            _httpClient = httpClient;
+            _localStorage = localStorage;
+            _requestManager = requestManager;
+            _anonymous = new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity()));
         }
+        
         public override async Task<AuthenticationState> GetAuthenticationStateAsync()
         {
-            if (_tokenService.IsTokenExist())
-            {
-                return new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity()));
-            }
-
-            _httpClient.DefaultRequestHeaders.Authorization = _tokenService.GetIdentityHeader();
-            var responce = _authService.GetUserFromToken();
-
-            var claims = new List<Claim>()
-            {
-                new Claim(ClaimTypes.Name, responce.Result.Name),
-                new Claim(ClaimTypes.MobilePhone, responce.Result.Phone),
-                new Claim(ClaimTypes.NameIdentifier, responce.Result.Id.ToString())
-            };
+            var token = await _localStorage.GetItemAsync<string>("authToken");
+            if(token == null)
+                return _anonymous;        
             
-            return new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity(claims, "user")));
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", token);
+            
+            return new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity(JwtParser.ParseClaimsFromJwt(token), "jwtAuthType")));
+        }
+
+        public void NotifyAsAuthenticated(string token)
+        {
+            var authenticatedUser = new ClaimsPrincipal(new ClaimsIdentity(new[] { new Claim(ClaimTypes.Name, token) }, "jwtAuthType"));
+            var authState = Task.FromResult(new AuthenticationState(authenticatedUser));
+            NotifyAuthenticationStateChanged(authState);
+        }
+
+        public void NotifyAsLogout()
+        {        
+            var authState = Task.FromResult(_anonymous);
+            NotifyAuthenticationStateChanged(authState);
+        }
+    }
+
+    public class GetUserByIdSuccessResultContract : IGetUserByIdSuccessResultContract
+    {
+        public IUserViewModel Data { get; set; }
+    }
+
+    public class GetUserByIdErrorResultContract : IGetUserByIdErrorResultContract
+    {
+        public string Message { get; set; }
+    }
+    public static class JwtParser
+    {
+        public static IEnumerable<Claim> ParseClaimsFromJwt(string jwt)
+        {
+            var claims = new List<Claim>();
+            var payload = jwt.Split('.')[1];
+        
+            var jsonBytes = ParseBase64WithoutPadding(payload);
+        
+            var keyValuePairs = JsonSerializer.Deserialize<Dictionary<string, object>>(jsonBytes);
+            claims.AddRange(keyValuePairs.Select(kvp => new Claim(kvp.Key, kvp.Value.ToString())));
+            return claims;
+        }
+        private static byte[] ParseBase64WithoutPadding(string base64)
+        {
+            switch (base64.Length % 4)
+            {
+                case 2: base64 += "=="; break;
+                case 3: base64 += "="; break;
+            }
+            return Convert.FromBase64String(base64);
         }
     }
 }

@@ -1,0 +1,36 @@
+﻿<nav class="navbar navbar-expand-lg bg-dark navbar-dark">
+    <NavLink class="navbar-brand" href="" Match="NavLinkMatch.All">
+        Nano35
+    </NavLink>
+    <div style="flex: 1 1 auto;"></div>
+    <div class="form-inline">
+        <ul class="navbar-nav">
+            <AuthorizeView>
+                <Authorized>
+                    <li class="nav-item">
+                        <NavLink class="nav-link" href="instance">
+                            Организации
+                        </NavLink>
+                    </li>
+                    <li class="nav-item">
+                        <NavLink class="nav-link" href="log-out">
+                            Выход
+                        </NavLink>
+                    </li>
+                </Authorized>
+                <NotAuthorized>
+                    <li class="nav-item">
+                        <NavLink class="nav-link" href="log-in">
+                            Авторизация
+                        </NavLink>
+                    </li>
+                    <li class="nav-item">
+                        <NavLink class="nav-link" href="registration">
+                            Регистрация
+                        </NavLink>
+                    </li>
+                </NotAuthorized>
+            </AuthorizeView>
+        </ul>
+    </div>
+</nav>

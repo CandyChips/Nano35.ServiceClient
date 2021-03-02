@@ -17,7 +17,9 @@ namespace Nano35.WebClient.Services
     public interface IAuthService
     {
         Task<IGenerateTokenResultContract> Login(GenerateUserTokenHttpContext.GenerateUserTokenBody loginRequest);
+        Task LogOut();
         Task<IGetUserByIdResultContract> GetCurrentUser();
+        Task<IRegisterResultContract> Register(RegisterHttpContext.RegisterBody model);
     }
 
     public class AuthService : IAuthService
@@ -57,6 +59,12 @@ namespace Nano35.WebClient.Services
             }
         }
 
+        public async Task LogOut()
+        {
+            await _localStorage.RemoveItemAsync("authToken");
+            ((CustomAuthenticationStateProvider) _customAuthenticationStateProvider).NotifyAsLogout();
+        }
+
         public async Task<IGetUserByIdResultContract> GetCurrentUser()
         {
             var result = await _httpClient.GetAsync($"{_requestManager.IdentityServer}/Identity/GetUserFromToken");
@@ -65,6 +73,11 @@ namespace Nano35.WebClient.Services
                 return await result.Content.ReadFromJsonAsync<impl3>();
             }
 
+            throw new NotImplementedException();
+        }
+
+        public Task<IRegisterResultContract> Register(RegisterHttpContext.RegisterBody model)
+        {
             throw new NotImplementedException();
         }
     }

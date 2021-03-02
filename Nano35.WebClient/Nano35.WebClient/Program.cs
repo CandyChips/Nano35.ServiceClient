@@ -27,6 +27,7 @@ namespace Nano35.WebClient
             builder.Services.AddScoped<IAuthService, AuthService>();
             builder.Services.AddScoped<ITokenService, TokenService>();
             builder.Services.AddScoped<IRequestManager, ClusterRequestManager>();
+            builder.Services.AddScoped<IInstancesService, InstancesService>();
                        
             await builder.Build().RunAsync();
         }

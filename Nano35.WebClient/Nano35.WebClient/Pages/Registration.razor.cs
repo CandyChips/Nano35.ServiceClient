@@ -1,15 +1,12 @@
+﻿using System;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 using Nano35.HttpContext.identity;
 using Nano35.WebClient.Services;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.NetworkInformation;
-using System.Threading.Tasks;
 
 namespace Nano35.WebClient.Pages
 {
-    public partial class Login
+    public partial class Registration
     {
         [Inject]
         private IAuthService _authService { get; set; }
@@ -17,8 +14,8 @@ namespace Nano35.WebClient.Pages
         public NavigationManager NavigationManager { get; set; }
         [Inject] 
         private IRequestManager _requestManager { get; set; }
-
-        private GenerateUserTokenHttpContext.GenerateUserTokenBody model = new GenerateUserTokenHttpContext.GenerateUserTokenBody();
+        
+        private RegisterHttpContext.RegisterBody model = new RegisterHttpContext.RegisterBody();
         private bool _loading = true;
         private string _error;
         private bool _serverAvailable = false;
@@ -30,17 +27,18 @@ namespace Nano35.WebClient.Pages
         }
 
         private async void HandleValidSubmit()
+        
         {
             try
             {
-                await _authService.Login(model);
-                NavigationManager.NavigateTo("/");
+                await _authService.Register(model);
+                NavigationManager.NavigateTo("/log-in");
             }
             catch (Exception ex)
             {
                 _error = ex.Message;
             }
         }
-
+        
     }
 }

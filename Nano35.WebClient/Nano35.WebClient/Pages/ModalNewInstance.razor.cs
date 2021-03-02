@@ -1,27 +1,23 @@
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
-using Nano35.HttpContext.identity;
+using Nano35.HttpContext.instance;
 using Nano35.WebClient.Services;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.NetworkInformation;
-using System.Threading.Tasks;
 
 namespace Nano35.WebClient.Pages
 {
-    public partial class Login
+    public partial class ModalNewInstance : ComponentBase
     {
-        [Inject]
-        private IAuthService _authService { get; set; }
         [Inject]
         public NavigationManager NavigationManager { get; set; }
         [Inject] 
         private IRequestManager _requestManager { get; set; }
-
-        private GenerateUserTokenHttpContext.GenerateUserTokenBody model = new GenerateUserTokenHttpContext.GenerateUserTokenBody();
+        
+        private CreateInstanceHttpContext.CreateInstanceBody model = new CreateInstanceHttpContext.CreateInstanceBody();
         private bool _loading = true;
         private string _error;
         private bool _serverAvailable = false;
+        
+        public bool Display { get; private set; }
 
         protected override async Task OnInitializedAsync()
         {
@@ -31,16 +27,18 @@ namespace Nano35.WebClient.Pages
 
         private async void HandleValidSubmit()
         {
-            try
-            {
-                await _authService.Login(model);
-                NavigationManager.NavigateTo("/");
-            }
-            catch (Exception ex)
-            {
-                _error = ex.Message;
-            }
+        }
+        
+        public void Show()
+        {
+            this.Display = true;
+            this.InvokeAsync(this.StateHasChanged);
         }
 
+        public void Hide()
+        {
+            this.Display = false;
+            this.InvokeAsync(this.StateHasChanged);
+        }
     }
 }

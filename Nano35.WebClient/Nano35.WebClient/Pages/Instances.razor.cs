@@ -44,7 +44,7 @@ namespace Nano35.WebClient.Pages
         private async Task OpenOrg(Guid id)
         {
             await _instanceService.SetInstanceById(id);
-            NavigationManager.NavigateTo("/instance");
+            NavigationManager.NavigateTo("/instance-view");
         }
         
     }

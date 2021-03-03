@@ -7,12 +7,14 @@ namespace Nano35.WebClient.Shared
 {
     public partial class NavMenu
     {
-        [Inject] private IInstanceService _instanceService { get; set; }
-        public Guid OrgName { get; set; }
+        [Inject] 
+        private IInstanceService _instanceService { get; set; }
+        
+        public string OrgName { get; set; }
 
-        protected override async Task OnInitializedAsync()
+        protected override void OnInitialized()
         {
-            OrgName = _instanceService.Instance.Id;
+            OrgName = _instanceService.GetCurrentInstance().OrgName;
         }
     }
 }

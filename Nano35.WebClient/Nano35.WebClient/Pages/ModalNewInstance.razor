@@ -31,6 +31,28 @@
                         <InputText @bind-Value="model.Info" class="form-control" />
                         <ValidationMessage For="@(() => model.Info)" />
                     </div>
+                    <div class="form-group">
+                        <label>Регион</label>
+                        <InputSelect @bind-Value="model.RegionId" class="custom-select">
+                            <option selected disabled>Choose...</option>
+                            @foreach (var item in _regions)
+                            {
+                                <option value="@item.Id">@item.Name </option>
+                            }
+                        </InputSelect>
+                        <ValidationMessage For="@(() => model.RegionId)"/>
+                    </div>
+                    <div class="form-group">
+                        <label>Тип</label>
+                        <InputSelect @bind-Value="model.TypeId" class="custom-select">
+                            <option selected disabled>Choose...</option>
+                            @foreach (var item in _types)
+                            {
+                                <option value="@item.Id">@item.Name </option>
+                            }
+                        </InputSelect>
+                        <ValidationMessage For="@(() => model.TypeId)"/>
+                    </div>
                     @* <div class="form-group"> *@
                     @*     <label>Регион</label> *@
                     @*     <InputText @bind-Value="model.RegionId" class="form-control" /> *@

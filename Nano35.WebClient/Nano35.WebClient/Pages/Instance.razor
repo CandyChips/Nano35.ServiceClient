@@ -1,14 +1,3 @@
 ﻿@using Microsoft.AspNetCore.Authorization
 @attribute [Authorize]
 @page "/instance"
-<AuthorizeView>
-    
-    <div class="page">
-        <div class="sidebar">
-            <NavMenu/>
-        </div>
-        <div class="main">
-            <h2>@_instanceService.Instance.OrgName</h2>
-        </div>
-    </div>
-</AuthorizeView>

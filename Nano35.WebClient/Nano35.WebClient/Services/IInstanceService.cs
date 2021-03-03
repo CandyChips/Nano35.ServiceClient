@@ -12,7 +12,7 @@ namespace Nano35.WebClient.Services
     public interface IInstanceService
     {
         public IInstanceViewModel Instance { get; set; }
-        Task<IInstanceViewModel> GetCurrentInstance();
+        IInstanceViewModel GetCurrentInstance();
         Task SetInstanceById(Guid id);
     }
     public class InstanceService :
@@ -28,7 +28,7 @@ namespace Nano35.WebClient.Services
         }
         public IInstanceViewModel Instance { get; set; }
         
-        public async Task<IInstanceViewModel> GetCurrentInstance()
+        public IInstanceViewModel GetCurrentInstance()
         {
             return Instance;
         }

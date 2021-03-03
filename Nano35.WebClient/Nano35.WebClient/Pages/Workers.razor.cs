@@ -5,7 +5,7 @@ using Nano35.WebClient.Services;
 
 namespace Nano35.WebClient.Pages
 {
-    public partial class Clients
+    public partial class Workers
     {
         [Inject] 
         private IRequestManager _requestManager { get; set; }

@@ -5,7 +5,7 @@
       "url": "_content\/Microsoft.AspNetCore.Components.WebAssembly.Authentication\/AuthenticationService.js"
     },
     {
-      "hash": "sha256-ShX8VEqqba580X3WuFPo\/0ex7srTih9myU02j+RwAbI=",
+      "hash": "sha256-TAGq2ejTqg4jWWNieh2CaJNkd12QNRZGfe5S+KU3Sks=",
       "url": "_framework\/blazor.boot.json"
     },
     {
@@ -117,7 +117,7 @@
       "url": "_framework\/Nano35.Contracts.dll"
     },
     {
-      "hash": "sha256-JP6hxqCBopYV\/gypGLsBtvGFdvY7ji92EavhbjDRAPM=",
+      "hash": "sha256-mg8U0Chkl\/AzjgvfQhrvcCpOO5vZlqorRu+dgB3PV6A=",
       "url": "_framework\/Nano35.HttpContext.dll"
     },
     {
@@ -813,11 +813,11 @@
       "url": "_framework\/dotnet.5.0.2.js"
     },
     {
-      "hash": "sha256-1vvHmjY3rUhwD31wh2KK4+LdNVwWbkqHPJeW8iwrHXw=",
+      "hash": "sha256-h8sTCwPoz2F8we1xiiNo8ZdU1VU\/GATw4Do4j1IyawM=",
       "url": "_framework\/Nano35.WebClient.dll"
     },
     {
-      "hash": "sha256-OY0QVG6UyNRSBgAeDjZziKb\/aGMYd9l7FuH\/K93qSHE=",
+      "hash": "sha256-DSHkIGQ3JRl9ufkxQpcD0mOs8da8jNN08btX8xobxKM=",
       "url": "_framework\/Nano35.WebClient.pdb"
     },
     {
@@ -933,7 +933,7 @@
       "url": "_framework\/Nano35.Contracts.dll.gz"
     },
     {
-      "hash": "sha256-3Ahg0fbOtiGBGaEQHn9ir+36s6oamRVWIyj2mbYjjg0=",
+      "hash": "sha256-+Zq4Ja567BIT\/IoG+LvqAMbTlJgo9UeC52vf+XLO5Kc=",
       "url": "_framework\/Nano35.HttpContext.dll.gz"
     },
     {
@@ -1697,13 +1697,13 @@
       "url": "sample-data\/weather.json"
     },
     {
-      "hash": "sha256-4HIPaOtxeQmIYeRZ7wU+0inJ7JkcIHHKrLVJTEz60GE=",
+      "hash": "sha256-OfprIUY4MkxUy1iCzndNyu8q6RWsF4RtXe8VOJYXa7k=",
       "url": "Nano35.WebClient.styles.css"
     },
     {
-      "hash": "sha256-JCUH5s37lylffk6BeLLTLoJzJVsaCvJHJBl7m\/WZKl4=",
+      "hash": "sha256-NS9zAwTjalcB0hLwcwq0F6BKtlsvgWbdk\/yYBxRIt5A=",
       "url": "Nano35.WebClient.bundle.scp.css"
     }
   ],
-  "version": "vLrX\/8C1"
+  "version": "17v8tYy\/"
 };

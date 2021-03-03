@@ -16,10 +16,10 @@ namespace Nano35.WebClient.Services
 {
     public interface IAuthService
     {
-        Task<GenerateUserTokenHttpContext.GenerateUserTokenSuccessResponse> Login(GenerateUserTokenHttpContext.GenerateUserTokenBody loginRequest);
+        Task<GenerateUserTokenSuccessHttpResponse> Login(GenerateUserTokenHttpBody loginRequest);
         Task LogOut();
         Task<IGetUserByIdResultContract> GetCurrentUser();
-        Task<IRegisterResultContract> Register(RegisterHttpContext.RegisterBody model);
+        Task<IRegisterResultContract> Register(RegisterHttpBody model);
     }
 
     public class AuthService : IAuthService
@@ -41,21 +41,20 @@ namespace Nano35.WebClient.Services
             _localStorage = localStorage;
         }
 
-        public async Task<GenerateUserTokenHttpContext.GenerateUserTokenSuccessResponse> Login(
-            GenerateUserTokenHttpContext.GenerateUserTokenBody loginRequest)
+        public async Task<GenerateUserTokenSuccessHttpResponse> Login(GenerateUserTokenHttpBody loginRequest)
         {
             var result = await _httpClient.PostAsJsonAsync($"{_requestManager.IdentityServer}/Identity/Authenticate", loginRequest);
             if (result.IsSuccessStatusCode)
             {
                 var success = await result.Content
-                    .ReadFromJsonAsync<GenerateUserTokenHttpContext.GenerateUserTokenSuccessResponse>();
+                    .ReadFromJsonAsync<GenerateUserTokenSuccessHttpResponse>();
                 await _localStorage.SetItemAsync("authToken", success?.Token);
                 ((CustomAuthenticationStateProvider) _customAuthenticationStateProvider).NotifyAsAuthenticated(
                     success?.Token);
                 return success;
             }
                 throw new Exception((await result.Content
-                    .ReadFromJsonAsync<GenerateUserTokenHttpContext.GenerateUserTokenErrorResponse>())?.Message);
+                    .ReadFromJsonAsync<GenerateUserTokenErrorHttpResponse>())?.Message);
         }
 
         public async Task LogOut()
@@ -75,7 +74,7 @@ namespace Nano35.WebClient.Services
             throw new NotImplementedException();
         }
 
-        public Task<IRegisterResultContract> Register(RegisterHttpContext.RegisterBody model)
+        public Task<IRegisterResultContract> Register(RegisterHttpBody model)
         {
             throw new NotImplementedException();
         }

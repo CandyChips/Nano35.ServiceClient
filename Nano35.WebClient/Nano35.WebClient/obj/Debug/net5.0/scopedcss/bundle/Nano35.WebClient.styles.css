@@ -1,3 +1,159 @@
+/* /Pages/Clients.razor.rz.scp.css */
+.page[b-5gce0a3nlg] {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.main[b-5gce0a3nlg] {
+    flex: 1;
+}
+
+.sidebar[b-5gce0a3nlg] {
+    background-image: linear-gradient(180deg, rgb(5, 39, 103) 0%, #3a0647 70%);
+}
+
+.top-row[b-5gce0a3nlg] {
+    background-color: #f7f7f7;
+    border-bottom: 1px solid #d6d5d5;
+    justify-content: flex-end;
+    height: 3.5rem;
+    display: flex;
+    align-items: center;
+}
+
+.top-row[b-5gce0a3nlg]  a, .top-row .btn-link[b-5gce0a3nlg] {
+    white-space: nowrap;
+    margin-left: 1.5rem;
+}
+
+.top-row a:first-child[b-5gce0a3nlg] {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+
+
+.page[b-5gce0a3nlg] {
+    flex-direction: row;
+}
+
+.sidebar[b-5gce0a3nlg] {
+    width: 250px;
+    height: 100vh;
+    position: sticky;
+    top: 0;
+}
+
+.top-row[b-5gce0a3nlg] {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+/* /Pages/Employees.razor.rz.scp.css */
+.page[b-p4tj9ut6yz] {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.main[b-p4tj9ut6yz] {
+    flex: 1;
+}
+
+.sidebar[b-p4tj9ut6yz] {
+    background-image: linear-gradient(180deg, rgb(5, 39, 103) 0%, #3a0647 70%);
+}
+
+.top-row[b-p4tj9ut6yz] {
+    background-color: #f7f7f7;
+    border-bottom: 1px solid #d6d5d5;
+    justify-content: flex-end;
+    height: 3.5rem;
+    display: flex;
+    align-items: center;
+}
+
+.top-row[b-p4tj9ut6yz]  a, .top-row .btn-link[b-p4tj9ut6yz] {
+    white-space: nowrap;
+    margin-left: 1.5rem;
+}
+
+.top-row a:first-child[b-p4tj9ut6yz] {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+
+
+.page[b-p4tj9ut6yz] {
+    flex-direction: row;
+}
+
+.sidebar[b-p4tj9ut6yz] {
+    width: 250px;
+    height: 100vh;
+    position: sticky;
+    top: 0;
+}
+
+.top-row[b-p4tj9ut6yz] {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+/* /Pages/Instance.razor.rz.scp.css */
+.page[b-rb3lbjc8me] {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.main[b-rb3lbjc8me] {
+    flex: 1;
+}
+
+.sidebar[b-rb3lbjc8me] {
+    background-image: linear-gradient(180deg, rgb(5, 39, 103) 0%, #3a0647 70%);
+}
+
+.top-row[b-rb3lbjc8me] {
+    background-color: #f7f7f7;
+    border-bottom: 1px solid #d6d5d5;
+    justify-content: flex-end;
+    height: 3.5rem;
+    display: flex;
+    align-items: center;
+}
+
+.top-row[b-rb3lbjc8me]  a, .top-row .btn-link[b-rb3lbjc8me] {
+    white-space: nowrap;
+    margin-left: 1.5rem;
+}
+
+.top-row a:first-child[b-rb3lbjc8me] {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+
+
+.page[b-rb3lbjc8me] {
+    flex-direction: row;
+}
+
+.sidebar[b-rb3lbjc8me] {
+    width: 250px;
+    height: 100vh;
+    position: sticky;
+    top: 0;
+}
+
+.top-row[b-rb3lbjc8me] {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
 /* /Pages/Login.razor.rz.scp.css */
 /* /Pages/ModalNewInstance.razor.rz.scp.css */
 div.modal-background[b-kdspcsomfv] {
@@ -18,6 +174,58 @@ div.modal-content[b-kdspcsomfv] {
     margin: 5% auto;
     border: 2px solid #888;
     width: 90%;
+}
+/* /Pages/Subdivisions.razor.rz.scp.css */
+.page[b-kuyfgpuyfz] {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.main[b-kuyfgpuyfz] {
+    flex: 1;
+}
+
+.sidebar[b-kuyfgpuyfz] {
+    background-image: linear-gradient(180deg, rgb(5, 39, 103) 0%, #3a0647 70%);
+}
+
+.top-row[b-kuyfgpuyfz] {
+    background-color: #f7f7f7;
+    border-bottom: 1px solid #d6d5d5;
+    justify-content: flex-end;
+    height: 3.5rem;
+    display: flex;
+    align-items: center;
+}
+
+.top-row[b-kuyfgpuyfz]  a, .top-row .btn-link[b-kuyfgpuyfz] {
+    white-space: nowrap;
+    margin-left: 1.5rem;
+}
+
+.top-row a:first-child[b-kuyfgpuyfz] {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+
+
+.page[b-kuyfgpuyfz] {
+    flex-direction: row;
+}
+
+.sidebar[b-kuyfgpuyfz] {
+    width: 250px;
+    height: 100vh;
+    position: sticky;
+    top: 0;
+}
+
+.top-row[b-kuyfgpuyfz] {
+    position: sticky;
+    top: 0;
+    z-index: 1;
 }
 /* /Shared/MainLayout.razor.rz.scp.css */
 .page[b-2delmhzm0s] {

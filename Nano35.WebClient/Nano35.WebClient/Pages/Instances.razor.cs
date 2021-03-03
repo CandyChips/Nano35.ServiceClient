@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 using Nano35.Contracts.Instance.Models;
 using Nano35.WebClient.Services;
+using InstanceViewModel = Nano35.HttpContext.instance.InstanceViewModel;
 
 namespace Nano35.WebClient.Pages
 {
@@ -25,12 +27,12 @@ namespace Nano35.WebClient.Pages
         
         public ModalNewInstance ModalNewInstance { get; set; }
 
-        private List<InstanceViewModel> _data = new List<InstanceViewModel>();
+        private IEnumerable<InstanceViewModel> _data;
         
         protected override async Task OnInitializedAsync()
         {
             _serverAvailable = await _requestManager.HealthCheck(_requestManager.InstanceServer);
-            _data = await _instancesService.GetAllInstances();
+            _data = (await _instancesService.GetAllInstances()).Data;
             _loading = false;
         }
         
@@ -39,9 +41,9 @@ namespace Nano35.WebClient.Pages
             this.ModalNewInstance.Show();
         }
 
-        private void OpenOrg(Guid id)
+        private async Task OpenOrg(Guid id)
         {
-            _instanceService.Id = id;
+            await _instanceService.SetInstanceById(id);
             NavigationManager.NavigateTo("/instance");
         }
         

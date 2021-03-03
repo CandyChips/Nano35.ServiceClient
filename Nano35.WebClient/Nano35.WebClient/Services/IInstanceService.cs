@@ -3,14 +3,17 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
+using Nano35.Contracts.Instance.Models;
+using Nano35.HttpContext.instance;
+using Nano35.WebClient.Pages;
 
 namespace Nano35.WebClient.Services
 {
     public interface IInstanceService
     {
-        public Guid Id { get; set; }
-        
-        Task<List<InstanceViewModel>> GetInstanceById();
+        public IInstanceViewModel Instance { get; set; }
+        Task<IInstanceViewModel> GetCurrentInstance();
+        Task SetInstanceById(Guid id);
     }
     public class InstanceService :
         IInstanceService
@@ -23,17 +26,24 @@ namespace Nano35.WebClient.Services
             _httpClient = httpClient;
             _requestManager = requestManager;
         }
-
-        public async Task<List<InstanceViewModel>> GetInstanceById()
+        public IInstanceViewModel Instance { get; set; }
+        
+        public async Task<IInstanceViewModel> GetCurrentInstance()
         {
-            var response = await _httpClient.GetAsync($"{_requestManager.InstanceServer}/Instances/GetInstanceById/Id={Id}");
-            if (response.IsSuccessStatusCode)
-            {
-                return (await response.Content.ReadFromJsonAsync<List<InstanceViewModel>>());
-            }
-            throw new Exception((await response.Content.ReadFromJsonAsync<string>()));
+            return Instance;
         }
         
-        public Guid Id { get; set; }
+        public async Task SetInstanceById(Guid id)
+        {
+            var response = await _httpClient.GetAsync($"{_requestManager.InstanceServer}/Instances/GetInstanceById/Id={id}");
+            if (response.IsSuccessStatusCode)
+            {
+                Instance = (await response.Content.ReadFromJsonAsync<GetInstanceByIdSuccessHttpResponse>())?.Data;
+            }
+        }
+
+        
+
+
     }
 }

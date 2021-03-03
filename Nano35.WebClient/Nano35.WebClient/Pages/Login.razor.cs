@@ -18,7 +18,7 @@ namespace Nano35.WebClient.Pages
         [Inject] 
         private IRequestManager _requestManager { get; set; }
 
-        private GenerateUserTokenHttpContext.GenerateUserTokenBody model = new GenerateUserTokenHttpContext.GenerateUserTokenBody();
+        private GenerateUserTokenHttpBody model = new GenerateUserTokenHttpBody();
         private bool _loading = true;
         private string _error;
         private bool _serverAvailable = false;

@@ -12,7 +12,7 @@ namespace Nano35.WebClient.Pages
         [Inject] 
         private IRequestManager _requestManager { get; set; }
         
-        private CreateInstanceHttpContext.CreateInstanceBody model = new CreateInstanceHttpContext.CreateInstanceBody();
+        private CreateInstanceHttpBody model = new CreateInstanceHttpBody();
         private bool _loading = true;
         private string _error;
         private bool _serverAvailable = false;

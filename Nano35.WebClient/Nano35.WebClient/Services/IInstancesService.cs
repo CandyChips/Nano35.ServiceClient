@@ -5,12 +5,13 @@ using System.Net.Http.Json;
 using System.Threading.Tasks;
 using Nano35.Contracts.Instance.Artifacts;
 using Nano35.Contracts.Instance.Models;
+using Nano35.HttpContext.instance;
 
 namespace Nano35.WebClient.Services
 {
     public interface IInstancesService
     {
-        Task<List<InstanceViewModel>> GetAllInstances();
+        Task<GetAllInstancesSuccessHttpResponse> GetAllInstances();
     }
     
     public class InstancesService :
@@ -25,12 +26,12 @@ namespace Nano35.WebClient.Services
             _requestManager = requestManager;
         }
 
-        public async Task<List<InstanceViewModel>> GetAllInstances()
+        public async Task<GetAllInstancesSuccessHttpResponse> GetAllInstances()
         {
             var response = await _httpClient.GetAsync($"{_requestManager.InstanceServer}/Instances/GetAllCurrentInstances");
             if (response.IsSuccessStatusCode)
             {
-                return (await response.Content.ReadFromJsonAsync<List<InstanceViewModel>>());
+                return (await response.Content.ReadFromJsonAsync<GetAllInstancesSuccessHttpResponse>());
             }
             throw new Exception((await response.Content.ReadFromJsonAsync<string>()));
         }

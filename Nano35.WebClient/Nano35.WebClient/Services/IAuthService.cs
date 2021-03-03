@@ -16,7 +16,7 @@ namespace Nano35.WebClient.Services
 {
     public interface IAuthService
     {
-        Task<IGenerateTokenResultContract> Login(GenerateUserTokenHttpContext.GenerateUserTokenBody loginRequest);
+        Task<GenerateUserTokenHttpContext.GenerateUserTokenSuccessResponse> Login(GenerateUserTokenHttpContext.GenerateUserTokenBody loginRequest);
         Task LogOut();
         Task<IGetUserByIdResultContract> GetCurrentUser();
         Task<IRegisterResultContract> Register(RegisterHttpContext.RegisterBody model);
@@ -41,22 +41,21 @@ namespace Nano35.WebClient.Services
             _localStorage = localStorage;
         }
 
-        public async Task<IGenerateTokenResultContract> Login(
+        public async Task<GenerateUserTokenHttpContext.GenerateUserTokenSuccessResponse> Login(
             GenerateUserTokenHttpContext.GenerateUserTokenBody loginRequest)
         {
             var result = await _httpClient.PostAsJsonAsync($"{_requestManager.IdentityServer}/Identity/Authenticate", loginRequest);
             if (result.IsSuccessStatusCode)
             {
-                var success = await result.Content.ReadFromJsonAsync<impl1>();
+                var success = await result.Content
+                    .ReadFromJsonAsync<GenerateUserTokenHttpContext.GenerateUserTokenSuccessResponse>();
                 await _localStorage.SetItemAsync("authToken", success?.Token);
                 ((CustomAuthenticationStateProvider) _customAuthenticationStateProvider).NotifyAsAuthenticated(
                     success?.Token);
                 return success;
             }
-            else
-            {
-                return await result.Content.ReadFromJsonAsync<impl2>();
-            }
+                throw new Exception((await result.Content
+                    .ReadFromJsonAsync<GenerateUserTokenHttpContext.GenerateUserTokenErrorResponse>())?.Message);
         }
 
         public async Task LogOut()

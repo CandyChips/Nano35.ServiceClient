@@ -5,8 +5,12 @@
       "url": "_content\/Microsoft.AspNetCore.Components.WebAssembly.Authentication\/AuthenticationService.js"
     },
     {
-      "hash": "sha256-nOd95\/Bz3ckIj741oWtayqhup59eg1U2dnRvUiiqP4k=",
+      "hash": "sha256-ShX8VEqqba580X3WuFPo\/0ex7srTih9myU02j+RwAbI=",
       "url": "_framework\/blazor.boot.json"
+    },
+    {
+      "hash": "sha256-7+FtaZd2xSysaMLC59XhYdtkNMZ15ha0lk73dxPdT5w=",
+      "url": "_framework\/Blazored.LocalStorage.dll"
     },
     {
       "hash": "sha256-fQTLMGLCCX5kLC\/epoTUwFSME++hDMWmDcXy2s+i968=",
@@ -113,7 +117,7 @@
       "url": "_framework\/Nano35.Contracts.dll"
     },
     {
-      "hash": "sha256-C1sprEjvZqzaT7s9pOmDap+4v1a7GFwYOm7WF2hdDfQ=",
+      "hash": "sha256-JP6hxqCBopYV\/gypGLsBtvGFdvY7ji92EavhbjDRAPM=",
       "url": "_framework\/Nano35.HttpContext.dll"
     },
     {
@@ -809,16 +813,20 @@
       "url": "_framework\/dotnet.5.0.2.js"
     },
     {
-      "hash": "sha256-F2mZFvms+ZKy9HWwCqXXMVO7fBncIoDy7pk10Shpan0=",
+      "hash": "sha256-1vvHmjY3rUhwD31wh2KK4+LdNVwWbkqHPJeW8iwrHXw=",
       "url": "_framework\/Nano35.WebClient.dll"
     },
     {
-      "hash": "sha256-UrDsheWKkqKAJuFUlOIIWllgmRMFtGUZPZpiuQDrb+Y=",
+      "hash": "sha256-OY0QVG6UyNRSBgAeDjZziKb\/aGMYd9l7FuH\/K93qSHE=",
       "url": "_framework\/Nano35.WebClient.pdb"
     },
     {
       "hash": "sha256-sYA0L2visb01XnqGT7epPVSXTZJFhpQ4PMDzhF\/rngo=",
       "url": "_framework\/blazor.webassembly.js"
+    },
+    {
+      "hash": "sha256-tDUxswvw5AObJpbLqM+35e19rdkAuPgcRfmV4nBJrkc=",
+      "url": "_framework\/Blazored.LocalStorage.dll.gz"
     },
     {
       "hash": "sha256-qqbH5vcExuUqUjt2AmRS4g87HlCMl5JlXAAn+OlOKdk=",
@@ -925,7 +933,7 @@
       "url": "_framework\/Nano35.Contracts.dll.gz"
     },
     {
-      "hash": "sha256-tD0gx7lkZyrmR2AvGQyGKTXmDP+biLgKEyHdrfwewis=",
+      "hash": "sha256-3Ahg0fbOtiGBGaEQHn9ir+36s6oamRVWIyj2mbYjjg0=",
       "url": "_framework\/Nano35.HttpContext.dll.gz"
     },
     {
@@ -1689,13 +1697,13 @@
       "url": "sample-data\/weather.json"
     },
     {
-      "hash": "sha256-OsQcrVBXdP+OmPYG8jNI7g\/SllK3D0j3Us034MP2uoA=",
+      "hash": "sha256-4HIPaOtxeQmIYeRZ7wU+0inJ7JkcIHHKrLVJTEz60GE=",
       "url": "Nano35.WebClient.styles.css"
     },
     {
-      "hash": "sha256-z\/nE+aIoPy4mjMW2KQMuNjqV3Ym+bvTK38mxQBV+ST4=",
+      "hash": "sha256-JCUH5s37lylffk6BeLLTLoJzJVsaCvJHJBl7m\/WZKl4=",
       "url": "Nano35.WebClient.bundle.scp.css"
     }
   ],
-  "version": "\/dYb+gq7"
+  "version": "vLrX\/8C1"
 };

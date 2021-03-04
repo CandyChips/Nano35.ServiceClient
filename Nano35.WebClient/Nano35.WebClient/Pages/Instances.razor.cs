@@ -12,8 +12,6 @@ namespace Nano35.WebClient.Pages
     public partial class Instances
     {
         [Inject]
-        private IAuthService _authService { get; set; }
-        [Inject]
         public NavigationManager NavigationManager { get; set; }
         [Inject] 
         private IRequestManager _requestManager { get; set; }

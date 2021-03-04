@@ -1,0 +1,77 @@
+﻿@if (this.Display)
+{
+    <div class="modal-background">
+        <div class="modal-content card">
+            <h4 class="card-header">Новый работник</h4>
+            <div class="card-body">
+                <EditForm Model="@model" OnValidSubmit="HandleValidSubmit">
+                    <DataAnnotationsValidator />
+                    <div class="form-group">
+                        <label>Фио</label>
+                        <InputText @bind-Value="model.Name" class="form-control" />
+                        <ValidationMessage For="@(() => model.Name)" />
+                    </div>
+                    <div class="form-group">
+                        <label>Эл почта</label>
+                        <InputText @bind-Value="model.Email" class="form-control" />
+                        <ValidationMessage For="@(() => model.Email)" />
+                    </div>
+                    <div class="form-group">
+                        <label>Номер телефона</label>
+                        <InputText @bind-Value="model.Phone" class="form-control" />
+                        <ValidationMessage For="@(() => model.Phone)" />
+                    </div>
+                    <div class="form-group">
+                        <label>Пароль</label>
+                        <InputText @bind-Value="model.Password" class="form-control" />
+                        <ValidationMessage For="@(() => model.Password)" />
+                    </div>
+                    <div class="form-group">
+                        <label>Подтверждение пароля</label>
+                        <InputText @bind-Value="model.PasswordConfirm" class="form-control" content="password" />
+                        <ValidationMessage For="@(() => model.PasswordConfirm)" />
+                    </div>
+                    <div class="form-group">
+                        <label>Примечание</label>
+                        <InputText @bind-Value="model.Comment" class="form-control" />
+                        <ValidationMessage For="@(() => model.Comment)" />
+                    </div>
+                    <div class="form-group">
+                        <label>Должность</label>
+                        <InputSelect @bind-Value="model.RoleId" class="custom-select">
+                            <option selected disabled>Choose...</option>
+                            @foreach (var item in _types)
+                            {
+                                <option value="@item.Id">@item.Name </option>
+                            }
+                        </InputSelect>
+                        <ValidationMessage For="@(() => model.RoleId)"/>
+                    </div>
+                    @* <div class="form-group"> *@
+                    @*     <label>Регион</label> *@
+                    @*     <InputText @bind-Value="model.RegionId" class="form-control" /> *@
+                    @*     <ValidationMessage For="@(() => model.RegionId)" /> *@
+                    @* </div> *@
+                    @* <div class="form-group"> *@
+                    @*     <label>Тип</label> *@
+                    @*     <InputText @bind-Value="model.TypeId" class="form-control" /> *@
+                    @*     <ValidationMessage For="@(() => model.TypeId)" /> *@
+                    @* </div> *@
+                    <button class="btn btn-primary" @onclick="Create">
+                        @if (_loading)
+                        {
+                            <span class="spinner-border spinner-border-sm mr-1"></span>
+                        }
+                        Создать
+                    </button>
+                    @if (!string.IsNullOrEmpty(_error))
+                    {
+                        <div class="alert alert-danger mt-3 mb-0">@_error</div>
+                    }
+                </EditForm>
+                <button class="btn btn-secondary"
+                    @onclick="Hide">Close</button>
+            </div>
+        </div>
+    </div>
+}

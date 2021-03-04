@@ -32,7 +32,7 @@ namespace Nano35.WebClient.Services
         {
             return Instance;
         }
-        
+
         public async Task SetInstanceById(Guid id)
         {
             var response = await _httpClient.GetAsync($"{_requestManager.InstanceServer}/Instances/GetInstanceById/Id={id}");

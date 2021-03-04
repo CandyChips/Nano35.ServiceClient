@@ -18,7 +18,7 @@ namespace Nano35.WebClient.Pages
         private bool _loading = true;
         private IInstanceViewModel _data;
         protected override async Task OnInitializedAsync()
-        {
+        { 
             NavigationManager.NavigateTo("/instance-view");
         }
     }

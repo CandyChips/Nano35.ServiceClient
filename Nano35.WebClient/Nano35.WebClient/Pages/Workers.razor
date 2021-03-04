@@ -1,9 +1,68 @@
-﻿@page "/instance/workers"
+﻿@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize]
+@page "/instance/workers"
 <div class="page">
     <div class="sidebar">
         <NavMenu/>
     </div>
     <div class="main">
-        <h2>Workers</h2>
+        <AuthorizeView>
+            @if (_loading)
+            {
+                <div class="col-md-6 offset-md-3 mt-5">
+                    <div class="card">
+                        <h4 class="card-header">Загрузка</h4>
+                        <div class="card-body">
+                            ...
+                        </div>
+                    </div>
+                </div>
+            }
+            else
+            {
+                @if (!_serverAvailable)
+                {
+                    <h4 class="card-header">Сервер недоступен</h4>
+                    <div class="card-body">
+                        Повторите попытку позднее
+                    </div>
+                }
+                else
+                {
+                    <button class="btn btn-light"
+                            style="width: 100%"
+                            @onclick="ShowModalNewWorker">
+                        Создать
+                    </button>
+                    <br/>
+                    <table class="table" style="font-size: 12px">
+                        <thead>
+                        <tr>
+                            <th>ФИО</th>
+                            <th>Почта</th>
+                            <th>Телефон</th>
+                            <th>Должность</th>
+                            <th>Комментарий</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @foreach (var item in _data)
+                        {
+                            <tr>
+                                <td>@item.Name</td>
+                                <td>@item.Email</td>
+                                <td>@item.Phone</td>
+                                <td>@item.Role</td>
+                                <td>@item.Comment</td>
+                                <td></td>
+                            </tr>
+                        }
+                        </tbody>
+                    </table>
+        
+                }
+            }
+        </AuthorizeView>
     </div>
 </div>
+<ModalNewWorker @ref="this.ModalNewWorker"></ModalNewWorker>

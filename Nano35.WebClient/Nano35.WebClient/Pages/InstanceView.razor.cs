@@ -11,6 +11,8 @@ namespace Nano35.WebClient.Pages
     public partial class InstanceView
     {
         [Inject] 
+        private ISessionProvider _sessionProvider { get; set; }
+        [Inject] 
         private IRequestManager _requestManager { get; set; }
         [Inject] 
         public NavigationManager NavigationManager { get; set; }
@@ -19,6 +21,8 @@ namespace Nano35.WebClient.Pages
         private IInstanceViewModel _data;
         protected override async Task OnInitializedAsync()
         {
+            if(await _sessionProvider.GetCurrentInstanceId() == Guid.Empty)
+                NavigationManager.NavigateTo("/instances");
             if(!await _requestManager.HealthCheck(_requestManager.InstanceServer))
                 NavigationManager.NavigateTo("/instances");
             _loading = false;

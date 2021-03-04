@@ -35,7 +35,7 @@ namespace Nano35.WebClient.Pages
             _loading = false;
         }
 
-        private async void HandleValidSubmit()
+        private async void Create()
         {
         }
         

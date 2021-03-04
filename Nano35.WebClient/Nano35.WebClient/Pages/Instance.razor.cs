@@ -13,12 +13,14 @@ namespace Nano35.WebClient.Pages
         [Inject] 
         private IRequestManager _requestManager { get; set; }
         [Inject] 
+        private ISessionProvider _sessionProvider { get; set; }
+        [Inject] 
         public NavigationManager NavigationManager { get; set; }
 
         private bool _loading = true;
         private IInstanceViewModel _data;
         protected override async Task OnInitializedAsync()
-        { 
+        {
             NavigationManager.NavigateTo("/instance-view");
         }
     }

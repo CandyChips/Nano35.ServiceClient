@@ -1,0 +1,38 @@
+﻿@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize]
+@page "/instance/coming"
+
+<div class="page">
+    <div class="sidebar bg-dark">
+        <NavMenu/>
+    </div>
+    <div class="main">
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+                <NavLink class="nav-link" href="/instance/storage">
+                    Склад
+                </NavLink>
+            </li>
+            <li class="nav-item">
+                <NavLink class="nav-link" href="/instance/coming">
+                    Оприходования
+                </NavLink>
+            </li>
+            <li class="nav-item">
+                <NavLink class="nav-link" href="/instance/cancellations">
+                    Списания
+                </NavLink>
+            </li>
+            <li class="nav-item">
+                <NavLink class="nav-link" href="/instance/sells">
+                    Продажи
+                </NavLink>
+            </li>
+            <li class="nav-item">
+                <NavLink class="nav-link" href="/instance/moves">
+                    Перемещения
+                </NavLink>
+            </li>
+        </ul>
+    </div>
+</div>

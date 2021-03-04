@@ -4,7 +4,9 @@
         <div class="modal-content card">
             <h4 class="card-header">Новый работник</h4>
             <div class="card-body">
-                <EditForm Model="@model" OnValidSubmit="HandleValidSubmit">
+            @if (!_loading)
+            {
+                <EditForm Model="@model" OnValidSubmit="Create">
                     <DataAnnotationsValidator />
                     <div class="form-group">
                         <label>Фио</label>
@@ -47,30 +49,20 @@
                         </InputSelect>
                         <ValidationMessage For="@(() => model.RoleId)"/>
                     </div>
-                    @* <div class="form-group"> *@
-                    @*     <label>Регион</label> *@
-                    @*     <InputText @bind-Value="model.RegionId" class="form-control" /> *@
-                    @*     <ValidationMessage For="@(() => model.RegionId)" /> *@
-                    @* </div> *@
-                    @* <div class="form-group"> *@
-                    @*     <label>Тип</label> *@
-                    @*     <InputText @bind-Value="model.TypeId" class="form-control" /> *@
-                    @*     <ValidationMessage For="@(() => model.TypeId)" /> *@
-                    @* </div> *@
-                    <button class="btn btn-primary" @onclick="Create">
-                        @if (_loading)
-                        {
-                            <span class="spinner-border spinner-border-sm mr-1"></span>
-                        }
-                        Создать
-                    </button>
                     @if (!string.IsNullOrEmpty(_error))
                     {
                         <div class="alert alert-danger mt-3 mb-0">@_error</div>
                     }
+                    <div>
+                        <button class="btn btn-primary">
+                            Создать
+                        </button>
+                        <button class="btn btn-secondary"
+                                @onclick="Hide">Закрыть
+                        </button>
+                    </div>
                 </EditForm>
-                <button class="btn btn-secondary"
-                    @onclick="Hide">Close</button>
+            }
             </div>
         </div>
     </div>

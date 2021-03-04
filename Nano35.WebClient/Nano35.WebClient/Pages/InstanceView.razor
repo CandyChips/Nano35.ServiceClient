@@ -2,18 +2,20 @@
 @attribute [Authorize]
 @page "/instance-view"
 
-@if (!_loading)
-{
-    <div class="page">
-        <div class="sidebar">
-            <NavMenu/>
-        </div>
-        <div class="main">
-            <h2>Организация</h2>
-        </div>
+
+
+<div class="page">
+    <div class="sidebar bg-dark">
+        <NavMenu/>
     </div>
-}
-else
-{
-    <h1>Загрузка...</h1>
-}
+    <div class="main">
+    @if (!_loading)
+    {        
+        <h2>Организация</h2>
+    }
+    else
+    {
+        <h1>Загрузка...</h1>
+    }
+    </div>
+</div>

@@ -19,7 +19,9 @@ namespace Nano35.WebClient.Pages
         private IInstancesService _instancesService { get; set; }
         [Inject]
         private IInstanceService _instanceService { get; set; }
-        
+        [Inject] 
+        private ISessionProvider _sessionprovider { get; set; }
+
         private bool _serverAvailable = false;
         private bool _loading = true;
         
@@ -41,7 +43,8 @@ namespace Nano35.WebClient.Pages
 
         private async Task OpenOrg(Guid id)
         {
-            await _instanceService.SetInstanceById(id);
+            await _instanceService.SetInstanceById(id);         //get session
+            await _sessionprovider.SetCurrentInstanceId(id);    //set instance id
             NavigationManager.NavigateTo("/instance-view");
         }
         

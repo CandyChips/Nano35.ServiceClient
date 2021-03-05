@@ -22,6 +22,8 @@ namespace Nano35.WebClient.Pages
         protected override async Task OnInitializedAsync()
         {
             NavigationManager.NavigateTo("/instance-view");
+            if (!await _sessionProvider.IsCurrentSessionIdExist())
+                NavigationManager.NavigateTo("/instances");
         }
     }
 }

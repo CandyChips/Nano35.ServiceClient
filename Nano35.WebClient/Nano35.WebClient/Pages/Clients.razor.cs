@@ -1,7 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
-using Nano35.Contracts.Instance.Models;
+using Microsoft.AspNetCore.Components.Web;
 using Nano35.HttpContext.instance;
 using Nano35.WebClient.Services;
 
@@ -17,8 +18,11 @@ namespace Nano35.WebClient.Pages
         private IInstanceService _instanceService { get; set; }
         [Inject]
         private IClientService _clientservice { get; set; }
+        [Inject]
+        private ISessionProvider _sessionProvider { get; set; }
 
         public ModalNewClient ModalNewClient { get; set; }
+        public ModalEditClient ModalEditClient { get; set; }
         
         private bool _serverAvailable = false;
         private bool _loading = true;
@@ -28,13 +32,20 @@ namespace Nano35.WebClient.Pages
             _serverAvailable = await _requestManager.HealthCheck(_requestManager.InstanceServer);
             if(!_serverAvailable)
                 NavigationManager.NavigateTo("/instances");
-            _data = (await _clientservice.GetAllClients(_instanceService.GetCurrentInstance().Id)).Data;
+            if (!await _sessionProvider.IsCurrentSessionIdExist())
+                NavigationManager.NavigateTo("/instances");
+            _data = (await _clientservice.GetAllClients(await _sessionProvider.GetCurrentInstanceId())).Data;
             _loading = false;
         }
         
         private void ShowModalNewClient()
         {
             this.ModalNewClient.Show();
+        }
+
+        private async void ShowModalEditClient(Guid id)
+        {
+            this.ModalEditClient.Show(id);
         }
     }
 }

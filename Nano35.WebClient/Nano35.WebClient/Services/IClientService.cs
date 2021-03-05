@@ -9,6 +9,7 @@ namespace Nano35.WebClient.Services
     public interface IClientService
     {
         Task<GetAllClientsSuccessHttpResponse> GetAllClients(Guid id);
+        Task<GetClientByIdSuccessHttpResponse> GetClientById(Guid id);
         Task<GetAllClientTypesSuccessHttpResponse> GetAllClientTypes();
         Task<GetAllClientStatesSuccessHttpResponse> GetAllClientStates();
         Task CreateClient(CreateClientHttpBody model);
@@ -62,6 +63,16 @@ namespace Nano35.WebClient.Services
                 throw new Exception((await response.Content.ReadFromJsonAsync<string>()));
             }
             
+        }
+
+        public async Task<GetClientByIdSuccessHttpResponse> GetClientById(Guid id)
+        {
+            var response = await _httpClient.GetAsync($"{_requestManager.InstanceServer}/Clients/GetClientById?UnitId={id})");
+            if (response.IsSuccessStatusCode)
+            {
+                return (await response.Content.ReadFromJsonAsync<GetClientByIdSuccessHttpResponse>());
+            }
+            throw new Exception((await response.Content.ReadFromJsonAsync<string>()));
         }
     }
 }

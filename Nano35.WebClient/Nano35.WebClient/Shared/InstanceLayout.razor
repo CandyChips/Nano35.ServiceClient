@@ -1,0 +1,26 @@
+﻿@inherits LayoutComponentBase
+@inject NavigationManager NavigationManager
+@layout MainLayout
+
+@if (_loading)
+    {
+        <div class="col-md-6 offset-md-3 mt-5">
+            <div class="card">
+                <h4 class="card-header">Загрузка</h4>
+                <div class="card-body">
+                    ...
+                </div>
+            </div>
+        </div>
+    }
+else
+{
+    <div class="page">
+        <div class="sidebar bg-dark">
+            <NavMenu/>
+        </div>
+        <div class="main">
+            @Body
+        </div>
+    </div>
+}

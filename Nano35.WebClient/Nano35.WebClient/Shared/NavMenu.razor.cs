@@ -12,7 +12,7 @@ namespace Nano35.WebClient.Shared
         
         public string OrgName { get; set; }
 
-        protected override void OnInitialized()
+        protected override async Task OnInitializedAsync()
         {
             OrgName = _instanceService.GetCurrentInstance().OrgName;
         }

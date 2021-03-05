@@ -96,7 +96,22 @@ using Nano35.WebClient.Shared;
 #line default
 #line hidden
 #nullable disable
-    [Microsoft.AspNetCore.Components.RouteAttribute("/clients")]
+#nullable restore
+#line 1 "C:\Users\user\RiderProjects\Nano35.ServiceClient\Nano35.WebClient\Nano35.WebClient\Pages\Clients.razor"
+using Microsoft.AspNetCore.Authorization;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
+#line 2 "C:\Users\user\RiderProjects\Nano35.ServiceClient\Nano35.WebClient\Nano35.WebClient\Pages\Clients.razor"
+           [Authorize]
+
+#line default
+#line hidden
+#nullable disable
+    [Microsoft.AspNetCore.Components.LayoutAttribute(typeof(InstanceLayout))]
+    [Microsoft.AspNetCore.Components.RouteAttribute("/instance/clients")]
     public partial class Clients : Microsoft.AspNetCore.Components.ComponentBase
     {
         #pragma warning disable 1998

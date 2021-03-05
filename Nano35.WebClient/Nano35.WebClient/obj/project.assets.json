@@ -342,7 +342,7 @@
           "lib/net5.0/Microsoft.JSInterop.WebAssembly.dll": {}
         }
       },
-      "Nano35.Contracts/1.7.3": {
+      "Nano35.Contracts/1.7.7": {
         "type": "package",
         "dependencies": {
           "MediatR": "9.0.0",
@@ -355,7 +355,7 @@
           "lib/net5.0/Nano35.Contracts.dll": {}
         }
       },
-      "Nano35.HttpContext/1.1.7": {
+      "Nano35.HttpContext/1.2.3": {
         "type": "package",
         "dependencies": {
           "Nano35.Contracts": "1.6.6"
@@ -727,7 +727,7 @@
           "lib/net5.0/Microsoft.JSInterop.WebAssembly.dll": {}
         }
       },
-      "Nano35.Contracts/1.7.3": {
+      "Nano35.Contracts/1.7.7": {
         "type": "package",
         "dependencies": {
           "MediatR": "9.0.0",
@@ -740,7 +740,7 @@
           "lib/net5.0/Nano35.Contracts.dll": {}
         }
       },
-      "Nano35.HttpContext/1.1.7": {
+      "Nano35.HttpContext/1.2.3": {
         "type": "package",
         "dependencies": {
           "Nano35.Contracts": "1.6.6"
@@ -1311,25 +1311,25 @@
         "microsoft.jsinterop.webassembly.nuspec"
       ]
     },
-    "Nano35.Contracts/1.7.3": {
-      "sha512": "bLnNfIR+EiaYoh1qWPWS36iA5+1ttB1Ti1YM8Wd0CRlgp05kJQBy+2TvBhrE0y2Clh0kUsBETMCMbd2awYIYIg==",
+    "Nano35.Contracts/1.7.7": {
+      "sha512": "NN/NzGGV+jwOrefTg5z/kLInLGLE7mQjNYuaw0WMFdQS6R7IY49n/1rWCBl9mor5Iely1iD4ayDiMn8manEFeg==",
       "type": "package",
-      "path": "nano35.contracts/1.7.3",
+      "path": "nano35.contracts/1.7.7",
       "files": [
         ".nupkg.metadata",
         "lib/net5.0/Nano35.Contracts.dll",
-        "nano35.contracts.1.7.3.nupkg.sha512",
+        "nano35.contracts.1.7.7.nupkg.sha512",
         "nano35.contracts.nuspec"
       ]
     },
-    "Nano35.HttpContext/1.1.7": {
-      "sha512": "F+JkzSkiugBkQcYDwvIuBPh5GzBl24JJJXH0wEzDaGT7pdig7D5Pvvr3Ik64HikRU1Q/pIBFg4UjqN/57RiZZA==",
+    "Nano35.HttpContext/1.2.3": {
+      "sha512": "AyQNVNv5ImmAweIZ9gYYXz9DSPWQU19he13HmE/XjWQj9Y5J+Zi1W1qwcf0Vrx5PQ9BgQzJhQQ892Eavxz60fQ==",
       "type": "package",
-      "path": "nano35.httpcontext/1.1.7",
+      "path": "nano35.httpcontext/1.2.3",
       "files": [
         ".nupkg.metadata",
         "lib/net5.0/Nano35.HttpContext.dll",
-        "nano35.httpcontext.1.1.7.nupkg.sha512",
+        "nano35.httpcontext.1.2.3.nupkg.sha512",
         "nano35.httpcontext.nuspec"
       ]
     },
@@ -1388,8 +1388,8 @@
       "Microsoft.AspNetCore.Components.WebAssembly >= 5.0.1",
       "Microsoft.AspNetCore.Components.WebAssembly.Authentication >= 5.0.3",
       "Microsoft.AspNetCore.Components.WebAssembly.DevServer >= 5.0.1",
-      "Nano35.Contracts >= 1.7.3",
-      "Nano35.HttpContext >= 1.1.7",
+      "Nano35.Contracts >= 1.7.7",
+      "Nano35.HttpContext >= 1.2.3",
       "System.Net.Http.Json >= 5.0.0"
     ]
   },
@@ -1450,11 +1450,11 @@
           },
           "Nano35.Contracts": {
             "target": "Package",
-            "version": "[1.7.3, )"
+            "version": "[1.7.7, )"
           },
           "Nano35.HttpContext": {
             "target": "Package",
-            "version": "[1.1.7, )"
+            "version": "[1.2.3, )"
           },
           "System.Net.Http.Json": {
             "target": "Package",

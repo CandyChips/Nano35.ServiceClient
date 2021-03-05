@@ -104,7 +104,7 @@ using Nano35.WebClient.Shared;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 33 "C:\Users\user\RiderProjects\Nano35.ServiceClient\Nano35.WebClient\Nano35.WebClient\Shared\NavMenu.razor"
+#line 41 "C:\Users\user\RiderProjects\Nano35.ServiceClient\Nano35.WebClient\Nano35.WebClient\Shared\NavMenu.razor"
        
     private bool collapseNavMenu = true;
 

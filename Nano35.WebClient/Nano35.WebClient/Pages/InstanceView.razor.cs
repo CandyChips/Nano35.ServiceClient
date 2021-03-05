@@ -21,7 +21,7 @@ namespace Nano35.WebClient.Pages
         private IInstanceViewModel _data;
         protected override async Task OnInitializedAsync()
         {
-            if(await _sessionProvider.GetCurrentInstanceId() == Guid.Empty)
+            if (!await _sessionProvider.IsCurrentSessionIdExist())
                 NavigationManager.NavigateTo("/instances");
             if(!await _requestManager.HealthCheck(_requestManager.InstanceServer))
                 NavigationManager.NavigateTo("/instances");

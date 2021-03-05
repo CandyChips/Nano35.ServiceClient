@@ -8,4 +8,5 @@
   &lt;PhysicalFolder Path="C:\Users\user\.nuget\packages\nano35.httpcontext\1.1.2" Loaded="True" /&gt;&#xD;
   &lt;PhysicalFolder Path="C:\Users\user\.nuget\packages\nano35.httpcontext\1.1.3" Loaded="True" /&gt;&#xD;
   &lt;PhysicalFolder Path="C:\Users\user\.nuget\packages\nano35.httpcontext\1.1.6" Loaded="True" /&gt;&#xD;
+  &lt;Assembly Path="C:\Users\user\.nuget\packages\netcore.encrypt\2.0.9\lib\netstandard2.0\NETCore.Encrypt.dll" /&gt;&#xD;
 &lt;/AssemblyExplorer&gt;</s:String></wpf:ResourceDictionary>

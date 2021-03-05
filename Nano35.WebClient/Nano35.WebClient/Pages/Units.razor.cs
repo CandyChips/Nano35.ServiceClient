@@ -16,6 +16,8 @@ namespace Nano35.WebClient.Pages
         private IInstanceService _instanceService { get; set; }
         [Inject]
         private IUnitService _unitService { get; set; }
+    
+        [Inject] private ISessionProvider _sessionProvider { get; set; }
 
         public ModalNewUnit ModalNewUnit { get; set; }
 
@@ -26,6 +28,8 @@ namespace Nano35.WebClient.Pages
         {
             _serverAvailable = await _requestManager.HealthCheck(_requestManager.InstanceServer);
             if(!_serverAvailable)
+                NavigationManager.NavigateTo("/instances");
+            if (!await _sessionProvider.IsCurrentSessionIdExist())
                 NavigationManager.NavigateTo("/instances");
             _data = (await _unitService.GetAllUnit(_instanceService.GetCurrentInstance().Id)).Data;
             _loading = false;

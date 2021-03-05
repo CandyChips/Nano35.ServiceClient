@@ -12,6 +12,7 @@ namespace Nano35.WebClient.Services
         Task<Guid> GetCurrentInstanceId();
         Task SetCurrentInstanceId(Guid id);
         Task RemoveCurrentInstanceId();
+        Task<bool> IsCurrentSessionIdExist();
         Task<Guid> GetCurrentUnitId();
         Task SetCurrentUnitId(Guid id);
         Task RemoveCurrentUnitId();
@@ -21,15 +22,18 @@ namespace Nano35.WebClient.Services
     {         
         
         private readonly ILocalStorageService _localStorage;
+        private readonly IEncryptionProvider _encryptionProvider;
 
         public SessionProvider(
-            ILocalStorageService localStorage)
+            ILocalStorageService localStorage, IEncryptionProvider encryptionProvider)
         {
             _localStorage = localStorage;
+            _encryptionProvider = encryptionProvider;
         }
 
         public async Task<Guid> GetCurrentUserId()
         {
+           
             return await _localStorage.GetItemAsync<Guid>("CurrentUserId");
         }
 
@@ -45,6 +49,7 @@ namespace Nano35.WebClient.Services
 
         public async Task<Guid> GetCurrentInstanceId()
         {
+            
             return await _localStorage.GetItemAsync<Guid>("CurrentInstanceId");
         }
 
@@ -56,6 +61,11 @@ namespace Nano35.WebClient.Services
         public async Task RemoveCurrentInstanceId()
         {
             await _localStorage.RemoveItemAsync("CurrentInstanceId");
+        }
+
+        public async Task<bool> IsCurrentSessionIdExist()
+        {
+           return await _localStorage.ContainKeyAsync("CurrentInstanceId");
         }
 
         public async Task<Guid> GetCurrentUnitId()
@@ -72,5 +82,7 @@ namespace Nano35.WebClient.Services
         {
             await _localStorage.RemoveItemAsync("CurrentUnitId");
         }
+        
+        
     }
 }

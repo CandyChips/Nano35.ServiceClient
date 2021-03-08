@@ -1,0 +1,80 @@
+﻿@if (this.Display)
+{
+    <style>
+        .modal-background {
+            display: block;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0,0,0);
+            background-color: rgba(0,0,0,0.4);
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            border: 2px solid #888;
+            width: 90%;
+        }
+    </style>
+    <div class="modal-background">
+        <div class="modal-content card">
+            <h4 class="card-header">Новая позиция к оприходованию</h4>
+            <div class="card-body">
+            @if (!_loading)
+            {
+                <EditForm Model="@_model">
+                    <DataAnnotationsValidator />
+                    <div class="form-group">
+                        <label>Товар</label>
+                        <SelectStorageItem></SelectStorageItem>
+                        <ValidationMessage For="@(() => _model.Number)" />
+                    </div>
+                    <div class="form-group">
+                        <label>Клиент</label>
+                        <InputSelect @bind-Value="_model.ClientId" class="custom-select">
+                            <option selected disabled>Choose...</option>
+                            @foreach (var item in Clients)
+                            {
+                                <option value="@item.Id">@item.Name </option>
+                            }
+                        </InputSelect>
+                        <ValidationMessage For="@(() => _model.ClientId)"/>
+                    </div>
+                    <div class="form-group">
+                        <label>Подразделение</label>
+                        <InputSelect @bind-Value="_model.UnitId" class="custom-select">
+                            <option selected disabled>Choose...</option>
+                            @foreach (var item in Units)
+                            {
+                                <option value="@item.Id">@item.Name</option>
+                            }
+                        </InputSelect>
+                        <ValidationMessage For="@(() => _model.UnitId)"/>
+                    </div>
+                    <div class="form-group">
+                        <label>Комментарий</label>
+                        <InputText @bind-Value="_model.Comment" class="form-control" />
+                        <ValidationMessage For="@(() => _model.Comment)" />
+                    </div>
+                    @if (!string.IsNullOrEmpty(_error))
+                    {
+                        <div class="alert alert-danger mt-3 mb-0">@_error</div>
+                    }
+                    <div>
+                        <button class="btn btn-primary">
+                            Создать
+                        </button>
+                        <button class="btn btn-secondary"
+                                @onclick="Hide">Закрыть
+                        </button>
+                    </div>
+                </EditForm>
+            }
+            </div>
+        </div>
+    </div>
+}

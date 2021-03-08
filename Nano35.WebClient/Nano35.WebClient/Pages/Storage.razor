@@ -1,35 +1,7 @@
 ﻿@using Microsoft.AspNetCore.Authorization
 @attribute [Authorize]
-@layout InstanceLayout
+@layout StorageLayout
 @page "/instance/storage"
 
-<AuthorizeView>
-    <ul class="nav nav-tabs">
-        <li class="nav-item">
-            <NavLink class="nav-link" href="/instance/storage">
-                Склад
-            </NavLink>
-        </li>
-        <li class="nav-item">
-            <NavLink class="nav-link" href="/instance/coming">
-                Оприходования
-            </NavLink>
-        </li>
-        <li class="nav-item">
-            <NavLink class="nav-link" href="/instance/cancellations">
-                Списания
-            </NavLink>
-        </li>
-        <li class="nav-item">
-            <NavLink class="nav-link" href="/instance/sells">
-                Продажи
-            </NavLink>
-        </li>
-        <li class="nav-item">
-            <NavLink class="nav-link" href="/instance/moves">
-                Перемещения
-            </NavLink>
-        </li>
-    </ul>
-</AuthorizeView>
 
+<h1>storage</h1>

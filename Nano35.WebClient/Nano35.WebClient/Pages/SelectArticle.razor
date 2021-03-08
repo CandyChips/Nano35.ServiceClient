@@ -1,0 +1,16 @@
+﻿
+<div class="input-group">
+    <InputSelect @bind-Value="Article" class="custom-select">
+        <option>Spring</option>
+        <option>Summer</option>
+        <option>Autumn</option>
+        <option>Winter</option>
+    </InputSelect>
+    <div class="input-group-append">
+        <button class="btn btn-outline-secondary" 
+                type="button"
+                @onclick="ShowModalNewArticle">Создать</button>
+    </div>
+</div>
+<ModalNewArticle @ref="this.modalNewArticle"></ModalNewArticle>    
+

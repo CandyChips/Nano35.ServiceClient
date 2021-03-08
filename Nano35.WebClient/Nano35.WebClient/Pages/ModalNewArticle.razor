@@ -1,0 +1,75 @@
+﻿@if (this.Display)
+{
+    <style>
+        .modal-background {
+            display: block;
+            position: fixed;
+            z-index: 3;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0,0,0);
+            background-color: rgba(0,0,0,0.4);
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            border: 2px solid #888;
+            width: 90%;
+        }
+    </style>
+    <div class="modal-background">
+        <div class="modal-content card">
+            <h4 class="card-header">Новое наименование</h4>
+            <div class="card-body">
+            @if (!Loading)
+            {
+                <EditForm Model="@_model" OnValidSubmit="Create">
+                    <DataAnnotationsValidator />
+                    <div class="form-group">
+                        <label>Категория</label>
+                        <nav aria-label="breadcrumb">
+                          <ol class="breadcrumb">
+                            <li class="breadcrumb-item active">/</li>
+                            @foreach (var item in _categories)
+                            {
+                                <li class="breadcrumb-item active">@item.Name</li>
+                            }
+                            <li class="breadcrumb-item active">
+                                
+                            </li>
+                          </ol>
+                        </nav>
+                        <input class="form-control"/>
+                    </div>
+                    <div class="form-group">
+                        <label>Бренд</label>
+                        <InputText @bind-Value="_model.Brand" class="form-control" />
+                        <ValidationMessage For="@(() => _model.Brand)" />
+                    </div>
+                    <div class="form-group">
+                        <label>Модель</label>
+                        <InputText @bind-Value="_model.Model" class="form-control" />
+                        <ValidationMessage For="@(() => _model.Model)" />
+                    </div>
+                    <div class="form-group">
+                        <label>Информация</label>
+                        <InputText @bind-Value="_model.Info" class="form-control" />
+                        <ValidationMessage For="@(() => _model.Info)" />
+                    </div>
+                    <div>
+                        <button class="btn btn-primary">
+                            Создать
+                        </button>
+                        <button class="btn btn-secondary"
+                                @onclick="Hide">Закрыть
+                        </button>
+                    </div>
+                </EditForm>
+            }
+            </div>
+        </div>
+    </div>
+}

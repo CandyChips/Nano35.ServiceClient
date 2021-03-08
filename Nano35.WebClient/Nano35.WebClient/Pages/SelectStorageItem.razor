@@ -1,0 +1,18 @@
+﻿@using Nano35.HttpContext.storage
+
+
+<div class="input-group">
+    <InputSelect @bind-Value="StorageItem" class="custom-select">
+        <option>Spring</option>
+        <option>Summer</option>
+        <option>Autumn</option>
+        <option>Winter</option>
+    </InputSelect>
+    <div class="input-group-append">
+        <button class="btn btn-outline-secondary" 
+                type="button"
+                @onclick="ShowModalNewComing">Создать</button>
+    </div>
+</div>
+<ModalNewStorageItem @ref="this.modalNewStorageItem"></ModalNewStorageItem>    
+

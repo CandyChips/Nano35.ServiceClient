@@ -1,28 +1,7 @@
 ﻿@using Microsoft.AspNetCore.Authorization
 @attribute [Authorize]
+@layout InstanceLayout
 @page "/instance-view"
 
 
-
-    @if (!_loading)
-    {        
-        <div class="page">
-            <div class="sidebar bg-dark">
-                <NavMenu/>
-            </div>
-            <div class="main">
-            </div>
-        </div>
-        <h2>Организация</h2>
-    }
-    else
-    {
-        <div class="page">
-            <div class="sidebar bg-dark">
-                <NavMenu/>
-            </div>
-            <div class="main">
-            </div>
-        </div>
-        <h1>Загрузка...</h1>
-    }
+<h2>Организация</h2>

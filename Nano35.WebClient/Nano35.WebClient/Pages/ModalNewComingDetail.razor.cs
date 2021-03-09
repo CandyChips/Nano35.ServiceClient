@@ -9,18 +9,13 @@ namespace Nano35.WebClient.Pages
 {
     public partial class ModalNewComingDetail : ComponentBase
     {
-        [Inject]
-        public NavigationManager NavigationManager { get; set; }
-        [Inject] 
-        private IRequestManager RequestManager { get; set; }
-        [Inject] 
-        private IInstanceService InstanceService { get; set; }
-        [Inject] 
-        private IClientService ClientService { get; set; }
-        [Inject] 
-        private IUnitService UnitService { get; set; }
-        [Inject] 
-        private ISessionProvider SessionProvider { get; set; }
+        [Inject] public NavigationManager NavigationManager { get; set; }
+        [Inject] private IRequestManager RequestManager { get; set; }
+        [Inject] private IInstanceService InstanceService { get; set; }
+        [Inject] private IClientService ClientService { get; set; }
+        [Inject] private IUnitService UnitService { get; set; }
+        [Inject] private ISessionProvider SessionProvider { get; set; }
+        [Parameter] public EventCallback OnHideModalNewComingDetail { get; set; }
         
         private IEnumerable<IClientViewModel> Clients { get; set; }
         private IEnumerable<IUnitViewModel> Units { get; set; }
@@ -30,8 +25,6 @@ namespace Nano35.WebClient.Pages
         private bool _loading = true;
         private string _error = "";
         private bool _serverAvailable = false;
-        
-        public bool Display { get; private set; }
 
         protected override async Task OnInitializedAsync()
         {
@@ -41,21 +34,13 @@ namespace Nano35.WebClient.Pages
             _loading = false;
         }
 
-        private async void HandleValidSubmit()
+        private void HandleValidSubmit()
         {
-        }
-        
-        public void Show()
-        {
-            this.Display = true;
-            this.InvokeAsync(this.StateHasChanged);
+            HideModalNewComingDetail();
         }
 
-        public void Hide()
-        {
-            this.Display = false;
-            this.InvokeAsync(this.StateHasChanged);
-        }
-        
+       
+        private void HideModalNewComingDetail() =>
+            OnHideModalNewComingDetail.InvokeAsync();
     }
 }

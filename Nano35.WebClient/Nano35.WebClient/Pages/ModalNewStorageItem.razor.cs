@@ -1,51 +1,56 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Net.Http.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 using Nano35.HttpContext.storage;
 using Nano35.WebClient.Services;
+using Newtonsoft.Json;
+using JsonConverter = System.Text.Json.Serialization.JsonConverter;
 
 namespace Nano35.WebClient.Pages
 {
     public partial class ModalNewStorageItem : ComponentBase
     {        
-        [Inject]
-        public NavigationManager NavigationManager { get; set; }
+        [Inject] public NavigationManager NavigationManager { get; set; }
+        [Parameter] public EventCallback OnHideModalNewStorageItem { get; set; }
         
-        private bool Loading = true;
-        private string Error = "";
-        private bool ServerAvailable = false;
-        public bool Display { get; private set; }
+        private bool _loading = true;
+        private string _error = "";
+        private bool _serverAvailable = false;
 
         private CreateStorageItemHttpBody _model = new CreateStorageItemHttpBody();
-        private List<StorageItemConditionViewModel> conditions = new List<StorageItemConditionViewModel>();
+        private List<StorageItemConditionViewModel> _conditions = new List<StorageItemConditionViewModel>();
         
         [Inject] 
         private IRequestManager RequestManager { get; set; }
         
         protected override async Task OnInitializedAsync()
         {
-            ServerAvailable = await RequestManager.HealthCheck(RequestManager.IdentityServer);
-            Loading = false;
+            _serverAvailable = await RequestManager.HealthCheck(RequestManager.IdentityServer);
+            _loading = false;
         }
 
-        private async void HandleValidSubmit()
+        private void OnSelectedStorageItemConditionChanged(Guid conditionId)
         {
-        }
-        
-        public void Show()
-        {
-            this.Display = true;
-            this.InvokeAsync(this.StateHasChanged);
+            _model.ConditionId = conditionId;
         }
 
-        public void Hide()
+        private void OnSelectedArticleChanged(Guid articleId)
         {
-            this.Display = false;
-            this.InvokeAsync(this.StateHasChanged);
+            _model.ArticleId = articleId;
         }
 
-        public void Create()
+        private void Create()
         {
+            //throw new Exception(JsonConvert.SerializeObject(_model));
+            HideModalNewStorageItem();
+        }
+
+       
+        private void HideModalNewStorageItem()
+        {
+            OnHideModalNewStorageItem.InvokeAsync();
         }
     }
 }

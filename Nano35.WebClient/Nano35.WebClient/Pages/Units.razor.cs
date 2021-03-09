@@ -8,15 +8,10 @@ namespace Nano35.WebClient.Pages
 {
     public partial class Units
     {
-        [Inject]
-        public NavigationManager NavigationManager { get; set; }
-        [Inject] 
-        private IRequestManager _requestManager { get; set; }
-        [Inject]
-        private IInstanceService _instanceService { get; set; }
-        [Inject]
-        private IUnitService _unitService { get; set; }
-    
+        [Inject] public NavigationManager NavigationManager { get; set; }
+        [Inject] private IRequestManager _requestManager { get; set; }
+        [Inject] private IInstanceService _instanceService { get; set; }
+        [Inject] private IUnitService _unitService { get; set; }
         [Inject] private ISessionProvider _sessionProvider { get; set; }
 
         public ModalNewUnit ModalNewUnit { get; set; }
@@ -36,6 +31,11 @@ namespace Nano35.WebClient.Pages
         }
         
         private void ShowModalNewUnit()
+        {
+            this.ModalNewUnit.Show();
+        }
+        
+        private void HideModalNewUnit()
         {
             this.ModalNewUnit.Show();
         }

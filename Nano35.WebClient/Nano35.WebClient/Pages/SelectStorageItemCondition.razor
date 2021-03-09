@@ -1,0 +1,18 @@
+﻿<div class="form-group">
+    <label>Состояние</label>
+    <InputSelect class="custom-select"
+                 @bind-Value="SelectedConditionId">
+            @if (!_isLoading)
+            {
+                <option selected disabled>Выберите состояние</option>
+                @foreach (var item in _conditions)
+                {
+                    <option value="@item.Id">@item.Name </option>
+                }
+            }
+            else
+            {
+                <option selected disabled>Загрузка</option>
+            }
+    </InputSelect>
+</div>

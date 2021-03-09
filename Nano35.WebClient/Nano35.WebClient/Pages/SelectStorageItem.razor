@@ -9,10 +9,14 @@
         <option>Winter</option>
     </InputSelect>
     <div class="input-group-append">
-        <button class="btn btn-outline-secondary" 
+        <button class="btn btn-outline-primary" 
                 type="button"
-                @onclick="ShowModalNewComing">Создать</button>
+                @onclick="ShowModalNewStorageItem">Создать</button>
     </div>
 </div>
-<ModalNewStorageItem @ref="this.modalNewStorageItem"></ModalNewStorageItem>    
 
+@if (_isNewStorageItemDisplay)
+{
+    <ModalNewStorageItem 
+        OnHideModalNewStorageItem="HideModalNewStorageItem"/>  
+}

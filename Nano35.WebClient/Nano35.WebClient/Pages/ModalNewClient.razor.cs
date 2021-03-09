@@ -11,54 +11,36 @@ namespace Nano35.WebClient.Pages
 {
     public partial class ModalNewClient : ComponentBase
     {
-        [Inject]
-        public NavigationManager NavigationManager { get; set; }
-        [Inject] 
-        private IRequestManager _requestManager { get; set; }
-        [Inject] 
-        private IInstanceService _instanceService { get; set; }
-        [Inject] 
-        private IClientService _clientservice { get; set; }
+        [Inject] public NavigationManager NavigationManager { get; set; }
+        [Inject] private IRequestManager RequestManager { get; set; }
+        [Inject] private IInstanceService InstanceService { get; set; }
+        [Inject] private IClientService ClientService { get; set; }
+        [Parameter] public EventCallback OnHideModalNewClient { get; set; }
         
-        private IEnumerable<IClientTypeViewModel> _types { get; set; }
-        private IEnumerable<IClientStateViewModel> _state { get; set; }
+        private IEnumerable<IClientTypeViewModel> Types { get; set; }
+        private IEnumerable<IClientStateViewModel> State { get; set; }
         
-        private CreateClientHttpBody model = new CreateClientHttpBody();
+        private CreateClientHttpBody _model = new CreateClientHttpBody();
         private bool _loading = true;
         private string _error;
         private bool _serverAvailable = false;
-        
-        public bool Display { get; private set; }
 
         protected override async Task OnInitializedAsync()
         {
-            _serverAvailable = await _requestManager.HealthCheck(_requestManager.IdentityServer);
-            _state = (await _clientservice.GetAllClientStates()).Data;
-            _types = (await _clientservice.GetAllClientTypes()).Data;
+            _serverAvailable = await RequestManager.HealthCheck(RequestManager.IdentityServer);
+            State = (await ClientService.GetAllClientStates()).Data;
+            Types = (await ClientService.GetAllClientTypes()).Data;
             _loading = false;
         }
 
-        private async void HandleValidSubmit()
-        {
-        }
-        
-        public void Show()
-        {
-            this.Display = true;
-            this.InvokeAsync(this.StateHasChanged);
-        }
+        private async void HideModalNewStorageItem() =>
+            await OnHideModalNewClient.InvokeAsync();
 
-        public void Hide()
+        private void Create()
         {
-            this.Display = false;
-            this.InvokeAsync(this.StateHasChanged);
-        }
-
-        public void Create()
-        {
-            model.NewId = Guid.NewGuid();
-            model.InstanceId = _instanceService.GetCurrentInstance().Id;
-            _clientservice.CreateClient(model);
+            _model.NewId = Guid.NewGuid();
+            _model.InstanceId = InstanceService.GetCurrentInstance().Id;
+            ClientService.CreateClient(_model);
         }
     }
 }

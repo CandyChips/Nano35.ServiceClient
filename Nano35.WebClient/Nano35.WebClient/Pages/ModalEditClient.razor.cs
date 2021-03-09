@@ -14,18 +14,18 @@ namespace Nano35.WebClient.Pages
         [Inject]
         public NavigationManager NavigationManager { get; set; }
         [Inject] 
-        private IRequestManager _requestManager { get; set; }
+        private IRequestManager RequestManager { get; set; }
         [Inject] 
-        private IInstanceService _instanceService { get; set; }
+        private IInstanceService InstanceService { get; set; }
         [Inject] 
-        private IClientService _clientservice { get; set; }
+        private IClientService Clientservice { get; set; }
         [Inject] 
-        private ISessionProvider _sessionProvider { get; set; }
+        private ISessionProvider SessionProvider { get; set; }
         
-        private IEnumerable<IClientTypeViewModel> _types { get; set; }
-        private IEnumerable<IClientStateViewModel> _state { get; set; }
+        private IEnumerable<IClientTypeViewModel> Types { get; set; }
+        private IEnumerable<IClientStateViewModel> State { get; set; }
 
-        private ClientViewModel model = new ClientViewModel();
+        private ClientViewModel _model = new ClientViewModel();
         private bool _loading = true;
         private string _error;
         private bool _serverAvailable = false;
@@ -35,19 +35,14 @@ namespace Nano35.WebClient.Pages
         protected override async Task OnInitializedAsync()
         {
             
-            _serverAvailable = await _requestManager.HealthCheck(_requestManager.IdentityServer);
-            _state = (await _clientservice.GetAllClientStates()).Data;
-            _types = (await _clientservice.GetAllClientTypes()).Data;
+            _serverAvailable = await RequestManager.HealthCheck(RequestManager.IdentityServer);
+            State = (await Clientservice.GetAllClientStates()).Data;
+            Types = (await Clientservice.GetAllClientTypes()).Data;
             _loading = false;
         }
 
-        private async void HandleValidSubmit()
-        {
-        }
-        
         public void Show(Guid id)
         {
-            //model = _clientservice.GetClientById(Id).Result.Data;
             this.Display = true;
             this.InvokeAsync(this.StateHasChanged);
         }
@@ -56,11 +51,6 @@ namespace Nano35.WebClient.Pages
         {
             this.Display = false;
             this.InvokeAsync(this.StateHasChanged);
-        }
-
-        public async void Edit()
-        {
-            
         }
     }
 }

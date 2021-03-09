@@ -22,13 +22,11 @@ namespace Nano35.WebClient.Services
     {         
         
         private readonly ILocalStorageService _localStorage;
-        private readonly IEncryptionProvider _encryptionProvider;
 
         public SessionProvider(
-            ILocalStorageService localStorage, IEncryptionProvider encryptionProvider)
+            ILocalStorageService localStorage)
         {
             _localStorage = localStorage;
-            _encryptionProvider = encryptionProvider;
         }
 
         public async Task<Guid> GetCurrentUserId()

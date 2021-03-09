@@ -31,9 +31,10 @@ namespace Nano35.WebClient
             builder.Services.AddScoped<IWorkerService, WorkerService>();
             builder.Services.AddScoped<IUnitService, UnitService>();
             builder.Services.AddScoped<IClientService, ClientService>();
+            builder.Services.AddScoped<IArticlesService, ArticlesService>();
             builder.Services.AddScoped<IComingsService, ComingsService>();
+            builder.Services.AddScoped<IStorageItemService, StorageItemService>();
             builder.Services.AddScoped<ISessionProvider, SessionProvider>();
-            builder.Services.AddSingleton<IEncryptionProvider, EncryptionProvider>();
                        
             await builder.Build().RunAsync();
         }

@@ -9,20 +9,15 @@ using Nano35.WebClient.Services;
 
 namespace Nano35.WebClient.Pages
 {
-    public partial class ModalNewComing : ComponentBase
+    public partial class ModalNewComing : 
+        ComponentBase
     {
-        [Inject]
-        public NavigationManager NavigationManager { get; set; }
-        [Inject] 
-        private IRequestManager RequestManager { get; set; }
-        [Inject] 
-        private IInstanceService InstanceService { get; set; }
-        [Inject] 
-        private IClientService ClientService { get; set; }
-        [Inject] 
-        private IUnitService UnitService { get; set; }
-        [Inject] 
-        private ISessionProvider SessionProvider { get; set; }
+        [Inject] private IRequestManager RequestManager { get; set; }
+        [Inject] private IInstanceService InstanceService { get; set; }
+        [Inject] private IClientService ClientService { get; set; }
+        [Inject] private IUnitService UnitService { get; set; }
+        [Inject] private ISessionProvider SessionProvider { get; set; }
+        [Parameter] public EventCallback OnHideModalNewComing { get; set; }
         
         private IEnumerable<IClientViewModel> Clients { get; set; }
         private IEnumerable<IUnitViewModel> Units { get; set; }
@@ -32,10 +27,8 @@ namespace Nano35.WebClient.Pages
         private bool _loading = true;
         private string _error = "";
         private bool _serverAvailable = false;
+        private bool _isNewComingDetailDisplay = false;
 
-        private ModalNewComingDetail modalNewComingDetail = new ModalNewComingDetail();
-        
-        public bool Display { get; private set; }
 
         protected override async Task OnInitializedAsync()
         {
@@ -45,32 +38,15 @@ namespace Nano35.WebClient.Pages
             _loading = false;
         }
 
-        private async void HandleValidSubmit()
+        private void Create()
         {
         }
         
-        public void Show()
-        {
-            this.Display = true;
-            this.InvokeAsync(this.StateHasChanged);
-        }
-
-        public void Hide()
-        {
-            this.Display = false;
-            this.InvokeAsync(this.StateHasChanged);
-        }
-
-        public void Create()
-        {
-           // model.NewId = Guid.NewGuid();
-           // model.InstanceId = _instanceService.GetCurrentInstance().Id;
-           // _clientservice.CreateClient(model);
-        }
-        
-        private void ShowModalNewComingDetail()
-        {
-            this.modalNewComingDetail.Show();
-        }
+        private void HideModalNewComing() =>
+            OnHideModalNewComing.InvokeAsync();
+        private void ShowModalNewComingDetail() =>
+            _isNewComingDetailDisplay = true;
+        private void HideModalNewComingDetail() =>
+            _isNewComingDetailDisplay = false;
     }
 }

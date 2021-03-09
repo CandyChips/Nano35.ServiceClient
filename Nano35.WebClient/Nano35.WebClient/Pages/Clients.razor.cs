@@ -13,39 +13,39 @@ namespace Nano35.WebClient.Pages
         [Inject]
         public NavigationManager NavigationManager { get; set; }
         [Inject] 
-        private IRequestManager _requestManager { get; set; }
+        private IRequestManager RequestManager { get; set; }
         [Inject]
-        private IInstanceService _instanceService { get; set; }
+        private IClientService ClientService { get; set; }
         [Inject]
-        private IClientService _clientservice { get; set; }
-        [Inject]
-        private ISessionProvider _sessionProvider { get; set; }
-
-        public ModalNewClient ModalNewClient { get; set; }
-        public ModalEditClient ModalEditClient { get; set; }
+        private ISessionProvider SessionProvider { get; set; }
+        
+        private bool _isNewClientDisplay = false;
+        private bool _isEditClientDisplay = false;
         
         private bool _serverAvailable = false;
         private bool _loading = true;
         private IEnumerable<ClientViewModel> _data;
         protected override async Task OnInitializedAsync()
         {
-            _serverAvailable = await _requestManager.HealthCheck(_requestManager.InstanceServer);
+            _serverAvailable = await RequestManager.HealthCheck(RequestManager.InstanceServer);
             if(!_serverAvailable)
                 NavigationManager.NavigateTo("/instances");
-            if (!await _sessionProvider.IsCurrentSessionIdExist())
+            if (!await SessionProvider.IsCurrentSessionIdExist())
                 NavigationManager.NavigateTo("/instances");
-            _data = (await _clientservice.GetAllClients(await _sessionProvider.GetCurrentInstanceId())).Data;
+            _data = (await ClientService.GetAllClients(await SessionProvider.GetCurrentInstanceId())).Data;
             _loading = false;
         }
         
-        private void ShowModalNewClient()
-        {
-            this.ModalNewClient.Show();
-        }
-
-        private async void ShowModalEditClient(Guid id)
-        {
-            this.ModalEditClient.Show(id);
-        }
+        private void ShowModalNewClient() => 
+            _isNewClientDisplay = true;
+        
+        private void HideModalNewClient() => 
+            _isNewClientDisplay = false;
+        
+        private void ShowModalEditClient() => 
+            _isEditClientDisplay = true;
+        
+        private void HideModalEditClient() => 
+            _isEditClientDisplay = false;
     }
 }

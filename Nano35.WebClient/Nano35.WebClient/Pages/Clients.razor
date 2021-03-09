@@ -63,8 +63,15 @@
                 }
                 </tbody>
             </table>
-            <ModalNewClient @ref="this.ModalNewClient"></ModalNewClient>
-            <ModalEditClient @ref="this.ModalEditClient"></ModalEditClient>
+        }
+        @if (_isNewClientDisplay)
+        {
+            <ModalNewClient/>
+        }
+        @if (_isEditClientDisplay)
+        {
+            
+            <ModalEditClient/>
         }
     }
 </AuthorizeView>

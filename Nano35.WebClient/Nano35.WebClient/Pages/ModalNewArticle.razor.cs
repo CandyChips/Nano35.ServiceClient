@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 using Nano35.HttpContext.storage;
@@ -6,47 +7,43 @@ using Nano35.WebClient.Services;
 
 namespace Nano35.WebClient.Pages
 {
-    public partial class ModalNewArticle
+    public partial class ModalNewArticle :
+        ComponentBase
     {
-        [Inject]
-        public NavigationManager NavigationManager { get; set; }
+        [Inject] private IRequestManager RequestManager { get; set; }
+        [Inject] private IArticlesService ArticlesService { get; set; }
+        [Inject] private ISessionProvider SessionProvider { get; set; }
+        [Parameter] public EventCallback OnHideModalNewArticle { get; set; }
         
-        private bool Loading = true;
+        private bool _loading = true;
         private string _error = "";
         private bool _serverAvailable = false;
-        public bool Display { get; private set; }
 
         private CreateArticleHttpBody _model = new CreateArticleHttpBody();
-
-        private List<ArticleCategoryViewModel> _categories = new List<ArticleCategoryViewModel>();
-        
-        [Inject] 
-        private IRequestManager RequestManager { get; set; }
         
         protected override async Task OnInitializedAsync()
         {
             _serverAvailable = await RequestManager.HealthCheck(RequestManager.IdentityServer);
-            Loading = false;
+            _model.InstanceId = await SessionProvider.GetCurrentInstanceId();
+            _model.NewId = Guid.NewGuid();
+            _loading = false;
+        }
+
+        private void CurrentArticleCategoryChanged(Guid newId)
+        {
+            _model.CategoryId = newId;
         }
 
         private async void HandleValidSubmit()
         {
-        }
-        
-        public void Show()
-        {
-            this.Display = true;
-            this.InvokeAsync(this.StateHasChanged);
+            await ArticlesService.CreateArticle(_model);
+            HideModalNewArticle();
         }
 
-        public void Hide()
+       
+        private void HideModalNewArticle()
         {
-            this.Display = false;
-            this.InvokeAsync(this.StateHasChanged);
-        }
-
-        public void Create()
-        {
+            OnHideModalNewArticle.InvokeAsync();
         }
     }
 }

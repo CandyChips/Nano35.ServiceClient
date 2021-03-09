@@ -1,16 +1,31 @@
-﻿
-<div class="input-group">
-    <InputSelect @bind-Value="Article" class="custom-select">
-        <option>Spring</option>
-        <option>Summer</option>
-        <option>Autumn</option>
-        <option>Winter</option>
-    </InputSelect>
-    <div class="input-group-append">
-        <button class="btn btn-outline-secondary" 
-                type="button"
-                @onclick="ShowModalNewArticle">Создать</button>
+﻿<div class="form-group">
+    <label>Наименование</label>
+    <div class="input-group">
+        <InputSelect class="custom-select"
+                     @bind-Value="SelectedArticlesId">
+            @if (!_isLoading)
+            {
+                <option selected disabled>Выберите наименование</option>
+                @foreach (var item in Articles)
+                {
+                    <option value="@item.Id">@item.Model</option>
+                }
+            }
+            else
+            {
+                <option selected disabled>Загрузка</option>
+            }
+        </InputSelect>
+        <div class="input-group-append">
+            <button class="btn btn-outline-primary" 
+                    type="button"
+                    @onclick="ShowModalNewArticle">Создать</button>
+        </div>
     </div>
 </div>
-<ModalNewArticle @ref="this.modalNewArticle"></ModalNewArticle>    
 
+@if (_isNewArticleDisplay)
+{
+    <ModalNewArticle 
+        OnHideModalNewArticle="HideModalNewArticle"/>  
+}

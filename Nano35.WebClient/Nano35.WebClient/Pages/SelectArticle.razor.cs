@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 using Nano35.HttpContext.storage;
@@ -13,6 +14,8 @@ namespace Nano35.WebClient.Pages
         [Parameter] public EventCallback<Guid> OnSelectedArticleChanged { get; set; }
         [Inject] private IArticlesService ArticlesService { get; set; }
         [Inject] private ISessionProvider SessionProvider { get; set; }
+        [Inject] private IRequestManager RequestManager { get; set; }
+        [Inject] private HttpClient HttpClient { get; set; }
         
         private List<ArticleViewModel> Articles { get; set; }
         private Guid _selectedArticlesId;
@@ -22,8 +25,9 @@ namespace Nano35.WebClient.Pages
         private bool _isNewArticleDisplay = false;
         
         protected override async Task OnInitializedAsync()
-        {            
-            Articles = (await ArticlesService.GetAllArticles(await SessionProvider.GetCurrentInstanceId())).Data.ToList();
+        {
+            var request = new GetAllArticlesHttpQuery() {InstanceId = await SessionProvider.GetCurrentInstanceId()};
+            Articles = (await new GetAllArticlesRequest(RequestManager, HttpClient, request).Send()).Data.ToList();
             _isLoading = false;
         }
 

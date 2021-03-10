@@ -55,4 +55,42 @@ namespace Nano35.WebClient.Services
             
         }
     }
+    public class GetAllClientStatesRequest : 
+        RequestProvider<GetAllClientStatesHttpQuery, GetAllClientStatesSuccessHttpResponse>
+    {
+        public GetAllClientStatesRequest(IRequestManager requestManager, HttpClient httpClient, GetAllClientStatesHttpQuery request) : 
+            base(requestManager, httpClient, request)
+        {
+            
+        }
+
+        public override async Task<GetAllClientStatesSuccessHttpResponse> Send()
+        {
+            var response = await HttpClient.GetAsync($"{RequestManager.StorageServer}/Clients/GetAllClientStates");
+            if (response.IsSuccessStatusCode)
+            {
+                return (await response.Content.ReadFromJsonAsync<GetAllClientStatesSuccessHttpResponse>());
+            }
+            throw new Exception((await response.Content.ReadFromJsonAsync<string>()));
+        }
+    }
+    public class GetAllClientTypesRequest : 
+        RequestProvider<GetAllClientTypesHttpQuery, GetAllClientTypesSuccessHttpResponse>
+    {
+        public GetAllClientTypesRequest(IRequestManager requestManager, HttpClient httpClient, GetAllClientTypesHttpQuery request) : 
+            base(requestManager, httpClient, request)
+        {
+            
+        }
+
+        public override async Task<GetAllClientTypesSuccessHttpResponse> Send()
+        {
+            var response = await HttpClient.GetAsync($"{RequestManager.StorageServer}/Clients/GetAllClientTypes");
+            if (response.IsSuccessStatusCode)
+            {
+                return (await response.Content.ReadFromJsonAsync<GetAllClientTypesSuccessHttpResponse>());
+            }
+            throw new Exception((await response.Content.ReadFromJsonAsync<string>()));
+        }
+    }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 using Nano35.HttpContext.storage;
@@ -10,9 +11,9 @@ namespace Nano35.WebClient.Pages
     public partial class ModalNewArticle :
         ComponentBase
     {
-        [Inject] private IRequestManager RequestManager { get; set; }
-        [Inject] private IArticlesService ArticlesService { get; set; }
         [Inject] private ISessionProvider SessionProvider { get; set; }
+        [Inject] private IRequestManager RequestManager { get; set; }
+        [Inject] private HttpClient HttpClient { get; set; }
         [Parameter] public EventCallback OnHideModalNewArticle { get; set; }
         
         private bool _loading = true;
@@ -36,7 +37,7 @@ namespace Nano35.WebClient.Pages
         
         private async void HandleValidSubmit()
         {
-            await ArticlesService.CreateArticle(_model);
+            await new CreateArticleRequest(RequestManager, HttpClient, _model).Send();
             HideModalNewArticle();
         }
 

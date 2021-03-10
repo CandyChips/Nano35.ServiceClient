@@ -13,15 +13,12 @@ namespace Nano35.WebClient.Pages
         [Inject] private ISessionProvider SessionProvider { get; set; }
         
         private bool _serverAvailable = false;
-
-        private bool _loading = true;
         
         protected override async Task OnInitializedAsync()
         {
             _serverAvailable = await RequestManager.HealthCheck(RequestManager.InstanceServer);
             if(!_serverAvailable)
                 NavigationManager.NavigateTo("/instances");
-            _loading = false;
         }   
     }
     

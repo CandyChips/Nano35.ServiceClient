@@ -6,7 +6,8 @@ using Nano35.WebClient.Services;
 
 namespace Nano35.WebClient.Pages
 {
-    public partial class Coming
+    public partial class Coming :
+        ComponentBase
     {
         [Inject] private IRequestManager RequestManager { get; set; }
         [Inject] private IComingsService ComingsService { get; set; }
@@ -24,8 +25,8 @@ namespace Nano35.WebClient.Pages
             _loading = false;
         }
 
-        private void ShowModalNewComing() => _serverAvailable = true;
-        private void HideModalNewComing() => _serverAvailable = false;
+        private void ShowModalNewComing() => _isNewComingDisplay = true;
+        private void HideModalNewComing() => _isNewComingDisplay = false;
         
     }
 }

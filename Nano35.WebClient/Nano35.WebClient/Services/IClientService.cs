@@ -8,12 +8,11 @@ namespace Nano35.WebClient.Services
 {
     public interface IClientService
     {
-        Task<GetAllClientsSuccessHttpResponse> GetAllClients(Guid id);
-        Task<GetClientByIdSuccessHttpResponse> GetClientById(Guid id);
         Task<GetAllClientTypesSuccessHttpResponse> GetAllClientTypes();
         Task<GetAllClientStatesSuccessHttpResponse> GetAllClientStates();
         Task CreateClient(CreateClientHttpBody model);
     }
+
 
     public class ClientService : IClientService
     {
@@ -24,15 +23,6 @@ namespace Nano35.WebClient.Services
         {
             _httpClient = httpClient;
             _requestManager = requestManager;
-        }
-        public async Task<GetAllClientsSuccessHttpResponse> GetAllClients(Guid id)
-        {
-            var response = await _httpClient.GetAsync($"{_requestManager.InstanceServer}/Clients/GetAllClients?InstanceId={id}");
-            if (response.IsSuccessStatusCode)
-            {
-                return (await response.Content.ReadFromJsonAsync<GetAllClientsSuccessHttpResponse>());
-            }
-            throw new Exception((await response.Content.ReadFromJsonAsync<string>()));
         }
         
         public async Task<GetAllClientTypesSuccessHttpResponse> GetAllClientTypes()
@@ -63,16 +53,6 @@ namespace Nano35.WebClient.Services
                 throw new Exception((await response.Content.ReadFromJsonAsync<string>()));
             }
             
-        }
-
-        public async Task<GetClientByIdSuccessHttpResponse> GetClientById(Guid id)
-        {
-            var response = await _httpClient.GetAsync($"{_requestManager.InstanceServer}/Clients/GetClientById?UnitId={id})");
-            if (response.IsSuccessStatusCode)
-            {
-                return (await response.Content.ReadFromJsonAsync<GetClientByIdSuccessHttpResponse>());
-            }
-            throw new Exception((await response.Content.ReadFromJsonAsync<string>()));
         }
     }
 }

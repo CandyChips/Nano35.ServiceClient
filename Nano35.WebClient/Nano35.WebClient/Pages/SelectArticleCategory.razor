@@ -2,12 +2,11 @@
     <label>Категория</label>
     <nav aria-label="breadcrumb">
           <ol class="breadcrumb">
-                @for (int i = 0; i < _selectedCategories.Count; i++)
+                @for (var i = 0; i < _selectedCategories.Count; i++)
                 {
                     <li class="breadcrumb-item active">
                         <span>
                             @_selectedCategories[i].Name
-                                
                             <button class="btn btn-outline-danger" 
                                     type="button"
                                     @onclick="() => OnRemoveSelectedCategory(i)">x</button>
@@ -24,16 +23,25 @@
         </button>
         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
             <span class="dropdown-header input-group">
-                <InputText @bind-Value="Name" class="form-control" placeholder="Выберите категорию или создайте новую!"/>
+                <InputText @bind-Value="_name" class="form-control" placeholder="Выберите категорию или создайте новую!"/>
                 <div class="input-group-append">
                     <button class="btn btn-outline-primary" 
                             type="button"
                             @onclick="OnCreateCategory">Создать</button>
                 </div>
             </span>
-            @foreach (var item in _categories)
+            @if (_isLoading)
             {
-                <a class="dropdown-item" @onclick="() => OnAddCategory(item)">@item.Name</a> 
+                <span class="dropdown-header input-group">
+                    Загрузка
+                </span>
+            }
+            else
+            {
+                @foreach (var item in _categories)
+                {
+                    <a class="dropdown-item" @onclick="() => OnAddCategory(item)">@item.Name</a> 
+                }
             }
         </div>
       </div>

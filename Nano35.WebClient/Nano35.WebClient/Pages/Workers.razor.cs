@@ -9,25 +9,24 @@ namespace Nano35.WebClient.Pages
 {
     public partial class Workers
     {
-        [Inject] 
-        private IRequestManager _requestManager { get; set; }
-        [Inject]
-        private IInstanceService _instanceService { get; set; }
-        [Inject]
-        private IWorkerService _workerService { get; set; }
-        public ModalNewWorker ModalNewWorker { get; set; }
-
+        [Inject] private IRequestManager RequestManager { get; set; }
+        [Inject] private IInstanceService InstanceService { get; set; }
+        [Inject] private IWorkerService WorkerService { get; set; }
+        
         private bool _loading = true;
+        private bool _isNewWorkerDisplay = false;
         private IEnumerable<WorkerViewModel> _data;
+        
         protected override async Task OnInitializedAsync()
         {
-            _data = (await _workerService.GetAllWorkers(_instanceService.GetCurrentInstance().Id)).Data;
+            _data = (await WorkerService.GetAllWorkers(InstanceService.GetCurrentInstance().Id)).Data;
             _loading = false;
         }
-        
-        private void ShowModalNewWorker()
-        {
-            this.ModalNewWorker.Show();
-        }
+
+        private void ShowModalNewWorker() =>
+            _isNewWorkerDisplay = true;
+
+        private void HideModalNewWorker() =>
+            _isNewWorkerDisplay = false;
     }
 }

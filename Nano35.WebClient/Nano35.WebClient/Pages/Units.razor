@@ -55,9 +55,11 @@
                 }
                 </tbody>
             </table>
-        
+            @if (_isNewUnitDisplay)
+            {
+                <ModalNewUnit 
+                    OnHideModalNewUnit ="HideModalNewUnit"/>
+            }
         }
     }
 </AuthorizeView>
-
-<ModalNewUnit @ref="this.ModalNewUnit"></ModalNewUnit>

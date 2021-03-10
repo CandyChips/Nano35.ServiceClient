@@ -1,17 +1,24 @@
-﻿@using Nano35.HttpContext.storage
-
-
-<div class="input-group">
-    <InputSelect @bind-Value="StorageItem" class="custom-select">
-        <option>Spring</option>
-        <option>Summer</option>
-        <option>Autumn</option>
-        <option>Winter</option>
-    </InputSelect>
-    <div class="input-group-append">
-        <button class="btn btn-outline-primary" 
-                type="button"
-                @onclick="ShowModalNewStorageItem">Создать</button>
+﻿<div class="form-group">
+    <label>Товар</label>
+    <div class="input-group">
+        <InputSelect @bind-Value="SelectedStorageItemId" class="custom-select">
+            @if (_loading)
+            {
+                <option selected disabled>Загрузка</option>
+            }
+            else
+            {
+                @foreach (var item in StorageItems)
+                {
+                    <option value="@item.Id">@item.Condition</option>
+                }
+            }
+        </InputSelect>
+        <div class="input-group-append">
+            <button class="btn btn-outline-primary" 
+                    type="button"
+                    @onclick="ShowModalNewStorageItem">Создать</button>
+        </div>
     </div>
 </div>
 

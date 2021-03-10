@@ -10,45 +10,35 @@ namespace Nano35.WebClient.Pages
 {
     public partial class ModalNewInstance : ComponentBase
     {
-        [Inject]
-        public NavigationManager NavigationManager { get; set; }
-        [Inject] 
-        private IRequestManager _requestManager { get; set; }
-        [Inject] 
-        private IInstancesService _instancesService { get; set; }
+        [Inject] public NavigationManager NavigationManager { get; set; }
+        [Inject] private IRequestManager RequestManager { get; set; }
+        [Inject] private IInstancesService InstancesService { get; set; }
+        [Parameter] public EventCallback OnHideModalNewInstance { get; set; }
 
-        private IEnumerable<IInstanceTypeViewModel> _types { get; set; }
-        private IEnumerable<IRegionViewModel> _regions { get; set; }
+        private IEnumerable<IInstanceTypeViewModel> Types { get; set; }
+        private IEnumerable<IRegionViewModel> Regions { get; set; }
         
-        private CreateInstanceHttpBody model = new CreateInstanceHttpBody();
+        private CreateInstanceHttpBody _model = new CreateInstanceHttpBody();
         private bool _loading = true;
-        private string _error;
+        private string _error = "";
         private bool _serverAvailable = false;
-        
-        public bool Display { get; private set; }
 
         protected override async Task OnInitializedAsync()
         {
-            _serverAvailable = await _requestManager.HealthCheck(_requestManager.IdentityServer);
-            _regions = (await _instancesService.GetAllRegions()).Data;
-            _types = (await _instancesService.GetAllTypes()).Data;
+            _serverAvailable = await RequestManager.HealthCheck(RequestManager.IdentityServer);
+            Regions = (await InstancesService.GetAllRegions()).Data;
+            Types = (await InstancesService.GetAllTypes()).Data;
             _loading = false;
         }
 
         private async void Create()
         {
-        }
-        
-        public void Show()
-        {
-            this.Display = true;
-            this.InvokeAsync(this.StateHasChanged);
+            
         }
 
-        public void Hide()
+        public void HideModalNewStorageItem()
         {
-            this.Display = false;
-            this.InvokeAsync(this.StateHasChanged);
+            OnHideModalNewInstance.InvokeAsync();
         }
     }
 }

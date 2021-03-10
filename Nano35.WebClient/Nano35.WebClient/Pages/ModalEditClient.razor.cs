@@ -9,25 +9,19 @@ using Nano35.WebClient.Services;
 
 namespace Nano35.WebClient.Pages
 {
-    public partial class ModalEditClient : ComponentBase
+    public partial class ModalEditClient : 
+        ComponentBase
     {
-        [Inject]
-        public NavigationManager NavigationManager { get; set; }
-        [Inject] 
-        private IRequestManager RequestManager { get; set; }
-        [Inject] 
-        private IInstanceService InstanceService { get; set; }
-        [Inject] 
-        private IClientService Clientservice { get; set; }
-        [Inject] 
-        private ISessionProvider SessionProvider { get; set; }
+        [Inject] public NavigationManager NavigationManager { get; set; }
+        [Inject] private IRequestManager RequestManager { get; set; }
+        [Inject] private IInstanceService InstanceService { get; set; }
+        [Inject] private IClientService ClientService { get; set; }
+        [Inject] private ISessionProvider SessionProvider { get; set; }
         
         private IEnumerable<IClientTypeViewModel> Types { get; set; }
         private IEnumerable<IClientStateViewModel> State { get; set; }
 
         private ClientViewModel _model = new ClientViewModel();
-        private bool _loading = true;
-        private string _error;
         private bool _serverAvailable = false;
         
         public bool Display { get; private set; }
@@ -36,9 +30,8 @@ namespace Nano35.WebClient.Pages
         {
             
             _serverAvailable = await RequestManager.HealthCheck(RequestManager.IdentityServer);
-            State = (await Clientservice.GetAllClientStates()).Data;
-            Types = (await Clientservice.GetAllClientTypes()).Data;
-            _loading = false;
+            State = (await ClientService.GetAllClientStates()).Data;
+            Types = (await ClientService.GetAllClientTypes()).Data;
         }
 
         public void Show(Guid id)

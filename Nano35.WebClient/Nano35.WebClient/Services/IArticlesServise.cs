@@ -15,6 +15,8 @@ namespace Nano35.WebClient.Services
     {
         Task<GetAllArticlesSuccessHttpResponse> GetAllArticles(Guid instanceId);
         Task<GetAllArticleCategoriesSuccessHttpResponse> GetAllCategories(Guid instanceId);
+        Task<GetAllArticleBrandsSuccessHttpResponse> GetAllBrands(Guid instanceId, Guid categoryId);
+        Task<GetAllArticleModelsSuccessHttpResponse> GetAllModels(Guid instanceId, Guid categoryId);
         Task<GetAllArticleCategoriesSuccessHttpResponse> GetAllSubCategories(Guid rootId);
         Task<CreateCategorySuccessHttpResponse> CreateCategory(CreateCategoryHttpBody body);
         Task<CreateArticleSuccessHttpResponse> CreateArticle(CreateArticleHttpBody body);
@@ -53,6 +55,28 @@ namespace Nano35.WebClient.Services
                 return (await response.Content.ReadFromJsonAsync<GetAllArticleCategoriesSuccessHttpResponse>());
             }
             throw new Exception((await response.Content.ReadFromJsonAsync<GetAllArticleCategoriesErrorHttpResponse>())?.Message);
+        }
+
+        public async Task<GetAllArticleBrandsSuccessHttpResponse> GetAllBrands(Guid instanceId, Guid categoryId)
+        {
+            var response = await _httpClient.GetAsync($"http://localhost:5003/Articles/GetAllArticleBrands?InstanceId={instanceId}&CategoryId={categoryId}");
+
+            if (response.IsSuccessStatusCode)
+            {
+                return (await response.Content.ReadFromJsonAsync<GetAllArticleBrandsSuccessHttpResponse>());
+            }
+            throw new Exception((await response.Content.ReadFromJsonAsync<GetAllArticleBrandsErrorHttpResponse>())?.Message);
+        }
+
+        public async Task<GetAllArticleModelsSuccessHttpResponse> GetAllModels(Guid instanceId, Guid categoryId)
+        {
+            var response = await _httpClient.GetAsync($"http://localhost:5003/Articles/GetAllArticleModels?InstanceId={instanceId}&CategoryId={categoryId}");
+
+            if (response.IsSuccessStatusCode)
+            {
+                return (await response.Content.ReadFromJsonAsync<GetAllArticleModelsSuccessHttpResponse>());
+            }
+            throw new Exception((await response.Content.ReadFromJsonAsync<GetAllArticleModelsErrorHttpResponse>())?.Message);
         }
 
         public async Task<GetAllArticleCategoriesSuccessHttpResponse> GetAllSubCategories(Guid rootId)

@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 using Nano35.Contracts.Instance.Models;
@@ -12,6 +14,7 @@ namespace Nano35.WebClient.Pages
     public partial class ModalNewComing : 
         ComponentBase
     {
+        [Inject] private HttpClient HttpClient { get; set; }
         [Inject] private IRequestManager RequestManager { get; set; }
         [Inject] private IInstanceService InstanceService { get; set; }
         [Inject] private IClientService ClientService { get; set; }
@@ -33,8 +36,13 @@ namespace Nano35.WebClient.Pages
         protected override async Task OnInitializedAsync()
         {
             _serverAvailable = await RequestManager.HealthCheck(RequestManager.IdentityServer);
-            Clients = (await ClientService.GetAllClients(await SessionProvider.GetCurrentInstanceId())).Data;
-            Units = (await UnitService.GetAllUnit(await SessionProvider.GetCurrentInstanceId())).Data;
+            
+            var request = new GetAllClientsHttpQuery() {InstanceId = await SessionProvider.GetCurrentInstanceId()};
+            Clients = (await new GetAllClientsRequest(RequestManager, HttpClient, request).Send()).Data;
+            
+            var unitsRequest = new GetAllUnitsHttpQuery() {InstanceId = await SessionProvider.GetCurrentInstanceId()};
+            Units = (await new GetAllUnitsRequest(RequestManager, HttpClient, unitsRequest).Send()).Data;
+
             _loading = false;
         }
 
@@ -44,8 +52,15 @@ namespace Nano35.WebClient.Pages
         
         private void HideModalNewComing() =>
             OnHideModalNewComing.InvokeAsync();
+
+        private void AddComingDetail(CreateComingDetailViewModel model)
+        {
+            _model.Details.ToList().Add(model);
+        }
+        
         private void ShowModalNewComingDetail() =>
             _isNewComingDetailDisplay = true;
+        
         private void HideModalNewComingDetail() =>
             _isNewComingDetailDisplay = false;
     }

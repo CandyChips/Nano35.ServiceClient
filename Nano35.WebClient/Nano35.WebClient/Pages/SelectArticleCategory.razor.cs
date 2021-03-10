@@ -16,15 +16,16 @@ namespace Nano35.WebClient.Pages
         
         private List<ArticleCategoryViewModel> _categories = new List<ArticleCategoryViewModel>();
         private List<ArticleCategoryViewModel> _selectedCategories = new List<ArticleCategoryViewModel>();
-        private string Name = "";
+        private string _name = "";
         private bool _isLoading = true;
         
         protected override async Task OnInitializedAsync()
         {            
             _categories = (await ArticlesService.GetAllCategories(await SessionProvider.GetCurrentInstanceId())).Data.ToList();
+            _isLoading = false;
         }
 
-        public async Task OnAddCategory(ArticleCategoryViewModel selected)
+        private async Task OnAddCategory(ArticleCategoryViewModel selected)
         {
             _isLoading = true;
             _categories.Clear();
@@ -34,22 +35,13 @@ namespace Nano35.WebClient.Pages
             _isLoading = false;
         }
 
-        public async Task OnRemoveSelectedCategory(int index)
-        {
-            _isLoading = true;
-            _categories.Clear();
-            _selectedCategories.RemoveRange(index, _selectedCategories.Count - index);
-            _categories = (await ArticlesService.GetAllSubCategories(_selectedCategories.Last().Id)).Data.ToList();
-            _isLoading = false;
-        }
-
-        public async Task OnCreateCategory()
+        private async Task OnCreateCategory()
         {
             _isLoading = true;
             _categories.Clear();
             var body = new CreateCategoryHttpBody()
             {
-                Name = Name,
+                Name = _name,
                 InstanceId = await SessionProvider.GetCurrentInstanceId(),
                 NewId = Guid.NewGuid(),
                 ParentCategoryId = _selectedCategories.Count == 0 ? Guid.Empty : _selectedCategories.Last().Id
@@ -58,6 +50,16 @@ namespace Nano35.WebClient.Pages
             await ArticlesService.CreateCategory(body);
             _categories = (await ArticlesService.GetAllSubCategories(body.NewId)).Data.ToList();
             _isLoading = false;
+        }
+
+        private async Task OnRemoveSelectedCategory(int index)
+        {
+            _isLoading = true;
+            _categories.Clear();
+            _selectedCategories.RemoveRange(index, _selectedCategories.Count - index);
+            _categories = (await ArticlesService.GetAllSubCategories(_selectedCategories.Last().Id)).Data.ToList();
+            _isLoading = false;
+            StateHasChanged();
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 using Nano35.Contracts.Instance.Models;
@@ -17,19 +18,18 @@ namespace Nano35.WebClient.Pages
         [Inject] private IClientService ClientService { get; set; }
         [Parameter] public EventCallback OnHideModalNewClient { get; set; }
         
-        private IEnumerable<IClientTypeViewModel> Types { get; set; }
-        private IEnumerable<IClientStateViewModel> State { get; set; }
-        
+        private List<ClientTypeViewModel> Types { get; set; }
+        private List<ClientStateViewModel> State { get; set; }
         private CreateClientHttpBody _model = new CreateClientHttpBody();
         private bool _loading = true;
-        private string _error;
+        private string _error = "";
         private bool _serverAvailable = false;
 
         protected override async Task OnInitializedAsync()
         {
             _serverAvailable = await RequestManager.HealthCheck(RequestManager.IdentityServer);
-            State = (await ClientService.GetAllClientStates()).Data;
-            Types = (await ClientService.GetAllClientTypes()).Data;
+            State = (await ClientService.GetAllClientStates()).Data.ToList();
+            Types = (await ClientService.GetAllClientTypes()).Data.ToList();
             _loading = false;
         }
 

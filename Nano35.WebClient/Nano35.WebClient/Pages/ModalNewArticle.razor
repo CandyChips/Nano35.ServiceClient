@@ -1,4 +1,24 @@
-﻿<div class="modal-background">
+﻿<style>
+    .modal-background {
+        display: block;
+        position: fixed;
+        z-index: 3;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgb(0,0,0);
+        background-color: rgba(0,0,0,0.4);
+    }
+    .modal-content {
+        background-color: #fefefe;
+        margin: 5% auto;
+        border: 2px solid #888;
+        width: 50%;
+    }
+</style>
+<div class="modal-background">
     <div class="modal-content card">
         <h4 class="card-header">Новое наименование</h4>
         <div class="card-body">
@@ -7,18 +27,14 @@
                 <EditForm Model="@_model" OnValidSubmit="HandleValidSubmit">
                     <SelectArticleCategory 
                         OnSelectedArticleCategoryChanged="CurrentArticleCategoryChanged"/>
-                    <div class="form-group">
-                        <label>Бренд</label>
-                        <InputText @bind-Value="_model.Brand" class="form-control" />
-                    </div>
-                    <div class="form-group">
-                        <label>Модель</label>
-                        <InputText @bind-Value="_model.Model" class="form-control" />
-                    </div>
-                    <div class="form-group">
-                        <label>Информация</label>
-                        <InputText @bind-Value="_model.Info" class="form-control" />
-                    </div>
+                    <SelectArticleBrand
+                        OnArticleBrandChanged="CurrentArticleBrandChanged"/>
+                    <SelectArticleModel
+                        OnArticleModelChanged="CurrentArticleModelChanged"/>
+                    <SelectArticleInfo
+                        OnArticleInfoChanged="ArticleInfoChanged"/>
+                    <AddArticleSpecification
+                        OnUpdateAddedSepecs="CurrentArticlesSpecsChanged"/>
                     <div class="btn-group">
                         <button class="btn btn-primary">
                             Создать

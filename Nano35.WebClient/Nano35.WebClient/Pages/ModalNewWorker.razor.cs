@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 using Nano35.Contracts.Instance.Models;
@@ -11,29 +12,21 @@ namespace Nano35.WebClient.Pages
 {
     public partial class ModalNewWorker : ComponentBase
     {
-        [Inject]
-        public NavigationManager NavigationManager { get; set; }
-        [Inject] 
-        private IRequestManager _requestManager { get; set; }
-        [Inject] 
-        private IWorkerService _workerService { get; set; }
-        [Inject] 
-        private IInstanceService _instanceService { get; set; }
+        [Inject] private IRequestManager RequestManager { get; set; }
+        [Inject] private IWorkerService WorkerService { get; set; }
+        [Inject] private IInstanceService InstanceService { get; set; }
+        [Parameter] public EventCallback OnHideModalNewWorker { get; set; }
         
-        private IEnumerable<IWorkersRoleViewModel> _types { get; set; }
-        private IEnumerable<IRegionViewModel> _regions { get; set; }
-        
-        private CreateWorkerHttpBody model = new CreateWorkerHttpBody();
+        private List<WorkersRoleViewModel> Types { get; set; }
+        private CreateWorkerHttpBody _model;
         private bool _loading = true;
-        private string _error;
+        private string _error = "";
         private bool _serverAvailable = false;
-        
-        public bool Display { get; private set; }
 
         protected override async Task OnInitializedAsync()
         {
-            _serverAvailable = await _requestManager.HealthCheck(_requestManager.IdentityServer);
-            _types = (await _workerService.GetAllWorkerRoles()).Data;
+            _serverAvailable = await RequestManager.HealthCheck(RequestManager.IdentityServer);
+            Types = (await WorkerService.GetAllWorkerRoles()).Data.ToList();
             _loading = false;
         }
 
@@ -41,24 +34,17 @@ namespace Nano35.WebClient.Pages
         {
         }
         
-        public void Show()
+        private void HideModalNewWorker()
         {
-            this.Display = true;
-            this.InvokeAsync(this.StateHasChanged);
-        }
-
-        public void Hide()
-        {
-            this.Display = false;
-            this.InvokeAsync(this.StateHasChanged);
+            OnHideModalNewWorker.InvokeAsync();
         }
         
         public void Create()
         {
-            model.NewId = Guid.NewGuid();
-            model.InstanceId = _instanceService.GetCurrentInstance().Id;
-            _workerService.CreateWorker(model);
-            Hide();
+            _model.NewId = Guid.NewGuid();
+            _model.InstanceId = InstanceService.GetCurrentInstance().Id;
+            WorkerService.CreateWorker(_model);
+            OnHideModalNewWorker.InvokeAsync();
         }
     }
 }

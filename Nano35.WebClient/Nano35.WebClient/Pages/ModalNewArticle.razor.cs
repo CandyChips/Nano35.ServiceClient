@@ -16,7 +16,6 @@ namespace Nano35.WebClient.Pages
         [Parameter] public EventCallback OnHideModalNewArticle { get; set; }
         
         private bool _loading = true;
-        private string _error = "";
         private bool _serverAvailable = false;
 
         private CreateArticleHttpBody _model = new CreateArticleHttpBody();
@@ -29,11 +28,12 @@ namespace Nano35.WebClient.Pages
             _loading = false;
         }
 
-        private void CurrentArticleCategoryChanged(Guid newId)
-        {
-            _model.CategoryId = newId;
-        }
-
+        private void CurrentArticleCategoryChanged(Guid newId) => _model.CategoryId = newId;
+        private void CurrentArticleBrandChanged(string brand) => _model.Brand = brand;
+        private void CurrentArticleModelChanged(string model) => _model.Model = model;
+        private void ArticleInfoChanged(string info) => _model.Info = info;
+        private void CurrentArticlesSpecsChanged(List<SpecHttpContext> specs) => _model.Specs = specs;
+        
         private async void HandleValidSubmit()
         {
             await ArticlesService.CreateArticle(_model);

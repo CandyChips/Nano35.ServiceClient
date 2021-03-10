@@ -6,23 +6,21 @@ namespace Nano35.WebClient.Shared
 {
     public partial class StorageLayout
     {
-        [Inject]
-        private ISessionProvider _sessionProvider { get; set; }
-        [Inject] 
-        private IRequestManager _requestManager { get; set; }
-        [Inject] 
-        private IInstanceService _instanceService { get; set; }
+        [Inject] private ISessionProvider SessionProvider { get; set; }
+        [Inject] private IRequestManager RequestManager { get; set; }
+        [Inject] private IInstanceService InstanceService { get; set; }
         
         private bool _serverAvailable = false;
         private bool _loading = true;
+        
         protected override async Task OnInitializedAsync()
         {
-            _serverAvailable = await _requestManager.HealthCheck(_requestManager.InstanceServer);
+            _serverAvailable = await RequestManager.HealthCheck(RequestManager.InstanceServer);
             if(!_serverAvailable)
                 NavigationManager.NavigateTo("/instances");
-            if(!await _sessionProvider.IsCurrentSessionIdExist())
+            if(!await SessionProvider.IsCurrentSessionIdExist())
                 NavigationManager.NavigateTo("/instances");
-            await _instanceService.IsInstanceExist();
+            await InstanceService.IsInstanceExist();
             _loading = false;
         }
     }

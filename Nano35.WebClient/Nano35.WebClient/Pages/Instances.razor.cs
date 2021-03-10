@@ -9,44 +9,41 @@ using InstanceViewModel = Nano35.HttpContext.instance.InstanceViewModel;
 
 namespace Nano35.WebClient.Pages
 {
-    public partial class Instances
+    public partial class Instances :
+        ComponentBase
     {
-        [Inject]
-        public NavigationManager NavigationManager { get; set; }
-        [Inject] 
-        private IRequestManager _requestManager { get; set; }
-        [Inject] 
-        private IInstancesService _instancesService { get; set; }
-        [Inject]
-        private IInstanceService _instanceService { get; set; }
-        [Inject] 
-        private ISessionProvider _sessionprovider { get; set; }
+        [Inject] public NavigationManager NavigationManager { get; set; }
+        [Inject] private IRequestManager RequestManager { get; set; }
+        [Inject] private IInstancesService InstancesService { get; set; }
+        [Inject] private IInstanceService InstanceService { get; set; }
+        [Inject] private ISessionProvider SessionProvider { get; set; }
+        [Parameter] public EventCallback OnHideModalNewInstance { get; set; }
 
         private bool _serverAvailable = false;
         private bool _loading = true;
-        
-        public ModalNewInstance ModalNewInstance { get; set; }
+        private bool _isNewInstanceDisplay = false;
 
         private IEnumerable<InstanceViewModel> _data;
         
         protected override async Task OnInitializedAsync()
         {
-            _serverAvailable = await _requestManager.HealthCheck(_requestManager.InstanceServer);
-            _data = (await _instancesService.GetAllInstances()).Data;
+            _serverAvailable = await RequestManager.HealthCheck(RequestManager.InstanceServer);
+            _data = (await InstancesService.GetAllInstances()).Data;
             _loading = false;
-        }
-        
-        private void ShowModalNewInstance()
-        {
-            this.ModalNewInstance.Show();
         }
 
         private async Task OpenOrg(Guid id)
         {
-            await _instanceService.SetInstanceById(id);         //get session
-            await _sessionprovider.SetCurrentInstanceId(id);    //set instance id
+            await InstanceService.SetInstanceById(id);         //get session
+            await SessionProvider.SetCurrentInstanceId(id);    //set instance id
             NavigationManager.NavigateTo("/instance-view");
         }
+        
+        private void HideModalNewInstance() => 
+            _isNewInstanceDisplay = false;
+        
+        private void ShowModalNewInstance() => 
+            _isNewInstanceDisplay = true;
         
     }
 }

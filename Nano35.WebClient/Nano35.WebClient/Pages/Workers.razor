@@ -48,7 +48,10 @@
             }
             </tbody>
         </table>
+        @if (_isNewWorkerDisplay)
+        {
+            <ModalNewWorker
+                OnHideModalNewWorker ="HideModalNewWorker"/>
+        }
     }
 </AuthorizeView>
-
-<ModalNewWorker @ref="this.ModalNewWorker"></ModalNewWorker>

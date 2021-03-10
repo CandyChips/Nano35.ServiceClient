@@ -8,36 +8,32 @@ namespace Nano35.WebClient.Pages
 {
     public partial class Units
     {
-        [Inject] public NavigationManager NavigationManager { get; set; }
-        [Inject] private IRequestManager _requestManager { get; set; }
-        [Inject] private IInstanceService _instanceService { get; set; }
-        [Inject] private IUnitService _unitService { get; set; }
-        [Inject] private ISessionProvider _sessionProvider { get; set; }
+        [Inject] private NavigationManager NavigationManager { get; set; }
+        [Inject] private IRequestManager RequestManager { get; set; }
+        [Inject] private IInstanceService InstanceService { get; set; }
+        [Inject] private IUnitService UnitService { get; set; }
+        [Inject] private ISessionProvider SessionProvider { get; set; }
 
         public ModalNewUnit ModalNewUnit { get; set; }
-
+        private bool _isNewUnitDisplay = false;
         private bool _serverAvailable = false;
         private bool _loading = true;
         private IEnumerable<UnitViewModel> _data;
         protected override async Task OnInitializedAsync()
         {
-            _serverAvailable = await _requestManager.HealthCheck(_requestManager.InstanceServer);
+            _serverAvailable = await RequestManager.HealthCheck(RequestManager.InstanceServer);
             if(!_serverAvailable)
                 NavigationManager.NavigateTo("/instances");
-            if (!await _sessionProvider.IsCurrentSessionIdExist())
+            if (!await SessionProvider.IsCurrentSessionIdExist())
                 NavigationManager.NavigateTo("/instances");
-            _data = (await _unitService.GetAllUnit(_instanceService.GetCurrentInstance().Id)).Data;
+            _data = (await UnitService.GetAllUnit(InstanceService.GetCurrentInstance().Id)).Data;
             _loading = false;
         }
+
+        private void ShowModalNewUnit() =>
+            _isNewUnitDisplay = true;
         
-        private void ShowModalNewUnit()
-        {
-            this.ModalNewUnit.Show();
-        }
-        
-        private void HideModalNewUnit()
-        {
-            this.ModalNewUnit.Show();
-        }
+        private void HideModalNewUnit() =>
+            _isNewUnitDisplay = false;
     }
 }

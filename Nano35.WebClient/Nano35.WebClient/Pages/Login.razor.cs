@@ -9,23 +9,21 @@ using System.Threading.Tasks;
 
 namespace Nano35.WebClient.Pages
 {
-    public partial class Login
+    public partial class Login :
+        ComponentBase
     {
-        [Inject]
-        private IAuthService _authService { get; set; }
-        [Inject]
-        public NavigationManager NavigationManager { get; set; }
-        [Inject] 
-        private IRequestManager _requestManager { get; set; }
+        [Inject] private IAuthService AuthService { get; set; }
+        [Inject] private NavigationManager NavigationManager { get; set; }
+        [Inject] private IRequestManager RequestManager { get; set; }
 
-        private GenerateUserTokenHttpBody model = new GenerateUserTokenHttpBody();
+        private GenerateUserTokenHttpBody _model = new GenerateUserTokenHttpBody();
         private bool _loading = true;
         private string _error;
         private bool _serverAvailable = false;
 
         protected override async Task OnInitializedAsync()
         {
-            _serverAvailable = await _requestManager.HealthCheck(_requestManager.IdentityServer);
+            _serverAvailable = await RequestManager.HealthCheck(RequestManager.IdentityServer);
             _loading = false;
         }
 
@@ -33,7 +31,7 @@ namespace Nano35.WebClient.Pages
         {
             try
             {
-                await _authService.Login(model);
+                await AuthService.Login(_model);
                 NavigationManager.NavigateTo("/");
             }
             catch (Exception ex)

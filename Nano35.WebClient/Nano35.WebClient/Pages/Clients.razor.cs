@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
@@ -8,16 +9,15 @@ using Nano35.WebClient.Services;
 
 namespace Nano35.WebClient.Pages
 {
-    public partial class Clients
+    public partial class Clients :
+        ComponentBase
     {
-        [Inject]
-        public NavigationManager NavigationManager { get; set; }
-        [Inject] 
-        private IRequestManager RequestManager { get; set; }
-        [Inject]
-        private IClientService ClientService { get; set; }
-        [Inject]
-        private ISessionProvider SessionProvider { get; set; }
+        [Inject] private NavigationManager NavigationManager { get; set; }
+        [Inject] private IRequestManager RequestManager { get; set; }
+        [Inject] private IClientService ClientService { get; set; }
+        [Inject] private ISessionProvider SessionProvider { get; set; }
+        [Inject] private HttpClient HttpClient { get; set; }
+       
         
         private bool _isNewClientDisplay = false;
         private bool _isEditClientDisplay = false;
@@ -32,7 +32,9 @@ namespace Nano35.WebClient.Pages
                 NavigationManager.NavigateTo("/instances");
             if (!await SessionProvider.IsCurrentSessionIdExist())
                 NavigationManager.NavigateTo("/instances");
-            _data = (await ClientService.GetAllClients(await SessionProvider.GetCurrentInstanceId())).Data;
+
+            var request = new GetAllClientsHttpQuery() {InstanceId = await SessionProvider.GetCurrentInstanceId()};
+            _data = (await new GetAllClientsRequest(RequestManager, HttpClient, request).Send()).Data;
             _loading = false;
         }
         
@@ -42,7 +44,7 @@ namespace Nano35.WebClient.Pages
         private void HideModalNewClient() => 
             _isNewClientDisplay = false;
         
-        private void ShowModalEditClient() => 
+        private void ShowModalEditClient(Guid id) => 
             _isEditClientDisplay = true;
         
         private void HideModalEditClient() => 

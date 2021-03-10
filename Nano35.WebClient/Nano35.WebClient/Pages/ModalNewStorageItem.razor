@@ -15,7 +15,7 @@
         background-color: #fefefe;
         margin: 5% auto;
         border: 2px solid #888;
-        width: 90%;
+        width: 50%;
     }
 </style>
 <div class="modal-background">
@@ -30,21 +30,17 @@
                     OnSelectedArticleChanged="OnSelectedArticleChanged"/>
                 <SelectStorageItemCondition 
                     OnSelectedArticleCategoryChanged="OnSelectedStorageItemConditionChanged"/>
-                <div class="form-group">
-                    <label>Комментарий</label>
-                    <InputText @bind-Value="_model.Comment" class="form-control" />
-                </div>
-                <div class="form-group">
-                    <label>Скрытый комментарий</label>
-                    <InputText @bind-Value="_model.HiddenComment" class="form-control" />
-                </div>
-                <div class="form-group">
-                    <label>Цена в закупе</label>
-                    <InputNumber @bind-Value="_model.PurchasePrice" class="form-control" />
-                </div>
-                <div class="form-group">
-                    <label>Цена продажи</label>
-                    <InputNumber @bind-Value="_model.RetailPrice" class="form-control" />
+                <SelectStorageItemComment
+                    OnStorageItemCommentChanged="OnStorageItemCommentChanged"/>
+                <SelectStorageItemHiddenComment
+                    OnStorageItemHiddenCommentChanged="OnStorageItemHiddenCommentChanged"/>
+                <SelectStorageItemPurchasePrice
+                    OnStorageItemPurchasePriceChanged="OnStorageItemPurchasePriceChanged"/>
+                <SelectStorageItemRetailPrice
+                    OnStorageItemRetailPriceChanged="OnStorageItemRetailPriceChanged"/>
+                <div class="input-group mb-3">
+                  <label class="input-group-text" for="inputGroupFile01">Фотографии: </label>
+                  <input type="file" class="form-control" id="inputGroupFile01">
                 </div>
                 <div class="btn-group">
                     <button class="btn btn-primary">

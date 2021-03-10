@@ -12,18 +12,14 @@ namespace Nano35.WebClient.Pages
 {
     public partial class ModalNewStorageItem : ComponentBase
     {        
-        [Inject] public NavigationManager NavigationManager { get; set; }
+        [Inject] private IRequestManager RequestManager { get; set; }
         [Parameter] public EventCallback OnHideModalNewStorageItem { get; set; }
         
         private bool _loading = true;
-        private string _error = "";
         private bool _serverAvailable = false;
-
         private CreateStorageItemHttpBody _model = new CreateStorageItemHttpBody();
         private List<StorageItemConditionViewModel> _conditions = new List<StorageItemConditionViewModel>();
         
-        [Inject] 
-        private IRequestManager RequestManager { get; set; }
         
         protected override async Task OnInitializedAsync()
         {
@@ -31,15 +27,12 @@ namespace Nano35.WebClient.Pages
             _loading = false;
         }
 
-        private void OnSelectedStorageItemConditionChanged(Guid conditionId)
-        {
-            _model.ConditionId = conditionId;
-        }
-
-        private void OnSelectedArticleChanged(Guid articleId)
-        {
-            _model.ArticleId = articleId;
-        }
+        private void OnSelectedStorageItemConditionChanged(Guid conditionId) => _model.ConditionId = conditionId;
+        private void OnSelectedArticleChanged(Guid articleId) => _model.ArticleId = articleId;
+        private void OnStorageItemCommentChanged(string comment) => _model.Comment = comment;
+        private void OnStorageItemHiddenCommentChanged(string hiddenComment) => _model.HiddenComment = hiddenComment;
+        private void OnStorageItemPurchasePriceChanged(decimal purchasePrice) => _model.PurchasePrice = purchasePrice;
+        private void OnStorageItemRetailPriceChanged(decimal retailPrice) => _model.RetailPrice = retailPrice;
 
         private void Create()
         {

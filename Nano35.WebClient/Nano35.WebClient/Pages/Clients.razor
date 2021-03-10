@@ -63,15 +63,16 @@
                 }
                 </tbody>
             </table>
-        }
-        @if (_isNewClientDisplay)
-        {
-            <ModalNewClient/>
-        }
-        @if (_isEditClientDisplay)
-        {
+            @if (_isNewClientDisplay)
+            {
+                <ModalNewClient 
+                    OnHideModalNewClient="HideModalNewClient"/>
+            }
+            @if (_isEditClientDisplay)
+            {
             
-            <ModalEditClient/>
+                <ModalEditClient/>
+            }
         }
     }
 </AuthorizeView>

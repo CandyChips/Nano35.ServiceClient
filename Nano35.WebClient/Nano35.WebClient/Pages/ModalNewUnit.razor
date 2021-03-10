@@ -1,59 +1,56 @@
-﻿@if (this.Display)
-{
-    <div class="modal-background">
-        <div class="modal-content card">
-            <h4 class="card-header">Новое подразделение</h4>
-            <div class="card-body">
-            @if (!_loading)
-            {
-                <EditForm Model="@model" OnValidSubmit="Create">
-                    <DataAnnotationsValidator />
-                    <div class="form-group">
-                        <label>Название Подразделения</label>
-                        <InputText @bind-Value="model.Name" class="form-control" />
-                        <ValidationMessage For="@(() => model.Name)" />
-                    </div>
-                    <div class="form-group">
-                        <label>Адресс</label>
-                        <InputText @bind-Value="model.Address" class="form-control" />
-                        <ValidationMessage For="@(() => model.Address)" />
-                    </div>
-                    <div class="form-group">
-                        <label>Номер телефона</label>
-                        <InputText @bind-Value="model.Phone" class="form-control" />
-                        <ValidationMessage For="@(() => model.Phone)" />
-                    </div>
-                    <div class="form-group">
-                        <label>Формат работы</label>
-                        <InputText @bind-Value="model.WorkingFormat" class="form-control" />
-                        <ValidationMessage For="@(() => model.WorkingFormat)" />
-                    </div>
-                    <div class="form-group">
-                        <label>Тип</label>
-                        <InputSelect @bind-Value="model.UnitTypeId" class="custom-select">
-                            <option selected disabled>Choose...</option>
-                            @foreach (var item in _types)
-                            {
-                                <option value="@item.Id">@item.Name </option>
-                            }
-                        </InputSelect>
-                        <ValidationMessage For="@(() => model.UnitTypeId)"/>
-                    </div>
-                    @if (!string.IsNullOrEmpty(_error))
-                    {
-                        <div class="alert alert-danger mt-3 mb-0">@_error</div>
-                    }
-                    <div class="btn-group">
-                        <button class="btn btn-primary">
-                            Создать
-                        </button>
-                        <button class="btn btn-secondary"
-                                @onclick="Hide">Закрыть
-                        </button>
-                    </div>
-                </EditForm>
-            }
-            </div>
+﻿<div class="modal-background">
+    <div class="modal-content card">
+        <h4 class="card-header">Новое подразделение</h4>
+        <div class="card-body">
+        @if (!_loading)
+        {
+            <EditForm Model="@_model" OnValidSubmit="Create">
+                <DataAnnotationsValidator />
+                <div class="form-group">
+                    <label>Название подразделения*</label>
+                    <InputText @bind-Value="_model.Name" class="form-control" />
+                    <ValidationMessage For="@(() => _model.Name)" />
+                </div>
+                <div class="form-group">
+                    <label>Адресс*</label>
+                    <InputText @bind-Value="_model.Address" class="form-control" />
+                    <ValidationMessage For="@(() => _model.Address)" />
+                </div>
+                <div class="form-group">
+                    <label>Номер телефона*</label>
+                    <InputText @bind-Value="_model.Phone" class="form-control" />
+                    <ValidationMessage For="@(() => _model.Phone)" />
+                </div>
+                <div class="form-group">
+                    <label>Формат работы</label>
+                    <InputText @bind-Value="_model.WorkingFormat" class="form-control" />
+                    <ValidationMessage For="@(() => _model.WorkingFormat)" />
+                </div>
+                <div class="form-group">
+                    <label>Тип*</label>
+                    <InputSelect @bind-Value="_model.UnitTypeId" class="custom-select">
+                        <option selected disabled>Choose...</option>
+                        @foreach (var item in Types)
+                        {
+                            <option value="@item.Id">@item.Name </option>
+                        }
+                    </InputSelect>
+                    <ValidationMessage For="@(() => _model.UnitTypeId)"/>
+                </div>
+                @if (!string.IsNullOrEmpty(_error))
+                {
+                    <div class="alert alert-danger mt-3 mb-0">@_error</div>
+                }
+                <div class="btn-group">
+                    <button class="btn btn-primary">
+                        Создать
+                    </button>
+                    <button class="btn btn-secondary"
+                            @onclick="OnHideModalNewUnit">Закрыть
+                    </button>
+                </div>
+            </EditForm>
+        }
         </div>
     </div>
-}
+</div>

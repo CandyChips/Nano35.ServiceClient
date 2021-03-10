@@ -8,24 +8,19 @@ using Nano35.WebClient.Services;
 
 namespace Nano35.WebClient.Pages
 {
-    public partial class InstanceView
+    public partial class InstanceView :
+        ComponentBase
     {
-        [Inject] 
-        private ISessionProvider _sessionProvider { get; set; }
-        [Inject] 
-        private IRequestManager _requestManager { get; set; }
-        [Inject] 
-        public NavigationManager NavigationManager { get; set; }
-
-        private bool _loading = true;
-        private IInstanceViewModel _data;
+        [Inject] private ISessionProvider SessionProvider { get; set; }
+        [Inject] private IRequestManager RequestManager { get; set; }
+        [Inject] private NavigationManager NavigationManager { get; set; }
+        
         protected override async Task OnInitializedAsync()
         {
-            if (!await _sessionProvider.IsCurrentSessionIdExist())
+            if (!await SessionProvider.IsCurrentSessionIdExist())
                 NavigationManager.NavigateTo("/instances");
-            if(!await _requestManager.HealthCheck(_requestManager.InstanceServer))
+            if(!await RequestManager.HealthCheck(RequestManager.InstanceServer))
                 NavigationManager.NavigateTo("/instances");
-            _loading = false;
         }
     }
 }

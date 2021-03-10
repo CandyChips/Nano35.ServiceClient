@@ -8,7 +8,8 @@ using Nano35.WebClient.Services;
 
 namespace Nano35.WebClient.Pages
 {
-    public partial class SelectStorageItemCondition : ComponentBase
+    public partial class SelectStorageItemCondition :
+        ComponentBase
     {
         [Parameter] public EventCallback<Guid> OnSelectedArticleCategoryChanged { get; set; }
         [Inject] private IStorageItemService StorageItemService { get; set; }
@@ -23,11 +24,12 @@ namespace Nano35.WebClient.Pages
         {            
             _conditions = (await StorageItemService.GetAllStorageConditions()).Data.ToList();
             _isLoading = false;
+            StateHasChanged();
         }
 
-        private async Task OnStorageItemConditionChanged()
+        private void OnStorageItemConditionChanged()
         {
-            await OnSelectedArticleCategoryChanged.InvokeAsync(_selectedConditionId);
+            OnSelectedArticleCategoryChanged.InvokeAsync(_selectedConditionId);
         }
     }
 }

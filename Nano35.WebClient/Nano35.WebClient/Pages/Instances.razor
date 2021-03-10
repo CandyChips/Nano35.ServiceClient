@@ -52,8 +52,12 @@
                 }
                 </tbody>
             </table>
-
+            @if (_isNewInstanceDisplay)
+            {
+            
+                <ModalNewInstance 
+                    OnHideModalNewInstance="HideModalNewInstance"/>
+            }
         }
     }
 </AuthorizeView>
-<ModalNewInstance @ref="this.ModalNewInstance"></ModalNewInstance>

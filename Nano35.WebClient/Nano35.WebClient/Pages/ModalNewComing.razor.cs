@@ -17,13 +17,10 @@ namespace Nano35.WebClient.Pages
         [Inject] private HttpClient HttpClient { get; set; }
         [Inject] private IRequestManager RequestManager { get; set; }
         [Inject] private IInstanceService InstanceService { get; set; }
-        [Inject] private IClientService ClientService { get; set; }
         [Inject] private IUnitService UnitService { get; set; }
         [Inject] private ISessionProvider SessionProvider { get; set; }
         [Parameter] public EventCallback OnHideModalNewComing { get; set; }
         
-        private IEnumerable<IClientViewModel> Clients { get; set; }
-        private IEnumerable<IUnitViewModel> Units { get; set; }
         
         private CreateComingHttpBody _model = new CreateComingHttpBody();
         private List<CreateComingDetailViewModel> _details = new List<CreateComingDetailViewModel>();
@@ -36,13 +33,7 @@ namespace Nano35.WebClient.Pages
         protected override async Task OnInitializedAsync()
         {
             _serverAvailable = await RequestManager.HealthCheck(RequestManager.IdentityServer);
-            
-            var request = new GetAllClientsHttpQuery() {InstanceId = await SessionProvider.GetCurrentInstanceId()};
-            Clients = (await new GetAllClientsRequest(RequestManager, HttpClient, request).Send()).Data;
-            
-            var unitsRequest = new GetAllUnitsHttpQuery() {InstanceId = await SessionProvider.GetCurrentInstanceId()};
-            Units = (await new GetAllUnitsRequest(RequestManager, HttpClient, unitsRequest).Send()).Data;
-
+            _details = new List<CreateComingDetailViewModel>();
             _loading = false;
         }
 
@@ -55,8 +46,12 @@ namespace Nano35.WebClient.Pages
 
         private void AddComingDetail(CreateComingDetailViewModel model)
         {
-            _model.Details.ToList().Add(model);
+            _details.Add(model);
+            StateHasChanged();
         }
+        
+        private void ComingUnitChanged(Guid unitId) => _model.UnitId = unitId;
+        private void ComingClientChanged(Guid clientId) => _model.ClientId = clientId;
         
         private void ShowModalNewComingDetail() =>
             _isNewComingDetailDisplay = true;

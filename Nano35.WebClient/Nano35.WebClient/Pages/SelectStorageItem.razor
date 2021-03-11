@@ -8,9 +8,10 @@
             }
             else
             {
+                <option selected disabled>Выберите товар</option>
                 @foreach (var item in StorageItems)
                 {
-                    <option value="@item.Id">@item.Condition</option>
+                    <option value="@item.Id">@item.Article @item.Condition</option>
                 }
             }
         </InputSelect>

@@ -11,7 +11,6 @@ namespace Nano35.WebClient.Pages
 {
     public partial class SelectArticleModel
     {
-        [Inject] private IArticlesService ArticlesService { get; set; }
         [Inject] private ISessionProvider SessionProvider { get; set; }
         [Inject] private IRequestManager RequestManager { get; set; }
         [Inject] private HttpClient HttpClient { get; set; }

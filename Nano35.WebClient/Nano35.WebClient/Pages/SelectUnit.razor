@@ -1,0 +1,30 @@
+﻿<div class="form-group">
+    <label>Подразделение</label>
+    <div class="input-group">
+        <InputSelect @bind-Value="SelectedStorageItemId" class="custom-select">
+            @if (_loading)
+            {
+                <option selected disabled>Загрузка</option>
+            }
+            else
+            {
+                <option selected disabled>Выберите подразделение</option>
+                @foreach (var item in Units)
+                {
+                    <option value="@item.Id">@item.Name </option>
+                }
+            }
+        </InputSelect>
+        <div class="input-group-append">
+            <button class="btn btn-outline-primary"
+                    type="button"
+                    @onclick="ShowModalNewUnit">Создать</button>
+        </div>
+    </div>
+</div>
+
+@if (_isNewUnitDisplay)
+{
+    <ModalNewUnit
+        OnHideModalNewUnit="HideModalNewUnit"/>  
+}

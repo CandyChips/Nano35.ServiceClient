@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
@@ -17,7 +18,7 @@ namespace Nano35.WebClient.Pages
         [Inject] private HttpClient HttpClient { get; set; }
         [Inject] private IRequestManager RequestManager { get; set; }
         
-        private IEnumerable<IStorageItemViewModel> StorageItems { get; set; }
+        private List<StorageItemViewModel> StorageItems { get; set; }
         private Guid _selectedStorageItemId;
         private Guid SelectedStorageItemId { get => _selectedStorageItemId; set { _selectedStorageItemId = value; OnStorageItemChanged(); } }
         private bool _isNewStorageItemDisplay = false;
@@ -27,10 +28,8 @@ namespace Nano35.WebClient.Pages
         protected override async Task OnInitializedAsync()
         {
             _serverAvailable = await RequestManager.HealthCheck(RequestManager.IdentityServer);
-            
             var storageItemsRequest = new GetAllStorageItemsQuery() {InstanceId = await SessionProvider.GetCurrentInstanceId()};
-            StorageItems = (await new GetAllStorageItemsRequest(RequestManager, HttpClient, storageItemsRequest).Send()).Data;
-            
+            StorageItems = (await new GetAllStorageItemsRequest(RequestManager, HttpClient, storageItemsRequest).Send()).Data.ToList();
             _loading = false;
         }
 

@@ -2,8 +2,6 @@
     <div class="modal-content card">
         <h4 class="card-header">Новый клиент</h4>
         <div class="card-body">
-        @if (!_loading)
-        {
             <EditForm Model="@_model" OnValidSubmit="Create">
                 <div class="form-group">
                     <label>Название клиента</label>
@@ -22,22 +20,36 @@
                     <InputNumber @bind-Value="_model.Selle" class="form-control" />
                 </div>
                 <div class="form-group">
-                    <label>Тип лица</label>
+                    <label>Статус клиента</label>
                     <InputSelect @bind-Value="_model.ClientStateId" class="custom-select">
-                        <option selected disabled>Choose...</option>
-                        @foreach (var item in State)
+                        @if (_loading)
                         {
-                            <option value="@item.Id">@item.Name </option>
+                            <option selected disabled>Загрузка</option>
+                        }
+                        else
+                        {
+                            <option selected disabled>Выберите статус клиента</option>
+                            @foreach (var item in State)
+                            {
+                                <option value="@item.Id">@item.Name </option>
+                            }
                         }
                     </InputSelect>
                 </div>
                 <div class="form-group">
                     <label>Тип клиента</label>
                     <InputSelect @bind-Value="_model.ClientTypeId" class="custom-select">
-                        <option selected disabled>Choose...</option>
-                        @foreach (var item in Types)
+                        @if (_loading)
                         {
-                            <option value="@item.Id">@item.Name </option>
+                            <option selected disabled>Загрузка</option>
+                        }
+                        else
+                        {
+                            <option selected disabled>Выберите тип клиента</option>
+                            @foreach (var item in Types)
+                            {
+                                <option value="@item.Id">@item.Name </option>
+                            }
                         }
                     </InputSelect>
                 </div>
@@ -46,15 +58,23 @@
                     <div class="alert alert-danger mt-3 mb-0">@_error</div>
                 }
                 <div  class="btn-group">
-                    <button class="btn btn-primary">
-                        Создать
-                    </button>
+                    @if (_loading)
+                    {
+                        <button class="btn btn-primary" disabled>
+                            Создать
+                        </button>
+                    }
+                    else
+                    {
+                        <button class="btn btn-primary">
+                            Создать
+                        </button>
+                    }
                     <button class="btn btn-secondary"
                             @onclick="HideModalNewStorageItem">Закрыть
                     </button>
                 </div>
             </EditForm>
-        }
         </div>
     </div>
 </div>

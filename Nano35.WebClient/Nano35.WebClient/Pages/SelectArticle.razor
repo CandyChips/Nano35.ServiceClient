@@ -8,7 +8,7 @@
                 <option selected disabled>Выберите наименование</option>
                 @foreach (var item in Articles)
                 {
-                    <option value="@item.Id">@item.Model</option>
+                    <option value="@item.Id">@item.Category @item.Model</option>
                 }
             }
             else

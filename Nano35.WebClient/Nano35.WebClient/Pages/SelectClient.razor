@@ -1,0 +1,30 @@
+﻿<div class="form-group">
+    <label>Клиенты</label>
+    <div class="input-group">
+        <InputSelect @bind-Value="SelectedClientId" class="custom-select">
+            @if(_loading)
+            {
+                <option selected disabled>Загрузка</option>
+            }
+            else
+            {
+                <option selected disabled>Выберите клиента</option>
+                @foreach (var item in Clients)
+                {
+                    <option value="@item.Id">@item.Name </option>
+                }
+            }
+        </InputSelect>
+        <div class="input-group-append">
+            <button class="btn btn-outline-primary" 
+                    type="button"
+                    @onclick="ShowModalNewClient">Создать</button>
+        </div>
+    </div>
+</div>
+
+@if (_isNewClientDisplay)
+{
+    <ModalNewClient
+        OnHideModalNewClient="HideModalNewClient"/>  
+}

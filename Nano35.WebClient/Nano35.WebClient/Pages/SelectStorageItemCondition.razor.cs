@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 using Nano35.HttpContext.storage;
@@ -12,7 +13,8 @@ namespace Nano35.WebClient.Pages
         ComponentBase
     {
         [Parameter] public EventCallback<Guid> OnSelectedArticleCategoryChanged { get; set; }
-        [Inject] private IStorageItemService StorageItemService { get; set; }
+        [Inject] private HttpClient HttpClient { get; set; }
+        [Inject] private IRequestManager RequestManager { get; set; }
 
         private List<StorageItemConditionViewModel> _conditions = new List<StorageItemConditionViewModel>();
         private Guid _selectedConditionId;
@@ -21,8 +23,9 @@ namespace Nano35.WebClient.Pages
         
         
         protected override async Task OnInitializedAsync()
-        {            
-            _conditions = (await StorageItemService.GetAllStorageConditions()).Data.ToList();
+        {
+            var request = new GetAllStorageItemConditionsHttpQuery();
+            _conditions = (await new GetAllStorageItemConditionsRequest(RequestManager, HttpClient, request).Send()).Data.ToList();
             _isLoading = false;
             StateHasChanged();
         }

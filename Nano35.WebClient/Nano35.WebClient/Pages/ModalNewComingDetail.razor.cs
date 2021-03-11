@@ -21,6 +21,8 @@ namespace Nano35.WebClient.Pages
         [Inject] private IUnitService UnitService { get; set; }
         [Inject] private ISessionProvider SessionProvider { get; set; }
         [Parameter] public EventCallback OnHideModalNewComingDetail { get; set; }
+        [Parameter] public Guid UnitId { get; set; }
+        [Parameter] public EventCallback<CreateComingDetailViewModel> OnAddNewComingDetail { get; set; }
         
         private CreateComingDetailViewModel _model = new CreateComingDetailViewModel();
         private bool _loading = true;
@@ -29,13 +31,14 @@ namespace Nano35.WebClient.Pages
 
         protected override async Task OnInitializedAsync()
         {
+            _model.Count = 1;
             _serverAvailable = await RequestManager.HealthCheck(RequestManager.IdentityServer);
-            
             _loading = false;
         }
 
         private void HandleValidSubmit()
         {
+            OnAddNewComingDetail.InvokeAsync(_model);
             HideModalNewComingDetail();
         }
 

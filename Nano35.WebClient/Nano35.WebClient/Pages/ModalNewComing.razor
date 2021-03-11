@@ -2,37 +2,23 @@
     <div class="modal-content card">
         <h4 class="card-header">Новое оприходование</h4>
         <div class="card-body">
-        @if (!_loading)
-        {
             <EditForm Model="@_model" OnValidSubmit="Create">
                 <DataAnnotationsValidator />
                 <div class="form-group">
                     <label>Номер оприходования</label>
-                    <InputText @bind-Value="_model.Number" class="form-control" />
+                    <InputText @bind-Value="_model.Number" 
+                                class="form-control"
+                                placeholder="Введите уникальный номер оприходования" />
                 </div>
-                <div class="form-group">
-                    <label>Клиент</label>
-                    <InputSelect @bind-Value="_model.ClientId" class="custom-select">
-                        <option selected disabled>Choose...</option>
-                        @foreach (var item in Clients)
-                        {
-                            <option value="@item.Id">@item.Name </option>
-                        }
-                    </InputSelect>
-                </div>
-                <div class="form-group">
-                    <label>Подразделение</label>
-                    <InputSelect @bind-Value="_model.UnitId" class="custom-select">
-                        <option selected disabled>Choose...</option>
-                        @foreach (var item in Units)
-                        {
-                            <option value="@item.Id">@item.Name </option>
-                        }
-                    </InputSelect>
-                </div>
+                <SelectClient
+                    OnClientChanged="ComingClientChanged"/>
+                <SelectUnit
+                    OnUnitChanged="ComingUnitChanged"/>
                 <div class="form-group">
                     <label>Комментарий</label>
-                    <InputText @bind-Value="_model.Comment" class="form-control" />
+                    <InputText @bind-Value="_model.Comment" 
+                                class="form-control"
+                                placeholder="Введите коментарий к оприходованию"  />
                 </div>
                 <button class="btn btn-outline-primary"
                         style="width: 100%"
@@ -49,12 +35,15 @@
                         </tr>
                     </thead>
                     <tbody>
+                    @foreach (var item in _details)
+                    {
                         <tr>
-                            <td>1</td>
-                            <td>1</td>
-                            <td>1</td>
-                            <td>1</td>
+                            <td>@item.PlaceOnStorage</td>
+                            <td>@item.PlaceOnStorage</td>
+                            <td>@item.Price</td>
+                            <td><button class="btn btn-danger">Закрыть</button></td>
                         </tr>
+                    }
                     </tbody>
                 </table>
                 @if (!string.IsNullOrEmpty(_error))
@@ -62,15 +51,24 @@
                     <div class="alert alert-danger mt-3 mb-0">@_error</div>
                 }
                 <div class="btn-group">
-                    <button class="btn btn-primary">
-                        Создать
-                    </button>
+                    @if (!_loading)
+                    {
+                        <button class="btn btn-primary">
+                            Создать
+                        </button>
+                    }
+                    else
+                    {
+                        <button class="btn btn-primary" disabled>
+                            Создать
+                        </button>
+                        
+                    }
                     <button class="btn btn-secondary"
                             @onclick="HideModalNewComing">Закрыть
                     </button>
                 </div>
             </EditForm>
-        }
         </div>
     </div>
 </div>
@@ -78,5 +76,7 @@
 @if (_isNewComingDetailDisplay)
 {
     <ModalNewComingDetail
-        OnHideModalNewComingDetail="HideModalNewComingDetail"/>
+        OnAddNewComingDetail="AddComingDetail"
+        OnHideModalNewComingDetail="HideModalNewComingDetail"
+        UnitId="_model.UnitId"/>
 }

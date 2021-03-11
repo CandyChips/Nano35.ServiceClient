@@ -11,7 +11,6 @@ namespace Nano35.WebClient.Pages
 {
     public partial class SelectArticleCategory
     {
-        [Inject] private IArticlesService ArticlesService { get; set; }
         [Inject] private ISessionProvider SessionProvider { get; set; }
         [Inject] private IRequestManager RequestManager { get; set; }
         [Inject] private HttpClient HttpClient { get; set; }
@@ -36,7 +35,7 @@ namespace Nano35.WebClient.Pages
             _categories.Clear();
             _selectedCategories.Add(selected);
              
-            var request = new GetAllArticlesCategoriesHttpQuery() { InstanceId = await SessionProvider.GetCurrentInstanceId(), ParentId = _selectedCategories.Last().Id};
+            var request = new GetAllArticlesCategoriesHttpQuery() { InstanceId = await SessionProvider.GetCurrentInstanceId(), ParentId = selected.Id};
             _categories = (await new GetAllArticleCategoriesRequest(RequestManager, HttpClient, request).Send()).Data.ToList();
             
             await OnSelectedArticleCategoryChanged.InvokeAsync(selected.Id);

@@ -17,7 +17,6 @@ namespace Nano35.WebClient.Pages
         [Inject] private IInstanceService InstanceService { get; set; }
         [Parameter] public EventCallback OnHideModalNewUnit { get; set; }
         
-        private List<UnitTypeViewModel> Types { get; set; }
         private CreateUnitHttpBody _model = new CreateUnitHttpBody();
         private bool _loading = true;
         private string _error = "";
@@ -26,7 +25,6 @@ namespace Nano35.WebClient.Pages
         protected override async Task OnInitializedAsync()
         {
             _serverAvailable = await RequestManager.HealthCheck(RequestManager.IdentityServer);
-            Types = (await UnitService.GetAllUnitTypes()).Data.ToList();
             _loading = false;
         }
 
@@ -39,6 +37,12 @@ namespace Nano35.WebClient.Pages
         {
             OnHideModalNewUnit.InvokeAsync();
         }
+        
+        private void UnitsTypeIdChanged(Guid unitTypeId) => _model.UnitTypeId = unitTypeId;
+        private void UnitsNameChanged(string name) => _model.Name = name;
+        private void UnitsAddressChanged(string address) => _model.Address = address;
+        private void UnitsPhoneChanged(string phone) => _model.Phone = phone;
+        private void UnitsWorkingFormatChanged(string workingFormat) => _model.WorkingFormat = workingFormat;
 
         private void Create()
         {

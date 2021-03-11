@@ -1,6 +1,9 @@
 ﻿<div class="form-group">
-    <label>Место на складе</label>
-    <InputText @bind-Value="ComingDetailPlaceOnStorage" list="brandsOptions" class="form-control" />
+    <label>Место на складе @UnitId</label>
+    <InputText @bind-Value="ComingDetailPlaceOnStorage" 
+                list="brandsOptions" 
+                class="form-control" 
+                placeholder="Введите название ячейки или выберите из используемых"/>
 </div>
 <datalist id="brandsOptions">
 </datalist>

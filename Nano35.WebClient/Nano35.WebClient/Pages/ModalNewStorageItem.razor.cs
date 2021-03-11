@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
@@ -13,6 +14,8 @@ namespace Nano35.WebClient.Pages
     public partial class ModalNewStorageItem : ComponentBase
     {        
         [Inject] private IRequestManager RequestManager { get; set; }
+        [Inject] private ISessionProvider SessionProvider { get; set; }
+        [Inject] private HttpClient HttpClient { get; set; }
         [Parameter] public EventCallback OnHideModalNewStorageItem { get; set; }
         
         private bool _loading = true;
@@ -23,6 +26,8 @@ namespace Nano35.WebClient.Pages
         
         protected override async Task OnInitializedAsync()
         {
+            _model.InstanceId = await SessionProvider.GetCurrentInstanceId();
+            _model.NewId = Guid.NewGuid();
             _serverAvailable = await RequestManager.HealthCheck(RequestManager.IdentityServer);
             _loading = false;
         }
@@ -34,9 +39,9 @@ namespace Nano35.WebClient.Pages
         private void OnStorageItemPurchasePriceChanged(decimal purchasePrice) => _model.PurchasePrice = purchasePrice;
         private void OnStorageItemRetailPriceChanged(decimal retailPrice) => _model.RetailPrice = retailPrice;
 
-        private void Create()
-        {
-            //throw new Exception(JsonConvert.SerializeObject(_model));
+        private async Task Create()
+        { 
+            await new CreateStorageItemRequest(RequestManager, HttpClient, _model).Send();
             HideModalNewStorageItem();
         }
 

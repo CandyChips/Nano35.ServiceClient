@@ -19,10 +19,10 @@ namespace Nano35.WebClient.Pages
         [Inject] private HttpClient HttpClient { get; set; }
        
         
-        private bool _isNewClientDisplay = false;
-        private bool _isEditClientDisplay = false;
-        
-        private bool _serverAvailable = false;
+        private bool _isNewClientDisplay;
+        private bool _isEditClientDisplay;
+
+        private bool _serverAvailable;
         private bool _loading = true;
         private IEnumerable<ClientViewModel> _data;
         protected override async Task OnInitializedAsync()

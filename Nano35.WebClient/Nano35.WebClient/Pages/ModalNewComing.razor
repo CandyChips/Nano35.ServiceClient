@@ -2,7 +2,7 @@
     <div class="modal-content card">
         <h4 class="card-header">Новое оприходование</h4>
         <div class="card-body">
-            <EditForm Model="@_model" OnValidSubmit="Create">
+            <EditForm Model="@_model" OnSubmit="Create">
                 <DataAnnotationsValidator />
                 <div class="form-group">
                     <label>Номер оприходования</label>
@@ -10,10 +10,13 @@
                                 class="form-control"
                                 placeholder="Введите уникальный номер оприходования" />
                 </div>
+                
                 <SelectClient
                     OnClientChanged="ComingClientChanged"/>
+                
                 <SelectUnit
                     OnUnitChanged="ComingUnitChanged"/>
+                
                 <div class="form-group">
                     <label>Комментарий</label>
                     <InputText @bind-Value="_model.Comment" 
@@ -53,9 +56,10 @@
                 <div class="btn-group">
                     @if (!_loading)
                     {
-                        <button class="btn btn-primary">
-                            Создать
-                        </button>
+                        <input type="submit"
+                               class="btn btn-primary"
+                               value="Создать"/>
+                            
                     }
                     else
                     {

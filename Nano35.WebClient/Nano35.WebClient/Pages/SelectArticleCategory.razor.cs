@@ -24,7 +24,10 @@ namespace Nano35.WebClient.Pages
         protected override async Task OnInitializedAsync()
         {            
             var request = new GetAllArticlesCategoriesHttpQuery() { InstanceId = await SessionProvider.GetCurrentInstanceId(), ParentId = Guid.Empty};
-            _categories = (await new GetAllArticleCategoriesRequest(RequestManager, HttpClient, request).Send()).Data.ToList();
+
+            _categories = (await new GetAllArticleCategoriesRequest(RequestManager,
+                                                                    HttpClient,
+                                                                    request).Send()).Data.ToList();
 
             _isLoading = false;
         }
@@ -34,9 +37,12 @@ namespace Nano35.WebClient.Pages
             _isLoading = true;
             _categories.Clear();
             _selectedCategories.Add(selected);
-             
-            var request = new GetAllArticlesCategoriesHttpQuery() { InstanceId = await SessionProvider.GetCurrentInstanceId(), ParentId = selected.Id};
-            _categories = (await new GetAllArticleCategoriesRequest(RequestManager, HttpClient, request).Send()).Data.ToList();
+
+            var request = new GetAllArticlesCategoriesHttpQuery() { InstanceId = await SessionProvider.GetCurrentInstanceId(), ParentId = selected.Id };
+
+            _categories = (await new GetAllArticleCategoriesRequest(RequestManager,
+                                                                    HttpClient,
+                                                                    request).Send()).Data.ToList();
             
             await OnSelectedArticleCategoryChanged.InvokeAsync(selected.Id);
             _isLoading = false;
@@ -51,14 +57,18 @@ namespace Nano35.WebClient.Pages
                 Name = _name,
                 InstanceId = await SessionProvider.GetCurrentInstanceId(),
                 NewId = Guid.NewGuid(),
-                ParentCategoryId = _selectedCategories.Count == 0 ? Guid.Empty : _selectedCategories.Last().Id
+                ParentCategoryId = _selectedCategories.Count != 0 ? _selectedCategories.Last().Id : Guid.Empty
             };
-            await new CreateCategoryRequest(RequestManager, HttpClient, body).Send();
-            
-            _selectedCategories.Add(new ArticleCategoryViewModel() {Id = body.NewId, Name = body.Name, ParentCategoryId = body.ParentCategoryId});
-            
-            var request = new GetAllArticlesCategoriesHttpQuery() { InstanceId = await SessionProvider.GetCurrentInstanceId(), ParentId = _selectedCategories.Last().Id};
-            _categories = (await new GetAllArticleCategoriesRequest(RequestManager, HttpClient, request).Send()).Data.ToList();
+
+            _ = await new CreateCategoryRequest(RequestManager, HttpClient, body).Send();
+
+            _selectedCategories.Add(new ArticleCategoryViewModel() { Id = body.NewId, Name = body.Name, ParentCategoryId = body.ParentCategoryId });
+
+            var request = new GetAllArticlesCategoriesHttpQuery() { InstanceId = await SessionProvider.GetCurrentInstanceId(), ParentId = _selectedCategories.Last().Id };
+
+            _categories = (await new GetAllArticleCategoriesRequest(RequestManager,
+                                                                    HttpClient,
+                                                                    request).Send()).Data.ToList();
 
             _isLoading = false;
         }
@@ -68,9 +78,12 @@ namespace Nano35.WebClient.Pages
             _isLoading = true;
             _categories.Clear();
             _selectedCategories.RemoveRange(index, _selectedCategories.Count - index);
-            
-            var request = new GetAllArticlesCategoriesHttpQuery() { InstanceId = await SessionProvider.GetCurrentInstanceId(), ParentId = _selectedCategories.Last().Id};
-            _categories = (await new GetAllArticleCategoriesRequest(RequestManager, HttpClient, request).Send()).Data.ToList();
+
+            var request = new GetAllArticlesCategoriesHttpQuery() { InstanceId = await SessionProvider.GetCurrentInstanceId(), ParentId = _selectedCategories.Last().Id };
+
+            _categories = (await new GetAllArticleCategoriesRequest(RequestManager,
+                                                                    HttpClient,
+                                                                    request).Send()).Data.ToList();
 
             _isLoading = false;
             StateHasChanged();

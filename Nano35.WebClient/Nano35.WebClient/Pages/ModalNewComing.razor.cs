@@ -34,11 +34,15 @@ namespace Nano35.WebClient.Pages
         {
             _serverAvailable = await RequestManager.HealthCheck(RequestManager.IdentityServer);
             _details = new List<CreateComingDetailViewModel>();
+            _model.InstanceId = await SessionProvider.GetCurrentInstanceId();
+            _model.NewId = Guid.NewGuid();
             _loading = false;
         }
 
-        private void Create()
+        private async void Create()
         {
+            _model.Details = _details;
+            await new CreateComingRequest(RequestManager, HttpClient, _model).Send();
         }
         
         private void HideModalNewComing() =>

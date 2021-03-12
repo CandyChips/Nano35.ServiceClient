@@ -15,12 +15,11 @@ namespace Nano35.WebClient.Pages
 
         private IEnumerable<ComingViewModel> _data;
         private bool _isNewComingDisplay = false;
-        private bool _serverAvailable = false;
         private bool _loading = true;
 
         protected override async Task OnInitializedAsync()
         {
-            _serverAvailable = await RequestManager.HealthCheck(RequestManager.StorageServer);
+            var isAvailible = await RequestManager.HealthCheck(RequestManager.StorageServer);
             _data = (await ComingsService.GetAllComings(await SessionProvider.GetCurrentInstanceId())).Data;
             _loading = false;
         }

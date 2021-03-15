@@ -8,19 +8,18 @@ using Nano35.WebClient.Services;
 
 namespace Nano35.WebClient.Pages
 {
-    public partial class ModalNewInstance : ComponentBase
+    public partial class ModalNewInstance : 
+        ComponentBase
     {
-        [Inject] public NavigationManager NavigationManager { get; set; }
         [Inject] private IRequestManager RequestManager { get; set; }
         [Inject] private IInstancesService InstancesService { get; set; }
         [Parameter] public EventCallback OnHideModalNewInstance { get; set; }
 
         private IEnumerable<IInstanceTypeViewModel> Types { get; set; }
         private IEnumerable<IRegionViewModel> Regions { get; set; }
-        
         private CreateInstanceHttpBody _model = new CreateInstanceHttpBody();
         private bool _loading = true;
-        private string _error = "";
+        private string _error = string.Empty;
         private bool _serverAvailable = false;
 
         protected override async Task OnInitializedAsync()
@@ -36,7 +35,7 @@ namespace Nano35.WebClient.Pages
             
         }
 
-        public void HideModalNewStorageItem()
+        private void HideModalNewStorageItem()
         {
             OnHideModalNewInstance.InvokeAsync();
         }

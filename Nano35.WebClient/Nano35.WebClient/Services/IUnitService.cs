@@ -10,7 +10,6 @@ namespace Nano35.WebClient.Services
     {
         Task<GetAllUnitsSuccessHttpResponse> GetAllUnit(Guid id);
         Task<GetAllUnitTypesSuccessHttpResponse> GetAllUnitTypes();
-        Task CreateUnit(CreateUnitHttpBody model);
     }
 
     public class UnitService : IUnitService
@@ -42,17 +41,6 @@ namespace Nano35.WebClient.Services
                 return (await response.Content.ReadFromJsonAsync<GetAllUnitTypesSuccessHttpResponse>());
             }
             throw new Exception((await response.Content.ReadFromJsonAsync<string>()));
-        }
-        
-        public async Task CreateUnit(CreateUnitHttpBody model)
-        {
-            HttpContent content = new StringContent(model.ToString());
-            var response = await _httpClient.PostAsync($"{_requestManager.InstanceServer}/Units/CreateUnit", content);
-            if (!response.IsSuccessStatusCode)
-            {
-                throw new Exception((await response.Content.ReadFromJsonAsync<string>()));
-            }
-            
         }
     }
 }

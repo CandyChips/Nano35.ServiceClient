@@ -12,7 +12,6 @@ namespace Nano35.WebClient.Pages
     public partial class ModalEditClient : 
         ComponentBase
     {
-        [Inject] public NavigationManager NavigationManager { get; set; }
         [Inject] private IRequestManager RequestManager { get; set; }
         [Inject] private IInstanceService InstanceService { get; set; }
         [Inject] private IClientService ClientService { get; set; }
@@ -20,11 +19,8 @@ namespace Nano35.WebClient.Pages
         
         private IEnumerable<IClientTypeViewModel> Types { get; set; }
         private IEnumerable<IClientStateViewModel> State { get; set; }
-
         private ClientViewModel _model = new ClientViewModel();
         private bool _serverAvailable = false;
-        
-        public bool Display { get; private set; }
 
         protected override async Task OnInitializedAsync()
         {
@@ -32,18 +28,6 @@ namespace Nano35.WebClient.Pages
             _serverAvailable = await RequestManager.HealthCheck(RequestManager.IdentityServer);
             State = (await ClientService.GetAllClientStates()).Data;
             Types = (await ClientService.GetAllClientTypes()).Data;
-        }
-
-        public void Show(Guid id)
-        {
-            this.Display = true;
-            this.InvokeAsync(this.StateHasChanged);
-        }
-
-        public void Hide()
-        {
-            this.Display = false;
-            this.InvokeAsync(this.StateHasChanged);
         }
     }
 }

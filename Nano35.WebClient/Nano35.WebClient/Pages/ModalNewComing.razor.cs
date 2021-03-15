@@ -16,7 +16,6 @@ namespace Nano35.WebClient.Pages
     {
         [Inject] private HttpClient HttpClient { get; set; }
         [Inject] private IRequestManager RequestManager { get; set; }
-        [Inject] private IInstanceService InstanceService { get; set; }
         [Inject] private IUnitService UnitService { get; set; }
         [Inject] private ISessionProvider SessionProvider { get; set; }
         [Parameter] public EventCallback OnHideModalNewComing { get; set; }
@@ -25,7 +24,7 @@ namespace Nano35.WebClient.Pages
         private CreateComingHttpBody _model = new CreateComingHttpBody();
         private List<CreateComingDetailViewModel> _details = new List<CreateComingDetailViewModel>();
         private bool _loading = true;
-        private string _error = "";
+        private string _error = string.Empty;
         private bool _serverAvailable = false;
         private bool _isNewComingDetailDisplay = false;
 

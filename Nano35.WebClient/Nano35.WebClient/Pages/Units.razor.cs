@@ -14,9 +14,8 @@ namespace Nano35.WebClient.Pages
         [Inject] private IUnitService UnitService { get; set; }
         [Inject] private ISessionProvider SessionProvider { get; set; }
 
-        public ModalNewUnit ModalNewUnit { get; set; }
-        private bool _isNewUnitDisplay = false;
-        private bool _serverAvailable = false;
+        private bool _isNewUnitDisplay;
+        private bool _serverAvailable;
         private bool _loading = true;
         private IEnumerable<UnitViewModel> _data;
         protected override async Task OnInitializedAsync()
@@ -29,11 +28,7 @@ namespace Nano35.WebClient.Pages
             _data = (await UnitService.GetAllUnit(InstanceService.GetCurrentInstance().Id)).Data;
             _loading = false;
         }
-
-        private void ShowModalNewUnit() =>
-            _isNewUnitDisplay = true;
-        
-        private void HideModalNewUnit() =>
-            _isNewUnitDisplay = false;
+        private void ShowModalNewUnit() => _isNewUnitDisplay = true;
+        private void HideModalNewUnit() => _isNewUnitDisplay = false;
     }
 }

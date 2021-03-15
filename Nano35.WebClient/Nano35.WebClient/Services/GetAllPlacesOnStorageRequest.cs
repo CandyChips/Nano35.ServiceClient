@@ -19,7 +19,7 @@ namespace Nano35.WebClient.Services
         public override async Task<GetAllPlacesOnStorageSuccessHttpResponse> Send()
         {
             var response = await HttpClient.GetAsync(
-                $"http://localhost:5003/PlacesOnStorage/GetAllPlacesOnStorage?UnitId={Request.UnitId}&StorageItemId={Request.StorageItemId}");
+                $"{RequestManager.StorageServer}/PlacesOnStorage/GetAllPlacesOnStorage?UnitId={Request.UnitId}&StorageItemId={Request.StorageItemId}");
             if (response.IsSuccessStatusCode)
             {
                 return (await response.Content.ReadFromJsonAsync<GetAllPlacesOnStorageSuccessHttpResponse>());

@@ -12,21 +12,20 @@ using Nano35.WebClient.Services;
 
 namespace Nano35.WebClient.Pages
 {
-    public partial class ModalNewComingDetail : ComponentBase
+    public partial class ModalNewComingDetail :
+        ComponentBase
     {
         [Inject] private HttpClient HttpClient { get; set; }
         [Inject] private IRequestManager RequestManager { get; set; }
-        [Inject] private IInstanceService InstanceService { get; set; }
-        [Inject] private IClientService ClientService { get; set; }
-        [Inject] private IUnitService UnitService { get; set; }
         [Inject] private ISessionProvider SessionProvider { get; set; }
+        
         [Parameter] public EventCallback OnHideModalNewComingDetail { get; set; }
         [Parameter] public Guid UnitId { get; set; }
         [Parameter] public EventCallback<CreateComingDetailViewModel> OnAddNewComingDetail { get; set; }
         
         private CreateComingDetailViewModel _model = new CreateComingDetailViewModel();
         private bool _loading = true;
-        private string _error = "";
+        private string _error = string.Empty;
         private bool _serverAvailable = false;
 
         protected override async Task OnInitializedAsync()

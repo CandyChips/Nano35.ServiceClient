@@ -9,16 +9,7 @@ namespace Nano35.WebClient.Pages
         [Parameter] public EventCallback<decimal> OnStorageItemRetailPriceChanged { get; set; }
         
         private decimal _storageItemRetailPrice = 0;
-
-        private decimal StorageItemRetailPrice
-        {
-            get => _storageItemRetailPrice;
-            set { 
-                OnStorageItemRetailPriceChanged.InvokeAsync(value);
-                _storageItemRetailPrice = value;
-            }
-        }
-        
+        private decimal StorageItemRetailPrice { get => _storageItemRetailPrice; set { OnStorageItemRetailPriceChanged.InvokeAsync(value); _storageItemRetailPrice = value; } }
         private bool _isLoading = true;
         
         protected override async Task OnInitializedAsync()

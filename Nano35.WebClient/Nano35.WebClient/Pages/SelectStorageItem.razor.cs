@@ -12,11 +12,10 @@ namespace Nano35.WebClient.Pages
 {
     public partial class SelectStorageItem : ComponentBase
     {
-        [Parameter] public EventCallback<Guid> OnSelectedStorageItemChanged { get; set; }
-        [Inject] private IStorageItemService StorageItemService { get; set; }
         [Inject] private ISessionProvider SessionProvider { get; set; }
-        [Inject] private HttpClient HttpClient { get; set; }
         [Inject] private IRequestManager RequestManager { get; set; }
+        [Inject] private HttpClient HttpClient { get; set; }
+        [Parameter] public EventCallback<Guid> OnSelectedStorageItemChanged { get; set; }
         
         private List<StorageItemViewModel> StorageItems { get; set; }
         private Guid _selectedStorageItemId;

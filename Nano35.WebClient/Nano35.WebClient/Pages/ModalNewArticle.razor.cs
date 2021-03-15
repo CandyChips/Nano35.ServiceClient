@@ -18,7 +18,6 @@ namespace Nano35.WebClient.Pages
         
         private bool _loading = true;
         private bool _serverAvailable = false;
-
         private CreateArticleHttpBody _model = new CreateArticleHttpBody();
         
         protected override async Task OnInitializedAsync()

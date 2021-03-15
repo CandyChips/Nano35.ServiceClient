@@ -16,7 +16,7 @@ namespace Nano35.WebClient.Pages
         [Inject] private HttpClient HttpClient { get; set; }
         [Inject] private IRequestManager RequestManager { get; set; }
 
-        private List<StorageItemConditionViewModel> _conditions = new List<StorageItemConditionViewModel>();
+        private List<StorageItemConditionViewModel> _conditions;
         private Guid _selectedConditionId;
         private Guid SelectedConditionId { get => _selectedConditionId; set { _selectedConditionId = value; OnStorageItemConditionChanged(); } }
         private bool _isLoading = true;

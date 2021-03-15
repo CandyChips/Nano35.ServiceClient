@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 using Nano35.Contracts.Instance.Models;
@@ -13,13 +14,14 @@ namespace Nano35.WebClient.Pages
     public partial class ModalNewUnit : ComponentBase
     {
         [Inject] private IRequestManager RequestManager { get; set; }
+        [Inject] private HttpClient HttpClient { get; set; }
         [Inject] private IUnitService UnitService { get; set; }
         [Inject] private IInstanceService InstanceService { get; set; }
         [Parameter] public EventCallback OnHideModalNewUnit { get; set; }
         
         private CreateUnitHttpBody _model = new CreateUnitHttpBody();
         private bool _loading = true;
-        private string _error = "";
+        private string _error = string.Empty;
         private bool _serverAvailable = false;
 
         protected override async Task OnInitializedAsync()
@@ -44,11 +46,11 @@ namespace Nano35.WebClient.Pages
         private void UnitsPhoneChanged(string phone) => _model.Phone = phone;
         private void UnitsWorkingFormatChanged(string workingFormat) => _model.WorkingFormat = workingFormat;
 
-        private void Create()
+        private async void Create()
         {
             _model.Id = Guid.NewGuid();
             _model.InstanceId = InstanceService.GetCurrentInstance().Id;
-            UnitService.CreateUnit(_model);
+            await new CreateUnitRequest(RequestManager, HttpClient, _model).Send();
         }
     }
 }

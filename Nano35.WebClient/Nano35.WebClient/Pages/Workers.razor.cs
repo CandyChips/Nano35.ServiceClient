@@ -9,12 +9,11 @@ namespace Nano35.WebClient.Pages
 {
     public partial class Workers
     {
-        [Inject] private IRequestManager RequestManager { get; set; }
         [Inject] private IInstanceService InstanceService { get; set; }
         [Inject] private IWorkerService WorkerService { get; set; }
         
         private bool _loading = true;
-        private bool _isNewWorkerDisplay = false;
+        private bool _isNewWorkerDisplay;
         private IEnumerable<WorkerViewModel> _data;
         
         protected override async Task OnInitializedAsync()
@@ -22,11 +21,7 @@ namespace Nano35.WebClient.Pages
             _data = (await WorkerService.GetAllWorkers(InstanceService.GetCurrentInstance().Id)).Data;
             _loading = false;
         }
-
-        private void ShowModalNewWorker() =>
-            _isNewWorkerDisplay = true;
-
-        private void HideModalNewWorker() =>
-            _isNewWorkerDisplay = false;
+        private void ShowModalNewWorker() => _isNewWorkerDisplay = true;
+        private void HideModalNewWorker() => _isNewWorkerDisplay = false;
     }
 }

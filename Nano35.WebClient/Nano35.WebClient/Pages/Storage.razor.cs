@@ -7,18 +7,14 @@ namespace Nano35.WebClient.Pages
     public partial class Storage
     {
         [Inject] private NavigationManager NavigationManager { get; set; }
-        
         [Inject] private IRequestManager RequestManager { get; set; }
         
-        [Inject] private ISessionProvider SessionProvider { get; set; }
-        
-        private bool _serverAvailable = false;
+        private bool _serverAvailable;
         
         protected override async Task OnInitializedAsync()
         {
             _serverAvailable = await RequestManager.HealthCheck(RequestManager.InstanceServer);
-            if(!_serverAvailable)
-                NavigationManager.NavigateTo("/instances");
+            if(!_serverAvailable) NavigationManager.NavigateTo("/instances");
         }   
     }
     

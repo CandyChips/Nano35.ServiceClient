@@ -10,7 +10,8 @@ using Nano35.WebClient.Services;
 
 namespace Nano35.WebClient.Pages
 {
-    public partial class SelectStorageItem : ComponentBase
+    public partial class SelectStorageItem : 
+        ComponentBase
     {
         [Inject] private ISessionProvider SessionProvider { get; set; }
         [Inject] private IRequestManager RequestManager { get; set; }
@@ -19,7 +20,7 @@ namespace Nano35.WebClient.Pages
         
         private List<StorageItemViewModel> StorageItems { get; set; }
         private Guid _selectedStorageItemId;
-        private Guid SelectedStorageItemId { get => _selectedStorageItemId; set { _selectedStorageItemId = value; OnStorageItemChanged(); } }
+        private Guid SelectedStorageItemId { get => _selectedStorageItemId; set { _selectedStorageItemId = value; OnSelectedStorageItemChanged.InvokeAsync(_selectedStorageItemId); } }
         private bool _isNewStorageItemDisplay = false;
         private bool _loading = true;
         private bool _serverAvailable = false;
@@ -27,19 +28,22 @@ namespace Nano35.WebClient.Pages
         protected override async Task OnInitializedAsync()
         {
             _serverAvailable = await RequestManager.HealthCheck(RequestManager.IdentityServer);
-            var storageItemsRequest = new GetAllStorageItemsQuery() {InstanceId = await SessionProvider.GetCurrentInstanceId()};
-            StorageItems = (await new GetAllStorageItemsRequest(RequestManager, HttpClient, storageItemsRequest).Send()).Data.ToList();
+            StorageItems = await GetAllStorageItems();
             _loading = false;
         }
 
-        private async Task OnStorageItemChanged() =>
-            await OnSelectedStorageItemChanged.InvokeAsync(_selectedStorageItemId);
-        
-        private void ShowModalNewStorageItem() => 
-            _isNewStorageItemDisplay = true;
-        
-        private void HideModalNewStorageItem() => 
+        private async Task<List<StorageItemViewModel>> GetAllStorageItems()
+        {
+            return (await new GetAllStorageItemsRequest(RequestManager, HttpClient, new GetAllStorageItemsQuery() {InstanceId = await SessionProvider.GetCurrentInstanceId()}).Send()).Data.ToList();
+        }
+
+        private void ShowModalNewStorageItem() => _isNewStorageItemDisplay = true;
+
+        private async void HideModalNewStorageItem()
+        {
+            StorageItems = await GetAllStorageItems();
             _isNewStorageItemDisplay = false;
+        }
     }
         
 }

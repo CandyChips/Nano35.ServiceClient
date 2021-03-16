@@ -1,0 +1,62 @@
+﻿@typeparam TItem
+
+<table class="table" style="font-size: 12px">
+    <thead>        
+        <tr>
+            @Header
+
+            @if (HasAnyDelegates)
+            {
+                <th>Действия</th>
+            }
+        </tr>  
+    </thead>
+    <tbody>        
+    @foreach (var item in Items)  
+    {  
+        <tr>
+            @Row(item)
+
+            @if (HasAnyDelegates)
+            {
+                <div class="button-cell">
+                    @if (EditRow.HasDelegate)
+                    {
+                        <button type="button"
+                                class="btn btn-primary btn-sm"
+                                @onclick="@(() => EditRow.InvokeAsync(item))">
+                            Редактировать
+                        </button>
+                    }
+                    @if (DeleteRow.HasDelegate)
+                    {
+                        <button type="button"
+                                class="btn btn-danger btn-sm"
+                                @onclick="@(() => DeleteRow.InvokeAsync(item))">
+                            Удалить
+                        </button>
+                    }
+                    @if (DetailsRow.HasDelegate)
+                    {
+                        <button type="button"
+                                class="btn btn-info btn-sm"
+                                @onclick="@(() => DetailsRow.InvokeAsync(item))">
+                            Информация
+                        </button>
+                    }
+                </div>
+            }
+        </tr>  
+    }  
+    </tbody>
+</table>
+
+@functions {  
+    [Parameter] public RenderFragment Header { get; set; }
+    [Parameter] public RenderFragment<TItem> Row { get; set; }
+    [Parameter] public IEnumerable<TItem> Items { get; set; } 
+    [Parameter] public EventCallback<TItem> EditRow { get; set; } 
+    [Parameter] public EventCallback<TItem> DeleteRow { get; set; } 
+    [Parameter] public EventCallback<TItem> DetailsRow { get; set; }
+    private bool HasAnyDelegates => (EditRow.HasDelegate || DeleteRow.HasDelegate || DetailsRow.HasDelegate);
+}  

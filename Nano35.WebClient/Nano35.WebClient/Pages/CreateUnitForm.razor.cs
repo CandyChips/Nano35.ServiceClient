@@ -1,28 +1,24 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
-using Nano35.Contracts.Instance.Models;
 using Nano35.HttpContext.instance;
 using Nano35.WebClient.Services;
 
 namespace Nano35.WebClient.Pages
 {
-    public partial class ModalNewUnit : ComponentBase
+    public partial class CreateUnitForm : 
+        ComponentBase
     {
         [Inject] private IRequestManager RequestManager { get; set; }
         [Inject] private HttpClient HttpClient { get; set; }
-        [Inject] private IUnitService UnitService { get; set; }
         [Inject] private IInstanceService InstanceService { get; set; }
         [Parameter] public EventCallback OnHideModalNewUnit { get; set; }
         
-        private CreateUnitHttpBody _model;
+        private CreateUnitHttpBody _model = new CreateUnitHttpBody();
         private bool _loading = true;
         private string _error = string.Empty;
-        private bool _serverAvailable = false;
+        private bool _serverAvailable;
 
         protected override async Task OnInitializedAsync()
         {

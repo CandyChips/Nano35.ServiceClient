@@ -1,4 +1,5 @@
-﻿<div class="modal-background">
+﻿@using Nano35.HttpContext.storage
+<div class="modal-background">
     <div class="modal-content card">
         <h4 class="card-header">Новое оприходование</h4>
         <div class="card-body">
@@ -15,7 +16,7 @@
                     OnClientChanged="ComingClientChanged"/>
                 
                 <SelectUnit
-                    OnUnitChanged="ComingUnitChanged"/>
+                    SelectedUnitId="_model.UnitId"/>
                 
                 <div class="form-group">
                     <label>Комментарий</label>
@@ -30,7 +31,7 @@
                         <button type="button" 
                                 class="btn btn-outline-primary"
                                 style="width: 100%"
-                                @onclick="ShowModalNewComingDetail">
+                                @onclick="() => { _isNewComingDetailDisplay = true; }">
                             Добавить
                         </button>
                     }
@@ -46,27 +47,18 @@
                         </span>
                         
                     }
-                    <table class="table" style="font-size: 12px">
-                        <thead>
-                            <tr>
-                                <th>Товар</th>
-                                <th>Количество</th>
-                                <th>Цена</th>
-                                <th>Действия</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        @foreach (var item in _details)
-                        {
-                            <tr>
-                                <td>@item.PlaceOnStorage</td>
-                                <td>@item.PlaceOnStorage</td>
-                                <td>@item.Price</td>
-                                <td><button class="btn btn-danger">Закрыть</button></td>
-                            </tr>
-                        }
-                        </tbody>
-                    </table>
+                    <Grid Items="@_details" TItem="CreateComingDetailViewModel">    
+                        <Header>  
+                            <th>Товар</th>
+                            <th>Количество</th>
+                            <th>Цена</th>
+                        </Header>  
+                        <Row Context="item">  
+                            <td>@item.PlaceOnStorage</td>
+                            <td>@item.PlaceOnStorage</td>
+                            <td>@item.Price</td>
+                        </Row>  
+                    </Grid>
                 </div>
                 @if (!string.IsNullOrEmpty(_error))
                 {
@@ -96,10 +88,12 @@
     </div>
 </div>
 
-@if (_isNewComingDetailDisplay)
-{
-    <ModalNewComingDetail
-        OnAddNewComingDetail="AddComingDetail"
-        OnHideModalNewComingDetail="HideModalNewComingDetail"
-        UnitId="_model.UnitId"/>
-}
+<Modal Title="Новая позиция к оприходованию" 
+       IsDisplay="@_isNewComingDetailDisplay">
+    <Form>
+        <AddComingDetailForm
+            OnAddNewComingDetail="AddComingDetail"
+            UnitId="_model.UnitId"/>
+    </Form>
+</Modal>
+

@@ -1,22 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
-using Nano35.Contracts.Instance.Models;
-using Nano35.HttpContext.instance;
 using Nano35.HttpContext.storage;
 using Nano35.WebClient.Services;
 
 namespace Nano35.WebClient.Pages
 {
-    public partial class ModalNewComing : 
+    public partial class CreateComingForm : 
         ComponentBase
     {
         [Inject] private HttpClient HttpClient { get; set; }
         [Inject] private IRequestManager RequestManager { get; set; }
-        [Inject] private IUnitService UnitService { get; set; }
         [Inject] private ISessionProvider SessionProvider { get; set; }
         [Parameter] public EventCallback OnHideModalNewComing { get; set; }
         
@@ -27,6 +23,7 @@ namespace Nano35.WebClient.Pages
         private string _error = string.Empty;
         private bool _serverAvailable = false;
         private bool _isNewComingDetailDisplay = false;
+        private bool _isNewUnitDisplay = false;
 
 
         protected override async Task OnInitializedAsync()
@@ -60,11 +57,6 @@ namespace Nano35.WebClient.Pages
         
         private void ComingUnitChanged(Guid unitId) => _model.UnitId = unitId;
         private void ComingClientChanged(Guid clientId) => _model.ClientId = clientId;
-        
-        private void ShowModalNewComingDetail() =>
-            _isNewComingDetailDisplay = true;
-        
-        private void HideModalNewComingDetail() =>
-            _isNewComingDetailDisplay = false;
+
     }
 }

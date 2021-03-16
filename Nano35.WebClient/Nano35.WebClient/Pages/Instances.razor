@@ -1,6 +1,8 @@
 ﻿@using Microsoft.AspNetCore.Authorization
+@using Nano35.HttpContext.instance
 @attribute [Authorize]
 @page "/instances"
+
 <AuthorizeView>
     @if (_loading)
     {
@@ -30,28 +32,17 @@
                 Создать
             </button>
             <br/>
-            <table class="table" style="font-size: 12px">
-                <thead>
-                <tr>
+            <Grid Items="@_data" TItem="InstanceViewModel"
+                  DetailsRow="(item) => OpenOrg(item.Id)">    
+                <Header>  
                     <th>Название</th>
                     <th>Организации</th>
-                    <th>Действия</th>
-                </tr>
-                </thead>
-                <tbody>
-                @foreach (var item in _data)
-                {
-                    <tr>
-                        <td>@item.OrgName</td>
-                        <td>@item.OrgRealName</td>
-                        <td><button class="btn btn-primary"
-                                    @onclick="() => OpenOrg(item.Id)">
-                            Войти
-                        </button></td>
-                    </tr>
-                }
-                </tbody>
-            </table>
+                </Header>  
+                <Row Context="item">  
+                    <td>@item.OrgName</td>
+                    <td>@item.OrgRealName</td>
+                </Row>  
+            </Grid>
             @if (_isNewInstanceDisplay)
             {
             

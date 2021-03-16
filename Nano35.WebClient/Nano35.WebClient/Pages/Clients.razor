@@ -1,4 +1,5 @@
 ﻿@using Microsoft.AspNetCore.Authorization
+@using Nano35.HttpContext.instance
 @attribute [Authorize]
 @layout InstanceLayout
 @page "/instance/clients"
@@ -32,37 +33,24 @@
                 Создать
             </button>
             <br/>
-            <table class="table" style="font-size: 12px">
-                <thead>
-                <tr>
+            <Grid Items="@_data" TItem="ClientViewModel">    
+                <Header>  
                     <th>Название</th>
                     <th>Адресс</th>
                     <th>Телефон</th>
                     <th>Salle</th>
                     <th>Тип Клиента</th>
                     <th>Статус Клиента</th>
-                    <th>Действия</th>
-                </tr>
-                </thead>
-                <tbody>
-                @foreach (var item in _data)
-                {
-                    <tr>
-                        <td>@item.Name</td>
-                        <td>@item.Email</td>
-                        <td>@item.Phone</td>
-                        <td>@item.Salle</td>
-                        <td>@item.ClientType</td>
-                        <td>@item.ClientState</td>
-                        <td><button type="button"
-                                    class="btn btn-primary"
-                                    @onclick="() => ShowModalEditClient(item.Id)">
-                            Редактировать
-                        </button></td>
-                    </tr>
-                }
-                </tbody>
-            </table>
+                </Header>  
+                <Row Context="item">  
+                    <td>@item.Name</td>
+                    <td>@item.Email</td>
+                    <td>@item.Phone</td>
+                    <td>@item.Salle</td>
+                    <td>@item.ClientType</td>
+                    <td>@item.ClientState</td>
+                </Row>  
+            </Grid>
             @if (_isNewClientDisplay)
             {
                 <ModalNewClient 

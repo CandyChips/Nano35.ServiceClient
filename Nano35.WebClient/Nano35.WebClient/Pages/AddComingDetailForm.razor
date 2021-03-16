@@ -1,0 +1,36 @@
+﻿<EditForm Model="@_model" >
+    
+    <SelectStorageItem
+        OnSelectedStorageItemChanged="OnSelectedStorageItemChanged"/>
+    
+    @* ToDo implement two way binding of current unit and item ids *@
+    <SelectComingDetailPlaceOnStorage
+        UnitId="UnitId"
+        StorageItemId="_model.StorageItemId"
+        OnComingDetailPlaceOnStorageChanged="OnComingDetailPlaceOnStorageChanged"/>
+    
+    <SelectComingDetailCount
+        OnComingDetailCountChanged="OnComingDetailCountChanged"/>
+    
+    <SelectComingDetailPrice
+        OnComingDetailPriceChanged="OnComingDetailPriceChanged"/>
+    
+    @if (!string.IsNullOrEmpty(_error))
+    {
+        <div class="alert alert-danger mt-3 mb-0">@_error</div>
+    }
+    @if (_loading)
+    {
+        <button class="btn btn-primary" disabled>
+            Создать
+        </button>
+    }
+    else
+    {
+        
+        <input type="submit" 
+               class="btn btn-primary" 
+               @onclick="HandleValidSubmit" 
+               value="Создать"/>
+    }
+</EditForm>

@@ -1,0 +1,13 @@
+﻿<div class="form-group">
+    <label>@Title</label>
+    <div class="input-group">
+        @Controls
+    </div>
+    @Validation
+</div>
+
+@functions {
+    [Parameter] public string Title { get; set; }
+    [Parameter] public RenderFragment Controls { get; set; }
+    [Parameter] public RenderFragment Validation { get; set; }
+}

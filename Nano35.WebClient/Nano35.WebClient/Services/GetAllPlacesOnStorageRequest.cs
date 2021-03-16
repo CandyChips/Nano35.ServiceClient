@@ -11,15 +11,14 @@ namespace Nano35.WebClient.Services
         RequestProvider<GetAllPlacesOnStorageHttpContext, GetAllPlacesOnStorageSuccessHttpResponse>
     {
         public GetAllPlacesOnStorageRequest(IRequestManager requestManager, HttpClient httpClient, GetAllPlacesOnStorageHttpContext request) : 
-            base(requestManager, httpClient, request)
-        {
-            
-        }
+            base(requestManager, httpClient, request) {}
 
         public override async Task<GetAllPlacesOnStorageSuccessHttpResponse> Send()
         {
             var response = await HttpClient.GetAsync(
-                $"{RequestManager.StorageServer}/PlacesOnStorage/GetAllPlacesOnStorage?UnitId={Request.UnitId}&StorageItemId={Request.StorageItemId}");
+                $"{RequestManager.StorageServer}/PlacesOnStorage/GetAllPlacesOnStorage?" 
+                + (Request.UnitId == Guid.Empty ? "" : $"UnitId={Request.UnitId}")
+                + (Request.StorageItemId == Guid.Empty ? "" : $"StorageItemId={Request.StorageItemId}"));
             if (response.IsSuccessStatusCode)
             {
                 return (await response.Content.ReadFromJsonAsync<GetAllPlacesOnStorageSuccessHttpResponse>());

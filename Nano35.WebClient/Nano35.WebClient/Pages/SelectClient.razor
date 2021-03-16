@@ -18,13 +18,14 @@
         <div class="input-group-append">
             <button class="btn btn-outline-primary" 
                     type="button"
-                    @onclick="ShowModalNewClient">Создать</button>
+                    @onclick="() => { _isNewClientDisplay = true; }">Создать</button>
         </div>
     </div>
 </div>
 
-@if (_isNewClientDisplay)
-{
-    <ModalNewClient
-        OnHideModalNewClient="HideModalNewClient"/>  
-}
+<Modal Title="Новый клиент" 
+       IsDisplay="@_isNewClientDisplay">
+    <Form>
+        <ModalNewClient/>  
+    </Form>
+</Modal>

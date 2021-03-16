@@ -19,13 +19,14 @@
         <div class="input-group-append">
             <button class="btn btn-outline-primary" 
                     type="button"
-                    @onclick="ShowModalNewArticle">Создать</button>
+                    @onclick="() => { _isNewArticleDisplay = true; }">Создать</button>
         </div>
     </div>
 </div>
 
-@if (_isNewArticleDisplay)
-{
-    <ModalNewArticle 
-        OnHideModalNewArticle="HideModalNewArticle"/>  
-}
+<Modal Title="Новое наименование" 
+       IsDisplay="@_isNewArticleDisplay">
+    <Form>
+        <CreateArticleForm/>
+    </Form>
+</Modal>

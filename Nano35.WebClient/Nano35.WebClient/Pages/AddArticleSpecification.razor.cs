@@ -9,14 +9,12 @@ namespace Nano35.WebClient.Pages
         ComponentBase
     {
         private SpecHttpContext _model = new SpecHttpContext();
-        private List<SpecHttpContext> _addedSpecs = new List<SpecHttpContext>();
-        [Parameter] public EventCallback<List<SpecHttpContext>> OnUpdateAddedSepecs { get; set; }
+        [Parameter] public List<SpecHttpContext> AddedSpecs { get; set; }
 
         private void AddSpec()
         {
-            _addedSpecs.Add(_model);
+            AddedSpecs.Add(_model);
             _model = new SpecHttpContext();
-            OnUpdateAddedSepecs.InvokeAsync(_addedSpecs);
         }
     }
     

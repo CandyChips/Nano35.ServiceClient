@@ -19,7 +19,7 @@ namespace Nano35.WebClient.Pages
 
         protected override async Task OnInitializedAsync()
         {
-            var isAvailible = await RequestManager.HealthCheck(RequestManager.StorageServer);
+            var isAvailable = await RequestManager.HealthCheck(RequestManager.StorageServer);
             _data = (await ComingsService.GetAllComings(await SessionProvider.GetCurrentInstanceId())).Data;
             _loading = false;
         }

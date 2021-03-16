@@ -14,7 +14,7 @@ namespace Nano35.WebClient.Pages
         [Inject] private ISessionProvider SessionProvider { get; set; }
         [Inject] private IRequestManager RequestManager { get; set; }
         [Inject] private HttpClient HttpClient { get; set; }
-        [Parameter] public EventCallback<Guid> OnSelectedArticleCategoryChanged { get; set; }
+        [Parameter] public Guid SelectedCategoryId { get; set; }
         
         private List<ArticleCategoryViewModel> _categories = new List<ArticleCategoryViewModel>();
         private List<ArticleCategoryViewModel> _selectedCategories = new List<ArticleCategoryViewModel>();
@@ -44,7 +44,7 @@ namespace Nano35.WebClient.Pages
                                                                     HttpClient,
                                                                     request).Send()).Data.ToList();
             
-            await OnSelectedArticleCategoryChanged.InvokeAsync(selected.Id);
+            SelectedCategoryId = _selectedCategories.Last().Id;
             _isLoading = false;
         }
 
@@ -70,6 +70,7 @@ namespace Nano35.WebClient.Pages
                                                                     HttpClient,
                                                                     request).Send()).Data.ToList();
 
+            SelectedCategoryId = _selectedCategories.Last().Id;
             _isLoading = false;
         }
 
@@ -86,6 +87,7 @@ namespace Nano35.WebClient.Pages
                                                                     request).Send()).Data.ToList();
 
             _isLoading = false;
+            SelectedCategoryId = _selectedCategories.Last().Id;
             StateHasChanged();
         }
     }

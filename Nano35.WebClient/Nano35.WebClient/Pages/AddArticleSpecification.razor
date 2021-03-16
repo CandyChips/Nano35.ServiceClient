@@ -8,7 +8,7 @@
         <button class="btn btn-outline-secondary" type="button" @onclick="AddSpec">Добавить</button>
     </div>
     <ul class="list-group">
-        @foreach (var item in _addedSpecs)
+        @foreach (var item in AddedSpecs)
         {
             <li class="list-group-item">@item.Key : @item.Value</li>
         }

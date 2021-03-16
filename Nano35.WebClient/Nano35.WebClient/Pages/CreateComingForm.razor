@@ -1,0 +1,104 @@
+﻿@using Nano35.HttpContext.storage
+
+<EditForm Model="@_model" OnSubmit="Create">
+    <DataAnnotationsValidator />
+    
+    <InputField Title="Номер оприходования">
+        <Controls>
+            <InputText @bind-Value="_model.Number" class="form-control" placeholder="Введите уникальный номер оприходования"/>
+        </Controls>
+    </InputField>
+    
+    <InputField Title="Номер оприходования">
+        <Controls>
+            <InputText @bind-Value="_model.Number" class="form-control" placeholder="Введите уникальный номер оприходования"/>
+        </Controls>
+    </InputField>
+    
+    <SelectClient
+        OnClientChanged="ComingClientChanged"/>
+    
+    
+    <InputField Title="Подразделение">
+        <Controls>
+            <SelectUnit SelectedUnitId="_model.UnitId"/>
+        </Controls>
+    </InputField>
+    
+    <InputField Title="Комментарий">
+        <Controls>
+            <InputText @bind-Value="_model.Comment" class="form-control" placeholder="Введите коментарий к оприходованию"/>
+        </Controls>
+    </InputField>
+    
+    <div class="form-group">
+        <label>Оприходуемые товары</label>
+        @if (_model.UnitId != Guid.Empty)
+        {
+            <button type="button" 
+                    class="btn btn-outline-primary"
+                    style="width: 100%"
+                    @onclick="() => { _isNewComingDetailDisplay = true; }">
+                Добавить
+            </button>
+        }
+        else
+        {
+            <span style="width: 100%" class="d-inline-block" tabindex="0" data-toggle="tooltip" title="Для добавления товаров к оприходованию укажите целевое подразделение">
+                <button type="button" 
+                    class="btn btn-outline-primary"
+                    style="width: 100%"
+                    disabled>
+                    Добавить
+                </button>
+            </span>
+            
+        }
+        <Grid Items="@_details" TItem="CreateComingDetailViewModel">    
+            <Header>  
+                <th>Товар</th>
+                <th>Количество</th>
+                <th>Цена</th>
+            </Header>  
+            <Row Context="item">  
+                <td>@item.PlaceOnStorage</td>
+                <td>@item.PlaceOnStorage</td>
+                <td>@item.Price</td>
+            </Row>  
+        </Grid>
+    </div>
+    @if (!string.IsNullOrEmpty(_error))
+    {
+        <div class="alert alert-danger mt-3 mb-0">@_error</div>
+    }
+    @if (!_loading)
+    {
+        <input type="submit"
+               class="btn btn-primary"
+               value="Создать"/>
+            
+    }
+    else
+    {
+        <button class="btn btn-primary" disabled>
+            Создать
+        </button>
+        
+    }
+</EditForm>
+
+<Modal Title="Новая позиция к оприходованию" 
+       IsDisplay="@_isNewComingDetailDisplay">
+    <Form>
+        <AddComingDetailForm
+            OnAddNewComingDetail="AddComingDetail"
+            UnitId="_model.UnitId"/>
+    </Form>
+</Modal>
+
+<Modal Title="Новое подразделение" 
+       IsDisplay="@_isNewUnitDisplay">
+    <Form>
+        <CreateUnitForm/>
+    </Form>
+</Modal>

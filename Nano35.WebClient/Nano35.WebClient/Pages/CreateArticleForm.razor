@@ -1,0 +1,49 @@
+﻿<EditForm Model="@_model" 
+          OnValidSubmit="HandleValidSubmit">
+    <InputField Title="Категория">
+        <Controls>
+            <SelectArticleCategory SelectedCategoryId="_model.CategoryId"/>
+        </Controls>
+    </InputField>
+    
+    <InputField Title="Бренд">
+        <Controls>
+            <InputText @bind-Value="_model.Brand" 
+                        class="form-control"/>
+        </Controls>
+    </InputField>
+    
+    <InputField Title="Модель">
+        <Controls>
+            <InputText @bind-Value="_model.Model" 
+                        class="form-control"/>
+        </Controls>
+    </InputField>
+    
+    <InputField Title="Описание">
+        <Controls>
+            <InputText @bind-Value="_model.Info" 
+                        class="form-control"/>
+        </Controls>
+    </InputField>
+    
+    <InputField Title="Харрактеристики">
+        <Controls>
+            <AddArticleSpecification AddedSpecs="_model.Specs"/>
+        </Controls>
+    </InputField>
+    
+    @if (_loading)
+    {
+        <button class="btn btn-primary" 
+                disabled>
+            Создать
+        </button>
+    }
+    else
+    {
+        <button class="btn btn-primary">
+            Создать
+        </button>
+    }
+</EditForm>

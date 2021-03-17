@@ -15,8 +15,19 @@ namespace Nano35.WebClient.Pages
         [Inject] private HttpClient HttpClient { get; set; }
         [Inject] private IRequestManager RequestManager { get; set; }
         [Inject] private ISessionProvider SessionProvider { get; set; }
-        [Parameter] public Guid SelectedClientId { get; set; }
+        [Parameter] public Guid ClientId { get; set; }
+        [Parameter] public EventCallback<Guid> ClientIdChanged { get; set; }
+        [Parameter] public bool CanCreate { get; set; }
         
+        private Guid SelectedClientId
+        {
+            get => ClientId;
+            set
+            {
+                ClientId = value;
+                ClientIdChanged.InvokeAsync(value);
+            } 
+        }
         private List<ClientViewModel> Clients { get; set; }
         private bool _loading = true;
         private bool _isNewClientDisplay = false;

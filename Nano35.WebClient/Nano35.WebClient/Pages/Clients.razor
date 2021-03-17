@@ -1,66 +1,86 @@
 ﻿@using Microsoft.AspNetCore.Authorization
 @using Nano35.HttpContext.instance
+@using Nano35.WebClient.Services
 @attribute [Authorize]
-@layout InstanceLayout
 @page "/instance/clients"
+@layout InstanceLayout
+@inject NavigationManager NavigationManager
+@inject IRequestManager RequestManager     
+@inject ISessionProvider SessionProvider   
+@inject HttpClient HttpClient              
 
-<AuthorizeView>
-    @if (_loading)
-    {
-        <div class="col-md-6 offset-md-3 mt-5">
-            <div class="card">
-                <h4 class="card-header">Загрузка</h4>
-                <div class="card-body">
-                    ...
-                </div>
+@if (_loading)
+{
+    <div class="col-md-6 offset-md-3 mt-5">
+        <div class="card">
+            <h4 class="card-header">Загрузка</h4>
+            <div class="card-body">
+                ...
             </div>
+        </div>
+    </div>
+}
+else
+{
+    @if (!_serverAvailable)
+    {
+        <h4 class="card-header">Сервер недоступен</h4>
+        <div class="card-body">
+            Повторите попытку позднее
         </div>
     }
     else
     {
-        @if (!_serverAvailable)
-        {
-            <h4 class="card-header">Сервер недоступен</h4>
-            <div class="card-body">
-                Повторите попытку позднее
-            </div>
-        }
-        else
-        {
-            <button class="btn btn-light"
-                    style="width: 100%"
-                    @onclick="ShowModalNewClient">
-                Создать
-            </button>
-            <br/>
-            <Grid Items="@_data" TItem="ClientViewModel">    
-                <Header>  
-                    <th>Название</th>
-                    <th>Адресс</th>
-                    <th>Телефон</th>
-                    <th>Salle</th>
-                    <th>Тип Клиента</th>
-                    <th>Статус Клиента</th>
-                </Header>  
-                <Row Context="item">  
-                    <td>@item.Name</td>
-                    <td>@item.Email</td>
-                    <td>@item.Phone</td>
-                    <td>@item.Salle</td>
-                    <td>@item.ClientType</td>
-                    <td>@item.ClientState</td>
-                </Row>  
-            </Grid>
-            @if (_isNewClientDisplay)
-            {
-                <ModalNewClient 
-                    OnHideModalNewClient="HideModalNewClient"/>
-            }
-            @if (_isEditClientDisplay)
-            {
-            
-                <ModalEditClient/>
-            }
-        }
+        <button class="btn btn-light"
+                style="width: 100%"
+                @onclick="() => { _isNewClientDisplay = true; }">
+            Создать
+        </button>
+        <Modal Title="Новое подразделение" 
+               IsDisplay="@_isNewClientDisplay">
+            <Form>
+                <CreateClient/>  
+            </Form>
+        </Modal>
+        <br/>
+        <Grid Items="@_data" TItem="ClientViewModel">    
+            <Header>  
+                <th>Название</th>
+                <th>Адресс</th>
+                <th>Телефон</th>
+                <th>Salle</th>
+                <th>Тип Клиента</th>
+                <th>Статус Клиента</th>
+            </Header>  
+            <Row Context="item">  
+                <td>@item.Name</td>
+                <td>@item.Email</td>
+                <td>@item.Phone</td>
+                <td>@item.Salle</td>
+                <td>@item.ClientType</td>
+                <td>@item.ClientState</td>
+            </Row>  
+        </Grid>
     }
-</AuthorizeView>
+}
+
+@code
+{
+    private bool _isNewClientDisplay;
+    private bool _serverAvailable;
+    private bool _loading = true;
+    private IEnumerable<ClientViewModel> _data;
+    protected override async Task OnInitializedAsync()
+    {
+        _serverAvailable = await RequestManager.HealthCheck(RequestManager.InstanceServer);
+        if(!_serverAvailable)
+            NavigationManager.NavigateTo("/instances");
+        if (!await SessionProvider.IsCurrentSessionIdExist())
+            NavigationManager.NavigateTo("/instances");
+
+        var request = new GetAllClientsHttpQuery() {InstanceId = await SessionProvider.GetCurrentInstanceId()};
+        _data = (await new GetAllClientsRequest(RequestManager, HttpClient, request).Send()).Data;
+        _loading = false;
+    }
+    
+}

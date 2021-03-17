@@ -1,4 +1,4 @@
-﻿<InputSelect @bind-Value="SelectedUnitId" class="custom-select">
+﻿<select @bind="SelectedUnitId" class="custom-select">
     @if (_loading)
     {
         <option selected disabled>Загрузка</option>
@@ -11,10 +11,20 @@
             <option value="@item.Id">@item.Name</option>
         }
     }
-</InputSelect>
-<div class="input-group-append">
-    <button class="btn btn-outline-primary"
-            type="button"
-            @onclick="ShowModalNewUnit">Создать</button>
-</div>
-
+</select>
+@if (CanCreate)
+{
+    <div class="input-group-append">
+        <button class="btn btn-outline-primary"
+                type="button"
+                @onclick="() => { _isNewUnitDisplay = true; }">
+            Создать
+        </button>
+    </div>
+    <Modal Title="Новое подразделение" 
+           IsDisplay="@_isNewUnitDisplay">
+        <Form>
+            <CreateUnitForm/>  
+        </Form>
+    </Modal>
+}

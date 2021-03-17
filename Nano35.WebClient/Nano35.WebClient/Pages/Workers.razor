@@ -4,42 +4,41 @@
 @layout InstanceLayout
 @page "/instance/workers"
 
-<AuthorizeView>
-    @if (_loading)
-    {
-        <div class="col-md-6 offset-md-3 mt-5">
-            <div class="card">
-                <h4 class="card-header">Загрузка</h4>
-                <div class="card-body">
-                    ...
-                </div>
+@if (_loading)
+{
+    <div class="col-md-6 offset-md-3 mt-5">
+        <div class="card">
+            <h4 class="card-header">Загрузка</h4>
+            <div class="card-body">
+                ...
             </div>
         </div>
-    }
-    else
-    {
-        <button class="btn btn-light"
-                style="width: 100%"
-                @onclick="ShowModalNewWorker">
-            Создать
-        </button>
-        <br/>
-        <Grid Items="@_data" TItem="WorkerViewModel">    
-            <Header>  
-                <th>ФИО</th>
-                <th>Почта</th>
-                <th>Телефон</th>
-            </Header>  
-            <Row Context="item">  
-                <td>@item.Name</td>
-                <td>@item.Email</td>
-                <td>@item.Phone</td>
-            </Row>  
-        </Grid>
-        @if (_isNewWorkerDisplay)
-        {
-            <ModalNewWorker
-                OnHideModalNewWorker ="HideModalNewWorker"/>
-        }
-    }
-</AuthorizeView>
+    </div>
+}
+else
+{
+    <button class="btn btn-light"
+            style="width: 100%"
+            @onclick="() => { _isNewWorkerDisplay = true; }">
+        Создать
+    </button>
+    <Modal Title="Новый сотрудник" 
+           IsDisplay="@_isNewWorkerDisplay">
+        <Form>
+            <CreateWorkerForm/>  
+        </Form>
+    </Modal>
+    <br/>
+    <Grid Items="@_data" TItem="WorkerViewModel">    
+        <Header>  
+            <th>ФИО</th>
+            <th>Почта</th>
+            <th>Телефон</th>
+        </Header>  
+        <Row Context="item">  
+            <td>@item.Name</td>
+            <td>@item.Email</td>
+            <td>@item.Phone</td>
+        </Row>  
+    </Grid>
+}

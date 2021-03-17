@@ -1,36 +1,32 @@
-﻿<EditForm Model="@_model" >
-    
-    <SelectStorageItem
-        OnSelectedStorageItemChanged="OnSelectedStorageItemChanged"/>
-    
-    @* ToDo implement two way binding of current unit and item ids *@
-    <SelectComingDetailPlaceOnStorage
-        UnitId="UnitId"
-        StorageItemId="_model.StorageItemId"
-        OnComingDetailPlaceOnStorageChanged="OnComingDetailPlaceOnStorageChanged"/>
-    
-    <SelectComingDetailCount
-        OnComingDetailCountChanged="OnComingDetailCountChanged"/>
-    
-    <SelectComingDetailPrice
-        OnComingDetailPriceChanged="OnComingDetailPriceChanged"/>
-    
-    @if (!string.IsNullOrEmpty(_error))
-    {
-        <div class="alert alert-danger mt-3 mb-0">@_error</div>
-    }
-    @if (_loading)
-    {
-        <button class="btn btn-primary" disabled>
-            Создать
-        </button>
-    }
-    else
-    {
-        
-        <input type="submit" 
-               class="btn btn-primary" 
-               @onclick="HandleValidSubmit" 
-               value="Создать"/>
-    }
+﻿@using Nano35.WebClient.Services
+@using Nano35.HttpContext.storage
+@inject HttpClient HttpClient
+@inject IRequestManager RequestManager
+@inject ISessionProvider SessionProvider
+
+<EditForm Model="@_model" OnValidSubmit="HandleValidSubmit">
+    <DataAnnotationsValidator/>
+
+
+    <input type="submit" class="btn btn-primary" @(_loading ? "disabled" : "") value="Создать"/>
+
 </EditForm>
+
+@code
+{
+    [Parameter] public EventCallback<CreateComingDetailViewModel> OnAddNewComingDetail { get; set; }
+        
+    private CreateComingDetailViewModel _model = new CreateComingDetailViewModel();
+    private bool _loading = true;
+
+    protected override void OnInitialized()
+    {
+        _model.Count = 1;
+        _loading = false;
+    }
+
+    private void HandleValidSubmit()
+    {
+        OnAddNewComingDetail.InvokeAsync(_model);
+    }
+}

@@ -1,30 +1,28 @@
-﻿<div class="form-group">
-    <label>Товар</label>
-    <div class="input-group">
-        <InputSelect @bind-Value="SelectedStorageItemId" class="custom-select">
-            @if (_loading)
-            {
-                <option selected disabled>Загрузка</option>
-            }
-            else
-            {
-                <option selected disabled>Выберите товар</option>
-                @foreach (var item in StorageItems)
-                {
-                    <option value="@item.Id">@item.Article @item.Condition</option>
-                }
-            }
-        </InputSelect>
-        <div class="input-group-append">
-            <button class="btn btn-outline-primary" 
-                    type="button"
-                    @onclick="ShowModalNewStorageItem">Создать</button>
-        </div>
-    </div>
+﻿<InputSelect @bind-Value="StorageItemId" class="custom-select">
+    @if (_loading)
+    {
+        <option selected disabled>Загрузка</option>
+    }
+    else
+    {
+        <option selected disabled>Выберите товар</option>
+        @foreach (var item in StorageItems)
+        {
+            <option value="@item.Id">@item.Article @item.Condition</option>
+        }
+    }
+</InputSelect>
+<div class="input-group-append">
+    <button class="btn btn-outline-primary"
+            type="button"
+            @onclick="() => { _isNewStorageItemDisplay = true; }">
+        Создать
+    </button>
 </div>
 
-@if (_isNewStorageItemDisplay)
-{
-    <ModalNewStorageItem 
-        OnHideModalNewStorageItem="HideModalNewStorageItem"/>  
-}
+<Modal Title="Новый товар" 
+       IsDisplay="@_isNewStorageItemDisplay">
+    <Form>
+        <CreateStorageItemForm/>  
+    </Form>
+</Modal>

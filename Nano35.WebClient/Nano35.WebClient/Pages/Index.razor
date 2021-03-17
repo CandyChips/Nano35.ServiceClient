@@ -3,20 +3,3 @@
 <AuthorizeView>
     
 </AuthorizeView>
-
-
-<Modal Title="Header" 
-       IsDisplay="@_isModalDisplay">
-    <Form>
-        <h1>Form</h1>
-    </Form>
-</Modal>
-<button class="btn btn-secondary" 
-        @onclick="() => { _isModalDisplay = true; }" >
-    Открыть
-</button>
-
-@code
-{
-    private bool _isModalDisplay = false;
-}

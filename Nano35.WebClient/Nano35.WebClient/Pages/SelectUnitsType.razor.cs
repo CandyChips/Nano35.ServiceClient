@@ -13,11 +13,7 @@ namespace Nano35.WebClient.Pages
     {
         [Inject] private HttpClient HttpClient { get; set; }
         [Inject] private IRequestManager RequestManager { get; set; }
-        [Parameter] public EventCallback<Guid> OnSelectedUnitsTypeChanged { get; set; }
-        
-        private Guid _selectedUnitsTypeId;
-        private Guid SelectedUnitsTypeId { get => _selectedUnitsTypeId; set { _selectedUnitsTypeId = value; OnUnitsTypeChanged(); } }
-
+        [Parameter] public Guid SelectedUnitsTypeId { get; set; }
         
         private List<UnitTypeViewModel> Types { get; set; }
         private bool _loading = true;
@@ -28,12 +24,6 @@ namespace Nano35.WebClient.Pages
             Types = (await new GetAllUnitTypesRequest(RequestManager, HttpClient, request).Send()).Data.ToList();
             _loading = false;
         }
-
-        private void OnUnitsTypeChanged()
-        {
-            OnSelectedUnitsTypeChanged.InvokeAsync(_selectedUnitsTypeId);
-        }
-        
     }
     
 }

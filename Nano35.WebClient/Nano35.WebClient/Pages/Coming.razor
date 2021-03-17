@@ -1,8 +1,13 @@
 ﻿@using Microsoft.AspNetCore.Authorization
 @using Nano35.HttpContext.storage
+@using Nano35.WebClient.Services
 @attribute [Authorize]
 @layout StorageLayout
 @page "/instance/coming"
+@inject IRequestManager RequestManager
+@inject IComingsService ComingsService
+@inject ISessionProvider SessionProvider
+
 
 @if (_loading)
 {
@@ -42,8 +47,26 @@ else
     <Modal Title="Новое оприходование" 
            IsDisplay="@_isNewComingDisplay">
         <Form>
-            <CreateComingForm/>
+            <CreateComing/>
         </Form>
     </Modal>
 
+}
+
+@code
+{
+    private IEnumerable<ComingViewModel> _data;
+    private bool _isNewComingDisplay = false;
+    private bool _loading = true;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var isAvailable = await RequestManager.HealthCheck(RequestManager.StorageServer);
+        _data = (await ComingsService.GetAllComings(await SessionProvider.GetCurrentInstanceId())).Data;
+        _loading = false;
+    }
+
+    private void ShowModalNewComing() => _isNewComingDisplay = true;
+    private void HideModalNewComing() => _isNewComingDisplay = false;
+    
 }

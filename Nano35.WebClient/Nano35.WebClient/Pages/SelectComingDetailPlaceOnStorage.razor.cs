@@ -11,48 +11,6 @@ namespace Nano35.WebClient.Pages
 {
     public partial class SelectComingDetailPlaceOnStorage
     {
-        [Inject] private HttpClient HttpClient { get; set; }
-        [Inject] private IRequestManager RequestManager { get; set; }
-        [Inject] private ISessionProvider SessionProvider { get; set; }
-        [Parameter] public Guid UnitId { get; set; }
-        [Parameter] public Guid StorageItemId { get; set; }
-        [Parameter] public EventCallback<string> OnComingDetailPlaceOnStorageChanged { get; set; }
         
-        private List<string> _comingDetailPlacesOnStorage;
-        private string _comingDetailPlaceOnStorage = "";
-
-        private string ComingDetailPlaceOnStorage
-        {
-            get => _comingDetailPlaceOnStorage;
-            set { 
-                OnComingDetailPlaceOnStorageChanged.InvokeAsync(value);
-                _comingDetailPlaceOnStorage = value;
-            }
-        }
-        private Guid _comingDetailStorageItemId { get; set; }
-
-        private Guid ComingDetailStorageItemId
-        {
-            get => _comingDetailStorageItemId;
-            set
-            {
-                _comingDetailStorageItemId = value;
-                _comingDetailPlacesOnStorage = UpdatePlacesOnStorage().Result;
-            }
-        }
-
-        private async Task<List<string>> UpdatePlacesOnStorage()
-        {
-            var request = new GetAllPlacesOnStorageHttpContext() {UnitId = await SessionProvider.GetCurrentUnitId(), StorageItemId = StorageItemId};
-            return (await new GetAllPlacesOnStorageRequest(RequestManager, HttpClient, request).Send()).Data.Select(a => $"{a.Name}: {a.Count}").ToList();
-        } 
-        
-        private bool _isLoading = true;
-        
-        protected override async Task OnInitializedAsync()
-        {
-            _comingDetailPlacesOnStorage = await UpdatePlacesOnStorage();
-            _isLoading = false;
-        }
     }
 }

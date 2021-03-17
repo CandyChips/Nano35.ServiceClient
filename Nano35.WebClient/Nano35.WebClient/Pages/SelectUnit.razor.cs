@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
@@ -14,33 +15,32 @@ namespace Nano35.WebClient.Pages
         [Inject] private HttpClient HttpClient { get; set; }
         [Inject] private IRequestManager RequestManager { get; set; }
         [Inject] private ISessionProvider SessionProvider { get; set; }
-        [Parameter] public Guid SelectedUnitId { get; set; }
+        [Parameter] public Guid UnitId { get; set; }
+        [Parameter] public EventCallback<Guid> UnitIdChanged { get; set; }
+        [Parameter] public bool CanCreate { get; set; }
         
-        private IEnumerable<IUnitViewModel> Units { get; set; }
-        private Guid _selectedUnitId;
+        private Guid SelectedUnitId 
+        { 
+            get => UnitId;
+            set
+            {
+                Console.WriteLine(value.ToString());
+                UnitId = value;
+                UnitIdChanged.InvokeAsync(value);
+            }
+        }
+        private List<UnitViewModel> Units { get; set; }
         private bool _loading = true;
         private bool _isNewUnitDisplay = false;
-        private Guid SelectedStorageItemId 
-        { 
-            get => SelectedUnitId;
-            set 
-            { 
-                SelectedUnitId = value;
-                SessionProvider.SetCurrentUnitId(value);
-            } 
-        }
         
         protected override async Task OnInitializedAsync()
         {
             var unitsRequest = new GetAllUnitsHttpQuery() {InstanceId = await SessionProvider.GetCurrentInstanceId()};
-            Units = (await new GetAllUnitsRequest(RequestManager, HttpClient, unitsRequest).Send()).Data;
+            Units = (await new GetAllUnitsRequest(RequestManager, HttpClient, unitsRequest).Send()).Data.ToList();
+            var unitId = await SessionProvider.GetCurrentUnitId();
+            if (unitId != Guid.Empty)
+                SelectedUnitId = unitId;
             _loading = false;
         }
-
-        private void ShowModalNewUnit() => 
-            _isNewUnitDisplay = true;
-        
-        private void HideModalNewUnit() => 
-            _isNewUnitDisplay = false;
     }
 }

@@ -1,0 +1,68 @@
+﻿@using Nano35.WebClient.Services
+@using Nano35.HttpContext.instance
+@inject HttpClient HttpClient
+@inject IRequestManager RequestManager
+@inject IInstanceService InstanceService
+
+<EditForm Model="@Model" OnValidSubmit="Create">
+    <DataAnnotationsValidator />
+
+    <InputField Title="Название подразделения*">
+        <Controls>
+            <InputText @bind-Value="Model.Name" 
+                        class="form-control"
+                        placeholder=""/>
+        </Controls>
+    </InputField>
+
+    <InputField Title="Адресс*">
+        <Controls>
+            <InputText @bind-Value="Model.Address"
+                        class="form-control"
+                        placeholder=""/>
+        </Controls>
+    </InputField>
+
+    <InputField Title="Формат работы">
+        <Controls>
+            <InputText @bind-Value="Model.WorkingFormat"
+                        class="form-control"
+                        placeholder=""/>
+        </Controls>
+    </InputField>
+
+    <InputField Title="Номер телефона*">
+        <Controls>
+            <InputText @bind-Value="Model.Phone" 
+                        class="form-control"
+                        placeholder=""/>
+        </Controls>
+    </InputField>
+
+    <InputField Title="Тип подразделения*">
+        <Controls>
+            <SelectUnitsType
+                SelectedUnitsTypeId="Model.UnitTypeId"/>
+        </Controls>
+    </InputField>
+                
+    @if (!string.IsNullOrEmpty(Error))
+    {
+        <div class="alert alert-danger mt-3 mb-0">@Error</div>
+    }
+    <button class="btn btn-primary">
+        Создать
+    </button>
+</EditForm>
+
+@code
+{
+    [Parameter] public CreateUnitHttpBody Model { get; set; }
+    [Parameter] public EventCallback FormSubmitted { get; set; }
+    [Parameter] public string Error { get; set; }
+
+    private async void Create()
+    {
+        await FormSubmitted.InvokeAsync();
+    }
+}

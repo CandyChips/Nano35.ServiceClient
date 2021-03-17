@@ -16,34 +16,29 @@ namespace Nano35.WebClient.Pages
         [Inject] private ISessionProvider SessionProvider { get; set; }
         [Inject] private IRequestManager RequestManager { get; set; }
         [Inject] private HttpClient HttpClient { get; set; }
-        [Parameter] public EventCallback<Guid> OnSelectedStorageItemChanged { get; set; }
+        [Parameter] public Guid StorageItemId { get; set; }
+        [Parameter] public EventCallback<Guid> StorageItemIdChanged { get; set; }
         
+        private Guid SelectedStorageItemId { get; set; }
         private List<StorageItemViewModel> StorageItems { get; set; }
-        private Guid _selectedStorageItemId;
-        private Guid SelectedStorageItemId { get => _selectedStorageItemId; set { _selectedStorageItemId = value; OnSelectedStorageItemChanged.InvokeAsync(_selectedStorageItemId); } }
         private bool _isNewStorageItemDisplay = false;
         private bool _loading = true;
         private bool _serverAvailable = false;
+        
+        private async Task OnStorageItemIdChanged(ChangeEventArgs e)
+        {
+            SelectedStorageItemId = (Guid) e.Value;
+            await StorageItemIdChanged.InvokeAsync(SelectedStorageItemId);
+        }
 
         protected override async Task OnInitializedAsync()
         {
-            _serverAvailable = await RequestManager.HealthCheck(RequestManager.IdentityServer);
             StorageItems = await GetAllStorageItems();
             _loading = false;
         }
 
-        private async Task<List<StorageItemViewModel>> GetAllStorageItems()
-        {
-            return (await new GetAllStorageItemsRequest(RequestManager, HttpClient, new GetAllStorageItemsQuery() {InstanceId = await SessionProvider.GetCurrentInstanceId()}).Send()).Data.ToList();
-        }
-
-        private void ShowModalNewStorageItem() => _isNewStorageItemDisplay = true;
-
-        private async void HideModalNewStorageItem()
-        {
-            StorageItems = await GetAllStorageItems();
-            _isNewStorageItemDisplay = false;
-        }
+        private async Task<List<StorageItemViewModel>> GetAllStorageItems() => 
+            (await new GetAllStorageItemsRequest(RequestManager, HttpClient, new GetAllStorageItemsQuery() {InstanceId = await SessionProvider.GetCurrentInstanceId()}).Send()).Data.ToList();
     }
         
 }

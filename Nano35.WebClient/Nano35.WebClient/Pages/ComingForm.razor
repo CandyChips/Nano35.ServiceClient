@@ -1,0 +1,105 @@
+﻿@using Nano35.HttpContext.storage
+@using Nano35.WebClient.Services
+@inject HttpClient HttpClient
+@inject IRequestManager RequestManager
+@inject ISessionProvider SessionProvider
+
+<EditForm Model="@Model" OnSubmit="Create">
+    <InputField Title="Номер оприходования">
+        <Controls>
+            <InputText @bind-Value="Model.Number" 
+                        class="form-control"
+                        placeholder="Введите уникальный номер оприходования"/>
+        </Controls>
+    </InputField>
+    
+    <InputField Title="Клиент">
+        <Controls>
+            <SelectClient @bind-ClientId="Model.ClientId"
+                           CanCreate="true"/>
+        </Controls>
+    </InputField>
+    
+    <InputField Title="Подразделение">
+        <Controls>
+            <SelectUnit @bind-UnitId="Model.UnitId"
+                         CanCreate="false"/>
+        </Controls>
+    </InputField>
+    
+    <InputField Title="Комментарий">
+        <Controls>
+            <InputText @bind-Value="Model.Comment" 
+                        class="form-control"
+                        placeholder="Введите коментарий к оприходованию"/>
+        </Controls>
+    </InputField>
+    
+    <InputField Title="Оприходуемые товары">
+        <Controls>
+            <button class="btn btn-outline-primary"
+                    style="width: 100%"
+                    @onclick="() => { _isNewComingDetailDisplay = true; }">
+                Добавить
+            </button>
+            
+            <Modal Title="Новая позиция к оприходованию"
+                   IsDisplay="@_isNewComingDetailDisplay">
+                <Form>
+                    <AddComingDetailForm OnAddNewComingDetail="AddComingDetail"/>
+                </Form>
+            </Modal>
+
+            <Grid Items="@_details"
+                  TItem="CreateComingDetailViewModel">
+                <Header>
+                    <th>Товар</th>
+                    <th>Место на складе</th>
+                    <th>Количество</th>
+                    <th>Цена</th>
+                </Header>
+                <Row Context="item">
+                    <td>@item.PlaceOnStorage</td>
+                    <td>@item.PlaceOnStorage</td>
+                    <td>@item.Count</td>
+                    <td>@item.Price</td>
+                </Row>
+            </Grid>
+        </Controls>
+    </InputField>
+    
+    @if (!string.IsNullOrEmpty(Error))
+    {
+        <div class="alert alert-danger mt-3 mb-0">@Error</div>
+    }
+    
+    <button type="submit"
+            class="btn btn-primary">
+         Создать
+    </button>
+</EditForm>
+
+@code
+{
+    [Parameter] public CreateComingHttpBody Model { get; set; }
+    [Parameter] public EventCallback FormSubmitted { get; set; }
+    [Parameter] public string Error { get; set; }
+    
+    private List<CreateComingDetailViewModel> _details = new List<CreateComingDetailViewModel>();
+    private bool _isNewComingDetailDisplay = false;
+    private bool _isNewUnitDisplay = false;
+
+    private async void Create()
+    {
+        Model.Details = _details.Select(a => 
+            new CreateComingDetailViewModel() { NewId = a.NewId, Count = a.Count, Price = a.Price, PlaceOnStorage = a.PlaceOnStorage, StorageItemId = a.StorageItemId}).ToList();
+        await FormSubmitted.InvokeAsync();
+    }
+
+    private void AddComingDetail(CreateComingDetailViewModel model)
+    {
+        _details.Add(model);
+        _isNewComingDetailDisplay = false;
+    }
+    
+}

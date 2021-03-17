@@ -1,0 +1,109 @@
+﻿@using Nano35.WebClient.Services
+@using Nano35.HttpContext.instance
+
+<EditForm Model="@_model" OnValidSubmit="Create">
+    <DataAnnotationsValidator />
+    
+    <InputField Title="Фио*">
+        <Controls>
+            <InputText @bind-Value="_model.Name" 
+                        class="form-control"/>
+            <ValidationMessage For="@(() => _model.Name)" />
+        </Controls>
+    </InputField>
+    
+    <InputField Title="Эл почта">
+        <Controls>
+            <InputText @bind-Value="_model.Email" 
+                        class="form-control"/>
+            <ValidationMessage For="@(() => _model.Email)" />
+        </Controls>
+    </InputField>
+    
+    <InputField Title="Номер телефона*">
+        <Controls>
+            <InputText @bind-Value="_model.Phone" 
+                        class="form-control"/>
+            <ValidationMessage For="@(() => _model.Phone)" />
+        </Controls>
+    </InputField>
+    
+    <InputField Title="Пароль*">
+        <Controls>
+            <InputText @bind-Value="_model.Password" 
+                        class="form-control"/>
+            <ValidationMessage For="@(() => _model.Password)" />
+        </Controls>
+    </InputField>
+    
+    <InputField Title="Подтверждение пароля*">
+        <Controls>
+            <InputText @bind-Value="_model.PasswordConfirm" 
+                        class="form-control"/>
+            <ValidationMessage For="@(() => _model.PasswordConfirm)" />
+        </Controls>
+    </InputField>
+    
+    <InputField Title="Примечание">
+        <Controls>
+            <InputText @bind-Value="_model.Comment" 
+                        class="form-control"/>
+            <ValidationMessage For="@(() => _model.Comment)" />
+        </Controls>
+    </InputField>
+    
+    <InputField Title="Должность*">
+        <Controls>
+            <InputSelect @bind-Value="_model.RoleId" class="custom-select">
+                <option selected disabled>Choose...</option>
+                @foreach (var item in _types)
+                {
+                    <option value="@item.Id">@item.Name </option>
+                }
+            </InputSelect>
+            <ValidationMessage For="@(() => _model.RoleId)"/>
+        </Controls>
+    </InputField>
+    
+    @if (!string.IsNullOrEmpty(_error))
+    {
+        <div class="alert alert-danger mt-3 mb-0">@_error</div>
+    }
+    
+    <button class="btn btn-primary">
+        Создать
+    </button>
+</EditForm>
+
+@code
+{
+    [Inject] private IRequestManager RequestManager { get; set; }
+    [Inject] private IWorkerService WorkerService { get; set; }
+    [Inject] private IInstanceService InstanceService { get; set; }
+    [Parameter] public EventCallback OnHideModalNewWorker { get; set; }
+
+    private List<WorkersRoleViewModel> _types = new List<WorkersRoleViewModel>();
+    private CreateWorkerHttpBody _model = new CreateWorkerHttpBody();
+    private bool _loading = true;
+    private string _error = "";
+    private bool _serverAvailable = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _serverAvailable = await RequestManager.HealthCheck(RequestManager.IdentityServer);
+        _types = (await WorkerService.GetAllWorkerRoles()).Data.ToList();
+        _loading = false;
+    }
+
+    private async void HandleValidSubmit()
+    {
+    }
+
+    private void Create()
+    {
+        _model.NewId = Guid.NewGuid();
+        _model.InstanceId = InstanceService.GetCurrentInstance().Id;
+        WorkerService.CreateWorker(_model);
+        OnHideModalNewWorker.InvokeAsync();
+    }
+}

@@ -1,4 +1,11 @@
-﻿<EditForm Model="@_model" 
+﻿@using Nano35.WebClient.Services
+@using Nano35.HttpContext.storage
+@inject ISessionProvider SessionProvider
+@inject IRequestManager RequestManager 
+@inject HttpClient HttpClient 
+
+
+<EditForm Model="@_model" 
           OnValidSubmit="HandleValidSubmit">
     <InputField Title="Категория">
         <Controls>
@@ -47,3 +54,21 @@
         </button>
     }
 </EditForm>
+
+@code
+{
+    private bool _loading = true;
+    private CreateArticleHttpBody _model = new CreateArticleHttpBody();
+        
+    protected override async Task OnInitializedAsync()
+    {
+        _model.InstanceId = await SessionProvider.GetCurrentInstanceId();
+        _model.NewId = Guid.NewGuid();
+        _loading = false;
+    }
+
+    private async void HandleValidSubmit()
+    {
+        await new CreateArticleRequest(RequestManager, HttpClient, _model).Send();
+    }
+}

@@ -25,21 +25,24 @@
                 <div class="card-body">
                     <EditForm Model="@_model" OnValidSubmit="HandleValidSubmit">
                         <DataAnnotationsValidator />
-                        <div class="form-group">
-                            <label>Номер телефона</label>
-                            <InputText @bind-Value="_model.Login" class="form-control" />
+    
+                        <InputField Title="Номер телефона">
+                            <Controls>
+                                <InputText @bind-Value="_model.Login" 
+                                            class="form-control"/>
                             <ValidationMessage For="@(() => _model.Login)" />
-                        </div>
-                        <div class="form-group">
-                            <label>Пароль</label>
-                            <InputText @bind-Value="_model.Password" type="password" class="form-control" />
-                            <ValidationMessage For="@(() => _model.Password)" />
-                        </div>
+                            </Controls>
+                        </InputField>
+    
+                        <InputField Title="Пароль">
+                            <Controls>
+                                <InputText @bind-Value="_model.Password"
+                                            type="password" 
+                                            class="form-control"/>
+                                <ValidationMessage For="@(() => _model.Password)" />
+                            </Controls>
+                        </InputField>
                         <button class="btn btn-primary">
-                            @if (_loading)
-                            {
-                                <span class="spinner-border spinner-border-sm mr-1"></span>
-                            }
                             Войти
                         </button>
                         @if (!string.IsNullOrEmpty(_error))

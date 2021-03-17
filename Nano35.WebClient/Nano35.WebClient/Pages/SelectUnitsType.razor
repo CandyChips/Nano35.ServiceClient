@@ -1,17 +1,14 @@
-﻿<div class="form-group">
-    <label>Тип*</label>
-    <InputSelect @bind-Value="SelectedUnitsTypeId" class="custom-select">
-        @if (_loading)
+﻿<InputSelect @bind-Value="SelectedUnitsTypeId" class="custom-select">
+    @if (_loading)
+    {
+        <option selected disabled>Загрузка</option>
+    }
+    else
+    {
+        <option selected disabled>Выберите тип подразделения</option>
+        @foreach (var item in Types)
         {
-            <option selected disabled>Загрузка</option>
+            <option value="@item.Id">@item.Name </option>
         }
-        else
-        {
-            <option selected disabled>Выберите тип подразделения</option>
-            @foreach (var item in Types)
-            {
-                <option value="@item.Id">@item.Name </option>
-            }
-        }
-    </InputSelect>
-</div>
+    }
+</InputSelect>
